@@ -6,9 +6,9 @@
 
 ## 1. Current State Snapshot (Overwrite on every task completion)
 - **Active Branch:** `main`
-- **Completed Tasks:** `Task 1.1` (Config, Log Redaction, Gemini Sharder), `Task 0.2` (Canonical Pydantic v2 Contracts, RFC 9457 Problem Details, OpenAPI 3.1 Skeleton)
-- **Next Roadmap Task:** `Task 1.0A — Isolated Mock & Replay Fixture Layer (backend/app/mocks/) + Contract Tests`
-- **Existing Backend Files:** `backend/app/core/config.py`, `backend/app/core/key_shard.py`, `backend/app/core/__init__.py`, `backend/app/schemas/problem_details.py`, `backend/app/schemas/contracts.py`, `backend/app/schemas/__init__.py`, `openapi/openapi.yaml`, `backend/tests/test_contracts.py`.
+- **Completed Tasks:** `Task 1.1` (Config, Redaction, Gemini Sharder), `Task 0.2` (Contracts, Problem Details, OpenAPI), `Task 1.0A` (Mock & Replay Fixture Layer + Contract Tests)
+- **Next Roadmap Task:** `Task 1.0B — Wired FastAPI /v1/* Blueprint Routers, SSE Stream (events_sse.py) & main.py`
+- **Existing Backend Files:** `backend/app/core/config.py`, `backend/app/core/key_shard.py`, `backend/app/core/__init__.py`, `backend/app/schemas/problem_details.py`, `backend/app/schemas/contracts.py`, `backend/app/schemas/__init__.py`, `backend/app/mocks/__init__.py`, `backend/app/mocks/replay_fixtures.py`, `openapi/openapi.yaml`, `backend/tests/test_contracts.py`, `backend/tests/test_config_and_contracts.py`.
 
 ## 2. Locked Stack & Invariants (Do Not Deviate)
 - **Project Name:** `agent-ready` (Monorepo: `backend/` FastAPI + `uv` + `uvicorn` + Supabase Postgres `asyncpg`, `frontend/` Next.js App Router + TS + Tailwind + AG Grid Community v32+).
@@ -23,6 +23,7 @@
 | ADR-01 | 2026-11-05 | Active | FastAPI (`uv`) backend + Next.js (`AG Grid`) frontend monorepo | Auto-exports OpenAPI 3.1 `/openapi.json` for APIMatic SDK generation; fast async Python | `backend/app/core/config.py`, `backend/app/core/key_shard.py` |
 | ADR-02 | 2026-11-05 | Active | Contract-first vertical blueprint with isolated `backend/app/mocks/` | Connects frontend & backend on Day 1; mock provider doubles as instant Replay mode | `docs/ROADMAP.md` |
 | ADR-03 | 2026-11-05 | Active | RFC 9457 Problem Details + Canonical Pydantic v2 Contracts & OpenAPI 3.1 | Standardizes machine-actionable errors, dual-ledger snapshots, SSE telemetry, and API contract | `backend/app/schemas/problem_details.py`, `backend/app/schemas/contracts.py`, `openapi/openapi.yaml` |
+| ADR-04 | 2026-11-05 | Active | Isolated Mock & Replay Layer in `backend/app/mocks/` | Powers Day 1 Blueprint & production Replay Last Run fallback with identical service signatures | `backend/app/mocks/__init__.py`, `backend/app/mocks/replay_fixtures.py` |
 
 ## 4. Verified Sandbox & Sponsor Quirks Log (Append 1 line per discovery)
 - PayPal Sandbox OAuth tokens expire every 3–8 hours; always refresh via `POST /v1/oauth2/token`.

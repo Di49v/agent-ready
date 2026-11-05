@@ -55,7 +55,7 @@
   - **Spec Details:** Update `config.py` with `use_mock_blueprint: bool = True`. Define canonical Pydantic v2 models & JSON Schemas for `TargetStore`, `PersonaSpec`, `LedgerSnapshot`, `RunCreateRequest`, `RunSummary`, `FindingDetail` (including `rule_number`, `rule_name`, `severity`, `evidence_ids`, `paypal_record`, `store_record`, `explanation`, `patch_diff`), `RunEvent` (SSE payload covering `agent_step`, `paypal_event`, `store_ledger_row`, `finding`, `run_completed`), `CartReceipt`, and RFC 9457 `ProblemDetails` (`application/problem+json` with `type`, `title`, `status`, `code`, `retryable`, `next_action`, `details`). Generate initial OpenAPI 3.1 skeleton in `openapi/openapi.yaml`.
   - **Verify:** Schema validation unit test passes and exports clean OpenAPI 3.1 JSON.
 
-- [ ] **Task 1.0A — Isolated Mock & Replay Fixture Layer (`backend/app/mocks/`) + Contract Tests**
+- [x] **Task 1.0A — Isolated Mock & Replay Fixture Layer (`backend/app/mocks/`) + Contract Tests**
   - **Files:** `backend/app/mocks/__init__.py`, `backend/app/mocks/replay_fixtures.py`, `backend/tests/test_config_and_contracts.py`
   - **Spec Details:** Build a cleanly isolated mock/replay data provider (`replay_fixtures.py`) that powers both the initial full-stack Blueprint AND the production **`Replay Last Run`** safety net (Section A9 & B11):
     1. Metadata for all 9 Personas (`The Retrier`, `The Tamperer`, `The Stale Cart`, `The Webhook Skeptic`, `The Refunder`, `The Ghost Order`, `The Disputer`, `The Misreader`, `The Content Trap`).
