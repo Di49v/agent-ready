@@ -8,6 +8,7 @@ import {
   ModuleRegistry,
   themeQuartz,
   colorSchemeDark,
+  ValidationModule,
 } from "ag-grid-community";
 import {
   AlertTriangle,
@@ -19,7 +20,7 @@ import {
 import { FindingDetail, DualLedgerRow } from "@/lib/api";
 
 // Register AG Grid Community modules
-ModuleRegistry.registerModules([AllCommunityModule]);
+ModuleRegistry.registerModules([AllCommunityModule, ValidationModule]);
 
 // AG Grid v36 Dark Quartz Theme
 const darkGridTheme = themeQuartz.withPart(colorSchemeDark).withParams({
@@ -198,8 +199,8 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
           return (
             <span
               className={`px-2 py-0.5 rounded text-[10px] font-mono border ${isError
-                  ? "bg-rose-950/60 border-rose-800/60 text-rose-300"
-                  : "bg-slate-900 border-slate-700 text-slate-300"
+                ? "bg-rose-950/60 border-rose-800/60 text-rose-300"
+                : "bg-slate-900 border-slate-700 text-slate-300"
                 }`}
             >
               {status || "UNKNOWN"}
@@ -254,8 +255,8 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
           <button
             onClick={() => setActiveTab("findings")}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition font-mono cursor-pointer ${activeTab === "findings"
-                ? "bg-[#181B26] text-[#06B6D4] border border-[#06B6D4]/50 shadow-md"
-                : "text-[#94A3B8] hover:text-white hover:bg-[#181B26]/50"
+              ? "bg-[#181B26] text-[#06B6D4] border border-[#06B6D4]/50 shadow-md"
+              : "text-[#94A3B8] hover:text-white hover:bg-[#181B26]/50"
               }`}
           >
             <AlertTriangle className="w-4 h-4 text-rose-400" />
@@ -269,8 +270,8 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
           <button
             onClick={() => setActiveTab("dual_ledger")}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition font-mono cursor-pointer ${activeTab === "dual_ledger"
-                ? "bg-[#181B26] text-[#06B6D4] border border-[#06B6D4]/50 shadow-md"
-                : "text-[#94A3B8] hover:text-white hover:bg-[#181B26]/50"
+              ? "bg-[#181B26] text-[#06B6D4] border border-[#06B6D4]/50 shadow-md"
+              : "text-[#94A3B8] hover:text-white hover:bg-[#181B26]/50"
               }`}
           >
             <Database className="w-4 h-4 text-[#06B6D4]" />
