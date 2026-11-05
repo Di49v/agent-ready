@@ -107,6 +107,11 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         field: "evidence_ids",
         headerName: "PayPal Evidence",
         width: 220,
+        cellDataType: false,
+        valueFormatter: (params) =>
+          params.value && Array.isArray(params.value)
+            ? params.value.join(", ")
+            : params.value || "",
         cellRenderer: (params: any) => {
           const ids: string[] = params.value || [];
           return (
@@ -213,6 +218,11 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         headerName: "Ledger Discrepancy",
         flex: 1,
         minWidth: 260,
+        cellDataType: false,
+        valueFormatter: (p) =>
+          p.value && Array.isArray(p.value)
+            ? p.value.join(", ")
+            : p.value || "",
         cellRenderer: (p: any) => {
           const list: string[] = p.value || [];
           if (list.length === 0) {
@@ -288,7 +298,10 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
       </div>
 
       {/* Grid Container */}
-      <div className="w-full h-[360px] rounded-lg overflow-hidden border border-[#242838]">
+      <div
+        className="w-full h-[360px] rounded-lg overflow-hidden border border-[#242838]"
+        style={{ width: "100%", height: "360px" }}
+      >
         {activeTab === "findings" ? (
           <AgGridReact<FindingDetail>
             theme={darkGridTheme}
@@ -298,6 +311,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
             pagination={false}
             rowHeight={46}
             headerHeight={40}
+            domLayout="normal"
             suppressCellFocus={true}
           />
         ) : (
@@ -309,6 +323,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
             pagination={false}
             rowHeight={46}
             headerHeight={40}
+            domLayout="normal"
             suppressCellFocus={true}
           />
         )}
