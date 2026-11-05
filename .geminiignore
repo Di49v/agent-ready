@@ -1,0 +1,18 @@
+# Block all real environment and secret files from AI context and indexing
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# Explicitly ALLOW the AI to read and update .env.example
+!.env.example
+
+# Ignore heavy build and dependency folders so indexing stays fast
+node_modules/
+.next/
+.venv/
+__pycache__/
+.pytest_cache/
+dist/
+build/
