@@ -136,7 +136,7 @@
     - `Probe`: Read-only `GET /_lab/ledger` signed with `LAB_PROBE_HMAC_SECRET` returning store orders, captures, refunds, tracking, and webhook log (plus black-box toggle to demonstrate the honest residual finding).
   - **Verify:** `pytest` confirms RFC 9457 Problem Details responses on `Hardened Shop` and valid HMAC signature on `/_lab/ledger`.
 
-- [ ] **Task 2.4 — HMAC Cart-Receipt Signer & ACP-Style Checkout Session Endpoints**
+- [x] **Task 2.4 — HMAC Cart-Receipt Signer & ACP-Style Checkout Session Endpoints**
   - **Files:** `backend/app/services/cart_signer.py`, `backend/app/shops/acp_sessions.py`
   - **Spec Details:**
     1. Build the `CartReceiptSigner` utility (`HMAC-SHA256` using `CART_RECEIPT_HMAC_SECRET`) that mints a signed receipt of the human-approved `{cart_id, sku, variant, quantity, max_amount, currency}` before an agent shops—so `Guard` can detect when `The Content Trap` alters the cart.
