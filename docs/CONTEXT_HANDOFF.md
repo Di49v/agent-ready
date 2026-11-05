@@ -6,9 +6,10 @@
 
 ## 1. Current State Snapshot (Overwrite on every task completion)
 - **Active Branch:** `main`
-- **Completed Tasks:** `Task 1.1` (Config, Redaction, Gemini Sharder), `Task 0.2` (Contracts, Problem Details, OpenAPI), `Task 1.0A` (Mock & Replay Fixture Layer), `Task 1.0B` (FastAPI /v1/* Routers, SSE Stream & Replay Service)
-- **Next Roadmap Task:** `Task 1.0C — Next.js Frontend, "Carbon & Telemetry Signal" Theme, API Client & Live 9-Lane Strip`
+- **Completed Tasks:** `Task 1.1` (Config, Redaction, Gemini Sharder), `Task 0.2` (Contracts, Problem Details, OpenAPI), `Task 1.0A` (Mock & Replay Fixture Layer), `Task 1.0B` (FastAPI /v1/* Routers, SSE Stream), `Task 1.0C` (Next.js Frontend, Carbon Theme, API Client & 9-Lane Swarm Strip)
+- **Next Roadmap Task:** `Task 1.0D — AG Grid Results Matrix, Side-by-Side Dual-Ledger Inspector & Main Dashboard (page.tsx)`
 - **Existing Backend Files:** `backend/app/core/config.py`, `backend/app/core/key_shard.py`, `backend/app/core/__init__.py`, `backend/app/schemas/problem_details.py`, `backend/app/schemas/contracts.py`, `backend/app/schemas/__init__.py`, `backend/app/mocks/__init__.py`, `backend/app/mocks/replay_fixtures.py`, `backend/app/services/replay_service.py`, `backend/app/api/events_sse.py`, `backend/app/api/v1_router.py`, `backend/app/main.py`, `openapi/openapi.yaml`, `backend/tests/test_contracts.py`, `backend/tests/test_config_and_contracts.py`, `backend/tests/test_api.py`.
+- **Existing Stack Files:** `backend/app/main.py`, `backend/app/api/v1_router.py`, `backend/app/api/events_sse.py`, `backend/app/services/replay_service.py`, `backend/app/mocks/replay_fixtures.py`, `frontend/src/app/globals.css`, `frontend/src/lib/api.ts`, `frontend/src/components/Header.tsx`, `frontend/src/components/SwarmLanes.tsx`, `frontend/src/app/page.tsx`.
 
 ## 2. Locked Stack & Invariants (Do Not Deviate)
 - **Project Name:** `agent-ready` (Monorepo: `backend/` FastAPI + `uv` + `uvicorn` + Supabase Postgres `asyncpg`, `frontend/` Next.js App Router + TS + Tailwind + AG Grid Community v32+).
@@ -25,6 +26,7 @@
 | ADR-03 | 2026-11-05 | Active | RFC 9457 Problem Details + Canonical Pydantic v2 Contracts & OpenAPI 3.1 | Standardizes machine-actionable errors, dual-ledger snapshots, SSE telemetry, and API contract | `backend/app/schemas/problem_details.py`, `backend/app/schemas/contracts.py`, `openapi/openapi.yaml` |
 | ADR-04 | 2026-11-05 | Active | Isolated Mock & Replay Layer in `backend/app/mocks/` | Powers Day 1 Blueprint & production Replay Last Run fallback with identical service signatures | `backend/app/mocks/__init__.py`, `backend/app/mocks/replay_fixtures.py` |
 | ADR-05 | 2026-11-05 | Active | FastAPI `/v1/*` Routers + ReplayService + SSE Streaming | Unifies public API, Red-to-Green rerun, and live Judge Arena telemetry with RFC 9457 errors | `backend/app/api/v1_router.py`, `backend/app/api/events_sse.py`, `backend/app/main.py` |
+| ADR-06 | 2026-11-05 | Active | Carbon & Telemetry Signal Theme + EventSource SSE 9-Lane Swarm Strip | Delivers real-time animated telemetry across 2 waves with batched concurrency for PayPal Sandbox | `frontend/src/app/globals.css`, `frontend/src/lib/api.ts`, `frontend/src/components/SwarmLanes.tsx` |
 
 ## 4. Verified Sandbox & Sponsor Quirks Log (Append 1 line per discovery)
 - PayPal Sandbox OAuth tokens expire every 3–8 hours; always refresh via `POST /v1/oauth2/token`.

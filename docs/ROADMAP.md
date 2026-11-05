@@ -70,7 +70,7 @@
   - **Spec Details:** Wire all Section B3.9 endpoints (`POST /v1/targets`, `POST /v1/runs`, `GET /v1/runs/{id}`, `GET /v1/runs/{id}/findings`, `GET /v1/runs/{id}/report`, `POST /v1/runs/{id}/rerun`, `GET /v1/personas`, `GET /v1/badge/{target}.svg`, `GET /v1/runs/{id}/events` SSE stream, `/webhooks/paypal` stub, and `GET /healthz`) with CORS enabled. Route through a clean dispatcher that serves from `replay_service.py` / `app/mocks/replay_fixtures.py` when `settings.use_mock_blueprint` or `replay=true` is set, with clean hook points for live Stage 2–4 services.
   - **Verify:** Start `uv run uvicorn app.main:app --reload` and verify `/openapi.json`, `/v1/personas`, `/v1/runs`, and SSE streaming work end-to-end.
 
-- [ ] **Task 1.0C — Next.js Frontend, "Carbon & Telemetry Signal" Theme, API Client & Live 9-Lane Strip**
+- [x] **Task 1.0C — Next.js Frontend, "Carbon & Telemetry Signal" Theme, API Client & Live 9-Lane Strip**
   - **Files:** `frontend/src/app/globals.css`, `frontend/src/lib/api.ts`, `frontend/src/components/Header.tsx`, `frontend/src/components/SwarmLanes.tsx`
   - **Spec Details:** Implement dark telemetry palette (`--bg-canvas: #090A0F`, `--bg-panel: #11131A`, `--signal-pass: #10B981`, `--signal-fail: #F43F5E`, `--signal-chaos: #F59E0B`, `--accent-telemetry: #06B6D4`, `JetBrains Mono` tabular numbers). Add target selector (`Naive Shop`, `Hardened Shop`), policy selector (`observe`, `assist`, `auto`), **`Run Crash Test`** button, and **`Replay Last Run`** button in `Header.tsx`. Wire `SwarmLanes.tsx` to the `/v1/runs/{id}/events` SSE stream.
   - **Verify:** Frontend connects to FastAPI backend and animates all 9 persona lanes live.
