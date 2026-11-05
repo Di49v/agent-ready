@@ -97,7 +97,7 @@
     5. Seed a card-funded capture and trigger `POST /v2/customer-support/process-chargeback` + buyer `POST /v1/customer/disputes` (with `PayPal-Auth-Assertion` JWT), recording `PAYPAL_PRE_SEEDED_DISPUTE_ID` in `.env`.
   - **Verify:** `uv run python backend/scripts/day1_spike.py` completes 5 parallel card checkouts and outputs verified Sandbox IDs.
 
-- [ ] **Task 1.3 — Database Models & Supabase Persistence Layer**
+- [x] **Task 1.3 — Database Models & Supabase Persistence Layer**
   - **Files:** `backend/app/db/models.py`, `backend/app/db/session.py`
   - **Spec Details:** Implement Section B3.4 & B4.5 entities: `Target`, `Run`, `Attempt`, `PayPalRecord`, `StoreRecord`, `Finding`, `Patch`, `RunEventLog` (for SSE & Replay), `StoreOrder`, and `IdempotencyRecord`. Configure `create_async_engine` with `connect_args={"statement_cache_size": 0}` for Supabase pooler compatibility.
   - **Verify:** Database tables initialize cleanly on Supabase Postgres.
