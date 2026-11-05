@@ -7,6 +7,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.api.v1_router import router as v1_router
+from app.api.webhooks import router as webhooks_router
 from app.core.config import get_settings, setup_sensitive_log_redaction
 from app.schemas.problem_details import (
     ProblemDetails,
@@ -90,6 +91,7 @@ def health_check() -> dict:
     }
 
 
-# Mount all /v1/* endpoints and PayPal webhook listener
+# Mount all /v1/* endpoints and live PayPal webhook listener
 app.include_router(v1_router)
+app.include_router(webhooks_router)
 

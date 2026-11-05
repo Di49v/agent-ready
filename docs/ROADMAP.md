@@ -102,7 +102,7 @@
   - **Spec Details:** Implement Section B3.4 & B4.5 entities: `Target`, `Run`, `Attempt`, `PayPalRecord`, `StoreRecord`, `Finding`, `Patch`, `RunEventLog` (for SSE & Replay), `StoreOrder`, and `IdempotencyRecord`. Configure `create_async_engine` with `connect_args={"statement_cache_size": 0}` for Supabase pooler compatibility.
   - **Verify:** Database tables initialize cleanly on Supabase Postgres.
 
-- [ ] **Task 1.4 — Render Skeleton Deployment & Live Webhook Receiver**
+- [x] **Task 1.4 — Render Skeleton Deployment & Live Webhook Receiver**
   - **Files:** `backend/app/api/webhooks.py`, `render.yaml`
   - **Spec Details:** Wire live `/webhooks/paypal` receiver verifying signatures via `PayPalSandboxClient.verify_webhook_signature` and logging events to `StoreRecord` / `RunEventLog`. Configure `render.yaml` so PayPal Sandbox Webhooks have a real public HTTPS target URL registered early.
   - **Verify:** PayPal Sandbox webhook simulator test reaches `/webhooks/paypal`.

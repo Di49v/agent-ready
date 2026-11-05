@@ -1,0 +1,70 @@
+# =============================================================================
+# AgentReady Lab — Render Blueprint Specification (Infrastructure-as-Code)
+# Multi-service configuration: FastAPI Backend + Next.js Frontend
+# =============================================================================
+services:
+  # ---------------------------------------------------------------------------
+  # 1. FastAPI Backend API & Live PayPal Webhook Receiver
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: agent-ready-backend
+    runtime: python
+    region: oregon
+    plan: starter
+    rootDir: backend
+    buildCommand: pip install uv && uv sync
+    startCommand: uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: USE_MOCK_BLUEPRINT
+        value: "false"
+      - key: PAYPAL_API_BASE_URL
+        value: https://api-m.sandbox.paypal.com
+      - key: REDACT_SENSITIVE_LOGS
+        value: "true"
+      - key: MAX_CONCURRENT_BUYERS
+        value: "5"
+      - key: WEBHOOK_SETTLE_WINDOW_SEC
+        value: "5"
+      - key: RULE3_SLA_SECONDS
+        value: "8"
+      # Sensitive secrets populated via Render Dashboard:
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: GEMINI_API_KEYS
+        sync: false
+      - key: CHANNEL3_API_KEY
+        sync: false
+      - key: LAB_PROBE_HMAC_SECRET
+        sync: false
+      - key: CART_RECEIPT_HMAC_SECRET
+        sync: false
+
+  # ---------------------------------------------------------------------------
+  # 2. Next.js Frontend Web Application (Carbon & Telemetry Dashboard)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: agent-ready-frontend
+    runtime: node
+    region: oregon
+    plan: starter
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: agent-ready-backend
+          property: host
+

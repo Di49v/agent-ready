@@ -168,15 +168,3 @@ def get_badge(target: str = Path(..., description="Target store ID")) -> Respons
     return Response(content=svg, media_type="image/svg+xml")
 
 
-@router.post(
-    "/webhooks/paypal",
-    summary="PayPal webhook event receiver",
-    description="Ingests PayPal notifications for asynchronous reconciliation.",
-)
-def handle_paypal_webhook(payload: dict = Body(default_factory=dict)) -> dict:
-    return {
-        "received": True,
-        "status": "queued_for_reconciliation",
-        "event_type": payload.get("event_type", "UNKNOWN"),
-    }
-
