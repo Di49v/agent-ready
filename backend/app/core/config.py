@@ -64,6 +64,11 @@ class Settings(BaseSettings):
 
     # --- Environment & Hardened Sandbox Lock ---
     APP_ENV: str = Field(default="development", description="Application environment")
+    USE_MOCK_BLUEPRINT: bool = Field(
+        default=True,
+        validation_alias=AliasChoices("USE_MOCK_BLUEPRINT", "use_mock_blueprint"),
+        description="Run in mock/replay blueprint mode without live external calls",
+    )
     PAYPAL_BASE_URL: str = Field(
         default=LOCKED_SANDBOX_BASE_URL,
         validation_alias=AliasChoices("PAYPAL_BASE_URL", "PAYPAL_API_BASE_URL"),
@@ -164,6 +169,11 @@ class Settings(BaseSettings):
         if not self.GEMINI_API_KEYS:
             return []
         return [k.strip() for k in self.GEMINI_API_KEYS.split(",") if k.strip()]
+
+    @property
+    def use_mock_blueprint(self) -> bool:
+        """Convenience property for lowercase access."""
+        return self.USE_MOCK_BLUEPRINT
 
 
 @lru_cache()

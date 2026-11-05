@@ -1,0 +1,758 @@
+openapi: 3.1.0
+info:
+  title: AgentReady Lab API
+  description: >
+    AgentReady Lab is the adversarial crash-testing, dual-ledger reconciliation,
+    and self-healing platform for AI agent commerce on PayPal Sandbox.
+  version: 1.0.0
+  contact:
+    name: AgentReady Lab Team
+    url: https://github.com/agent-ready/agent-ready
+servers:
+  - url: http://localhost:8000
+    description: Local Development Server
+  - url: https://api.agentready.lab
+    description: Production Lab Server
+
+paths:
+  /healthz:
+    get:
+      summary: Health check and warm-up
+      description: Returns 200 OK to prevent cold starts on Render and verify server vitality.
+      operationId: checkHealth
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  version:
+                    type: string
+                    example: 0.1.0
+
+  /v1/targets:
+    get:
+      summary: List registered target stores
+      description: Returns pre-registered demo stores (Naive Shop, Hardened Shop) and custom targets.
+      operationId: listTargets
+      responses:
+        '200':
+          description: List of targets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TargetStore'
+    post:
+      summary: Register a new target store
+      description: Registers an external or custom sandbox store for crash testing.
+      operationId: createTarget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TargetStore'
+      responses:
+        '201':
+          description: Target registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TargetStore'
+        '400':
+          $ref: '#/components/responses/ProblemDetailsResponse'
+
+  /v1/personas:
+    get:
+      summary: List adversarial personas in the test pack
+      description: Returns specifications for the 9 adversarial AI buyer personas.
+      operationId: listPersonas
+      responses:
+        '200':
+          description: Array of persona specifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonaSpec'
+
+  /v1/runs:
+    post:
+      summary: Start a new crash-test run
+      description: Initiates a parallel swarm crash test against the target store with the specified seed and pack.
+      operationId: createRun
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunCreateRequest'
+      responses:
+        '202':
+          description: Run accepted and queued or running
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunSummary'
+        '400':
+          $ref: '#/components/responses/ProblemDetailsResponse'
+        '404':
+          $ref: '#/components/responses/ProblemDetailsResponse'
+
+  /v1/runs/{id}:
+    get:
+      summary: Get run status and score
+      description: Retrieves the current status, Agent-Readiness Score, and finding breakdown for a run.
+      operationId: getRun
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Run identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Run summary details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunSummary'
+        '404':
+          $ref: '#/components/responses/ProblemDetailsResponse'
+
+  /v1/runs/{id}/findings:
+    get:
+      summary: List findings for a run
+      description: Returns all invariant rule violations detected by the Reconciler with PayPal IDs as evidence.
+      operationId: listRunFindings
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Run identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of findings with evidence and code diffs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FindingDetail'
+        '404':
+          $ref: '#/components/responses/ProblemDetailsResponse'
+
+  /v1/runs/{id}/report:
+    get:
+      summary: Get comprehensive run audit report
+      description: Returns a complete Markdown and JSON audit report for merchant export.
+      operationId: getRunReport
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Run identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Audit report object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunReportResponse'
+        '404':
+          $ref: '#/components/responses/ProblemDetailsResponse'
+
+  /v1/runs/{id}/rerun:
+    post:
+      summary: Re-run same seed against target
+      description: Re-runs the exact same seed against the target store to verify patch remediation.
+      operationId: rerunSameSeed
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Base run identifier to replay
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                target_override:
+                  type: string
+                  description: Optional alternative target ID (e.g. 'hardened-shop')
+      responses:
+        '202':
+          description: Re-run accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunSummary'
+        '404':
+          $ref: '#/components/responses/ProblemDetailsResponse'
+
+  /v1/runs/{id}/events:
+    get:
+      summary: Stream live run telemetry (SSE)
+      description: Server-Sent Events stream delivering real-time telemetry frames to the Judge Arena live strip.
+      operationId: streamRunEvents
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Run identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Real-time event stream
+          content:
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/RunEvent'
+        '404':
+          $ref: '#/components/responses/ProblemDetailsResponse'
+
+  /v1/badge/{target}.svg:
+    get:
+      summary: Get Agent-Readiness SVG badge
+      description: Dynamic SVG badge showing the target store's latest readiness score.
+      operationId: getScoreBadge
+      parameters:
+        - name: target
+          in: path
+          required: true
+          description: Target store ID (e.g. 'naive-shop', 'hardened-shop')
+          schema:
+            type: string
+      responses:
+        '200':
+          description: SVG image markup
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+
+  /webhooks/paypal:
+    post:
+      summary: Receive PayPal Sandbox webhook events
+      description: Ingests PayPal asynchronous notifications for order approvals, captures, refunds, and disputes.
+      operationId: handlePayPalWebhook
+      responses:
+        '200':
+          description: Webhook received and queued for reconciliation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  received:
+                    type: boolean
+                    example: true
+        '401':
+          $ref: '#/components/responses/ProblemDetailsResponse'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Lab-Api-Key
+      description: Public demo or merchant API key for AgentReady Lab access
+
+  responses:
+    ProblemDetailsResponse:
+      description: RFC 9457 Problem Details error response
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  schemas:
+    ProblemDetails:
+      type: object
+      required:
+        - type
+        - title
+        - status
+        - code
+      properties:
+        type:
+          type: string
+          format: uri
+          example: https://lab.example/errors/price-mismatch
+        title:
+          type: string
+          example: Submitted amount does not match current price
+        status:
+          type: integer
+          example: 409
+        code:
+          type: string
+          example: PRICE_MISMATCH_REAUTHORIZATION_REQUIRED
+        detail:
+          type: string
+          example: Server calculated $48.00 USD but received $40.00 USD.
+        retryable:
+          type: boolean
+          default: false
+        next_action:
+          type: string
+          example: ask_user_to_confirm_new_price
+        details:
+          type: object
+          additionalProperties: true
+        instance:
+          type: string
+          format: uri
+
+    TargetStore:
+      type: object
+      required:
+        - id
+        - name
+        - base_url
+      properties:
+        id:
+          type: string
+          example: naive-shop
+        name:
+          type: string
+          example: Naive Shop (Vulnerable Baseline)
+        base_url:
+          type: string
+          format: uri
+          example: http://localhost:8000/demo/naive
+        mode:
+          type: string
+          enum: [probe, black_box]
+          default: probe
+        probe_url:
+          type: string
+          format: uri
+          example: http://localhost:8000/demo/naive/_lab/ledger
+        ledger_secret:
+          type: string
+        description:
+          type: string
+        is_demo:
+          type: boolean
+          default: true
+        created_at:
+          type: string
+          format: date-time
+
+    PersonaSpec:
+      type: object
+      required:
+        - id
+        - name
+        - plain_words
+        - rule_number
+        - rule_name
+        - driven_by
+        - fault_description
+        - expected_behavior
+      properties:
+        id:
+          type: string
+          example: the_retrier
+        name:
+          type: string
+          example: The Retrier
+        plain_words:
+          type: string
+          example: Connection drops after paying, then it tries again
+        rule_number:
+          type: integer
+          minimum: 1
+          maximum: 6
+          example: 1
+        rule_name:
+          type: string
+          example: Pay Once
+        driven_by:
+          type: string
+          enum: [fixed_script, live_llm]
+          example: fixed_script
+        fault_description:
+          type: string
+          example: Drops HTTP response after successful capture and replays identical request
+        expected_behavior:
+          type: string
+          example: Store must return original result with Idempotent-Replayed true
+        wave:
+          type: integer
+          enum: [1, 2]
+          default: 1
+
+    CartItem:
+      type: object
+      required:
+        - item_id
+        - title
+        - unit_price
+        - quantity
+      properties:
+        item_id:
+          type: string
+          example: sku_run_shoe_8
+        title:
+          type: string
+          example: Velocity Runner Shoes
+        unit_price:
+          type: string
+          example: "120.00"
+        quantity:
+          type: integer
+          minimum: 1
+          example: 1
+        selected_options:
+          type: object
+          additionalProperties:
+            type: string
+
+    CartReceipt:
+      type: object
+      required:
+        - receipt_id
+        - cart_id
+        - total_amount
+        - client_timestamp
+        - cart_hash
+      properties:
+        receipt_id:
+          type: string
+          example: rcpt_7f3a9e2b
+        cart_id:
+          type: string
+          example: cart_user_42_lane_1
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        currency:
+          type: string
+          default: USD
+          example: USD
+        total_amount:
+          type: string
+          example: "120.00"
+        client_timestamp:
+          type: string
+          format: date-time
+        cart_hash:
+          type: string
+          example: a5b4c3d2e1f0...
+        signature:
+          type: string
+
+    FindingSeverity:
+      type: string
+      enum: [CRITICAL, HIGH, MEDIUM, LOW]
+
+    FindingDetail:
+      type: object
+      required:
+        - id
+        - rule_number
+        - rule_name
+        - severity
+        - title
+        - explanation
+      properties:
+        id:
+          type: string
+          example: find_rule1_double_capture
+        run_id:
+          type: string
+          example: run_42_naive_shop
+        rule_number:
+          type: integer
+          example: 1
+        rule_name:
+          type: string
+          example: Pay Once
+        severity:
+          $ref: '#/components/schemas/FindingSeverity'
+        persona_id:
+          type: string
+          example: the_retrier
+        title:
+          type: string
+          example: Double Capture Detected on Idempotent Replay
+        evidence_ids:
+          type: array
+          items:
+            type: string
+          example: [5O190127TN364715T, 2GG279541U471931P, 8AB123456C789012D]
+        paypal_record:
+          type: object
+          additionalProperties: true
+        store_record:
+          type: object
+          additionalProperties: true
+        explanation:
+          type: string
+          example: Store did not persist the PayPal-Request-Id header on checkout retry, causing two distinct captures.
+        patch_diff:
+          type: string
+        fixed:
+          type: boolean
+          default: false
+        remediation_action:
+          type: string
+
+    DualLedgerRow:
+      type: object
+      required:
+        - cart_id
+        - persona_id
+        - timestamp
+      properties:
+        cart_id:
+          type: string
+        persona_id:
+          type: string
+        timestamp:
+          type: string
+        paypal_order_id:
+          type: string
+        paypal_capture_id:
+          type: string
+        paypal_status:
+          type: string
+        paypal_amount:
+          type: string
+        store_order_id:
+          type: string
+        store_status:
+          type: string
+        store_amount:
+          type: string
+        tracking_number:
+          type: string
+        has_dispute:
+          type: boolean
+        dispute_id:
+          type: string
+        disagreements:
+          type: array
+          items:
+            type: string
+
+    LedgerSnapshot:
+      type: object
+      required:
+        - run_id
+        - target_id
+        - snapshot_time
+      properties:
+        run_id:
+          type: string
+        target_id:
+          type: string
+        snapshot_time:
+          type: string
+        settle_window_sec:
+          type: integer
+          default: 5
+        probe_verified:
+          type: boolean
+          default: true
+        paypal_records:
+          type: array
+          items:
+            type: object
+        store_records:
+          type: array
+          items:
+            type: object
+        dual_rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/DualLedgerRow'
+
+    RunCreateRequest:
+      type: object
+      properties:
+        target:
+          type: string
+          default: naive-shop
+          example: naive-shop
+        pack:
+          type: string
+          default: full
+          example: full
+        seed:
+          type: integer
+          default: 42
+          example: 42
+        policy:
+          type: string
+          enum: [observe, assist, auto]
+          default: auto
+        replay:
+          type: boolean
+          default: false
+
+    RuleScore:
+      type: object
+      required:
+        - rule_number
+        - rule_name
+        - weight
+        - rule_score
+      properties:
+        rule_number:
+          type: integer
+        rule_name:
+          type: string
+        weight:
+          type: integer
+        failed_carts:
+          type: integer
+        total_evaluated_carts:
+          type: integer
+        failure_share:
+          type: number
+        rule_score:
+          type: integer
+        status:
+          type: string
+          enum: [PASS, FAIL]
+
+    RunSummary:
+      type: object
+      required:
+        - id
+        - target
+        - target_name
+        - status
+        - created_at
+      properties:
+        id:
+          type: string
+          example: run_42_naive_shop
+        target:
+          type: string
+          example: naive-shop
+        target_name:
+          type: string
+          example: Naive Shop (Vulnerable Baseline)
+        status:
+          type: string
+          enum: [queued, running, grading, complete, failed]
+          example: complete
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 18
+        seed:
+          type: integer
+          example: 42
+        policy:
+          type: string
+          enum: [observe, assist, auto]
+        pack:
+          type: string
+        created_at:
+          type: string
+        completed_at:
+          type: string
+        settle_window_sec:
+          type: integer
+          default: 5
+        total_findings:
+          type: integer
+        critical_findings:
+          type: integer
+        high_findings:
+          type: integer
+        medium_findings:
+          type: integer
+        low_findings:
+          type: integer
+        findings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FindingDetail'
+        rule_scores:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleScore'
+        badge_url:
+          type: string
+        disclaimer:
+          type: string
+          example: Score weights are AgentReady Lab's heuristic design, not an official PayPal standard or certification.
+
+    RunReportResponse:
+      type: object
+      required:
+        - run_id
+        - summary
+        - markdown
+        - generated_at
+      properties:
+        run_id:
+          type: string
+        summary:
+          $ref: '#/components/schemas/RunSummary'
+        markdown:
+          type: string
+        generated_at:
+          type: string
+
+    RunEvent:
+      type: object
+      required:
+        - event
+        - run_id
+        - timestamp
+      properties:
+        event:
+          type: string
+          enum: [agent_step, paypal_event, store_ledger_row, finding, run_completed]
+        run_id:
+          type: string
+        timestamp:
+          type: string
+        lane:
+          type: integer
+          minimum: 1
+          maximum: 9
+        persona_id:
+          type: string
+        actor:
+          type: string
+        action:
+          type: string
+        paypal_id:
+          type: string
+        amount:
+          type: string
+        status:
+          type: string
+        rule_hit:
+          type: integer
+        data:
+          type: object
+
