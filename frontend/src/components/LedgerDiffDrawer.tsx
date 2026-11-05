@@ -64,13 +64,12 @@ export const LedgerDiffDrawer: React.FC<LedgerDiffDrawerProps> = ({
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span
-                className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider uppercase border ${
-                  severity === "CRITICAL"
+                className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider uppercase border ${severity === "CRITICAL"
                     ? "bg-rose-950/80 border-rose-700/80 text-rose-300"
                     : severity === "HIGH"
-                    ? "bg-amber-950/80 border-amber-700/80 text-amber-300"
-                    : "bg-slate-900 border-slate-700 text-slate-300"
-                }`}
+                      ? "bg-amber-950/80 border-amber-700/80 text-amber-300"
+                      : "bg-slate-900 border-slate-700 text-slate-300"
+                  }`}
               >
                 {severity}
               </span>
@@ -207,3 +206,4 @@ export const LedgerDiffDrawer: React.FC<LedgerDiffDrawerProps> = ({
     </div>
   );
 };
+

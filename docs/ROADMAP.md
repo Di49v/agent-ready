@@ -75,7 +75,7 @@
   - **Spec Details:** Implement dark telemetry palette (`--bg-canvas: #090A0F`, `--bg-panel: #11131A`, `--signal-pass: #10B981`, `--signal-fail: #F43F5E`, `--signal-chaos: #F59E0B`, `--accent-telemetry: #06B6D4`, `JetBrains Mono` tabular numbers). Add target selector (`Naive Shop`, `Hardened Shop`), policy selector (`observe`, `assist`, `auto`), **`Run Crash Test`** button, and **`Replay Last Run`** button in `Header.tsx`. Wire `SwarmLanes.tsx` to the `/v1/runs/{id}/events` SSE stream.
   - **Verify:** Frontend connects to FastAPI backend and animates all 9 persona lanes live.
 
-- [ ] **Task 1.0D — AG Grid Results Matrix, Side-by-Side Dual-Ledger Inspector & Main Dashboard (`page.tsx`)**
+- [x] **Task 1.0D — AG Grid Results Matrix, Side-by-Side Dual-Ledger Inspector & Main Dashboard (`page.tsx`)**
   - **Files:** `frontend/src/components/FindingsGrid.tsx`, `frontend/src/components/LedgerDiffDrawer.tsx`, `frontend/src/components/PatchViewer.tsx`, `frontend/src/app/page.tsx`
   - **Spec Details:**
     - `FindingsGrid.tsx`: Configure `ag-grid-community` (`themeQuartz` dark custom theme) with grouping by Persona/Rule, red/green conditional cell badges, clickable PayPal Order/Capture IDs, and severity ranking.
