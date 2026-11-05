@@ -67,7 +67,7 @@ class SwarmEngine:
         event_list: List[RunEvent],
         event_callback: Optional[Callable[[RunEvent], None]],
         run_id: str,
-        lane: int,
+        lane: Optional[int],
         persona_id: str,
         event_type: str,
         actor: str,
@@ -110,12 +110,12 @@ class SwarmEngine:
         cart_id = f"cart_lane1_{uuid.uuid4().hex[:6]}"
         pid = "the_retrier"
 
-        await self._emit_event(events, cb, run_id, 1, pid, "agent_step", "The Retrier", "CREATE_CART", "STARTED", "$120.00", rule_hit=1)
-        await shop.create_cart(cart_id, [{"id": "prod_headphones_001", "quantity": 1}], client_price=120.00)
+        await self._emit_event(events, cb, run_id, 1, pid, "agent_step", "The Retrier", "CREATE_CART", "STARTED", "$399.00", rule_hit=1)
+        await shop.create_cart(cart_id, [{"id": "prod_headphones_001", "quantity": 1}], client_price=399.00)
 
         # Trigger rapid retry with same idempotency key
         key = f"idemp_{cart_id}"
-        await self._emit_event(events, cb, run_id, 1, pid, "agent_step", "The Retrier", "POST /v2/checkout/orders", "CAPTURING", "$120.00", rule_hit=1)
+        await self._emit_event(events, cb, run_id, 1, pid, "agent_step", "The Retrier", "POST /v2/checkout/orders", "CAPTURING", "$399.00", rule_hit=1)
 
         res1 = await shop.checkout_order(cart_id=cart_id, idempotency_key=key)
 
@@ -130,7 +130,7 @@ class SwarmEngine:
 
         await self._emit_event(
             events, cb, run_id, 1, pid, "paypal_event", "PayPal Sandbox",
-            "CAPTURE_RESULT", status_label, "$120.00" if is_replayed else "$240.00",
+            "CAPTURE_RESULT", status_label, "$399.00" if is_replayed else "$798.00",
             paypal_id=res1.get("paypal_capture_id"), rule_hit=1
         )
 
@@ -142,7 +142,7 @@ class SwarmEngine:
             cart_id=cart_id,
             attack_vector="Rapid duplicate capture request without idempotency handling",
             outcome=outcome,
-            amount="$120.00" if is_replayed else "$240.00",
+            amount="$399.00" if is_replayed else "$798.00",
             paypal_order_id=res1.get("paypal_order_id"),
             paypal_capture_id=res1.get("paypal_capture_id"),
             store_order_id=res1.get("order_id"),
@@ -200,7 +200,12 @@ class SwarmEngine:
 
         try:
             # Cart created at stale price $150.00 while catalog is $199.00
-            await shop.create_cart(cart_id, [{"id": "prod_keyboard_004", "quantity": 1}], client_price=150.00)
+            await shop.create_cart(
+                cart_id,
+                [{"id": "prod_keyboard_004", "quantity": 1}],
+                client_price=150.00,
+                selected_variants={"switch_type": "Red (Linear)", "color": "Carbon Black"},
+            )
             await shop.checkout_order(cart_id=cart_id)
         except ProblemException as exc:
             outcome = "BLOCKED_BY_GUARD"
@@ -483,7 +488,7 @@ class SwarmEngine:
 
         # Broadcast completion event
         await self._emit_event(
-            events, event_callback, run_id, 0, "orchestrator", "run_completed",
+            events, event_callback, run_id, None, "orchestrator", "run_completed",
             "Swarm Orchestrator", "SWARM_BATCH_COMPLETE", "COMPLETED",
             data={"total_lanes": 9, "duration_sec": total_duration}
         )

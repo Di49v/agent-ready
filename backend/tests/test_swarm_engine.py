@@ -30,7 +30,7 @@ async def test_swarm_execution_on_naive_shop() -> None:
     # Lane 1 (The Retrier): Double capture exploited
     l1 = res.lane_results[1]
     assert l1.outcome == "VULNERABILITY_EXPLOITED"
-    assert l1.amount == "$240.00"
+    assert l1.amount == "$798.00"
 
     # Lane 2 (The Tamperer): Client price tamper accepted ($1.50)
     l2 = res.lane_results[2]
@@ -61,7 +61,7 @@ async def test_swarm_execution_on_hardened_shop() -> None:
     # Lane 1 (The Retrier): Idempotent cache hit
     l1 = res.lane_results[1]
     assert l1.outcome == "BLOCKED_BY_GUARD"
-    assert l1.amount == "$120.00"
+    assert l1.amount == "$399.00"
 
     # Lane 2 (The Tamperer): Blocked with 409 PRICE_MISMATCH
     l2 = res.lane_results[2]
