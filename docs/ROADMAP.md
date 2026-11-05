@@ -147,7 +147,7 @@
 
 ## STAGE 3 (Day 3 — Nov 7): Seeded Chaos Proxy & The 7 Deterministic Personas (Tier 1 Core)
 
-- [ ] **Task 3.1 — Deterministic Seeded Chaos Proxy (Batched 5-Buyer Semaphore)**
+- [x] **Task 3.1 — Deterministic Seeded Chaos Proxy (Batched 5-Buyer Semaphore)**
   - **Files:** `backend/app/chaos/proxy.py`, `backend/app/chaos/faults.py`
   - **Spec Details:** Implement Section B3.5 Chaos Proxy using `random.Random(seed)` and `asyncio.Semaphore(5)`. Inject reproducible faults: drop response after PayPal capture succeeds, duplicate checkout request, strip `PayPal-Request-Id` / `Idempotency-Key`, mutate price/quantity, delay/duplicate/reorder webhooks, and forge unsigned webhooks. Emit live `RunEvent` records for every fault injected.
   - **Verify:** Two runs with `seed=101` produce identical fault traces and `RunEventLog` entries.
