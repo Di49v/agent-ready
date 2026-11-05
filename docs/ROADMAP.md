@@ -129,7 +129,7 @@
     12. `BUG_MISSING_DISPUTE_PROOF` (fails to store tracking reference + signed cart receipt for disputes)
   - **Verify:** Unit test confirms flags can be toggled individually or all-on (`Naive Shop`) / all-off (`Hardened Shop`).
 
-- [ ] **Task 2.3 — Guard Middleware, Hardened Shop & Signed Probe Endpoint (`/_lab/ledger`)**
+- [x] **Task 2.3 — Guard Middleware, Hardened Shop & Signed Probe Endpoint (`/_lab/ledger`)**
   - **Files:** `backend/app/shops/guard.py`, `backend/app/shops/hardened_shop.py`, `backend/app/shops/probe.py`
   - **Spec Details:**
     - `Guard`: Enforces `Idempotency-Key` $\rightarrow$ `PayPal-Request-Id` persistence (returning original `200/201` with `Idempotent-Replayed: true`), server-side price recalculation (`409 PRICE_MISMATCH_REAUTHORIZATION_REQUIRED`), HMAC cart-intent receipt check (`409 CART_INTENT_MISMATCH`), variant clarity check (`422 AMBIGUOUS_VARIANT_CLARIFICATION_REQUIRED`), `verify-webhook-signature` (`401 WEBHOOK_SIGNATURE_INVALID`), and refund cap check (`422 REFUND_EXCEEDS_CAPTURE`).
