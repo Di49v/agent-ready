@@ -179,6 +179,7 @@ class ProblemException(Exception):
     @classmethod
     def webhook_signature_invalid(
         cls,
+        detail: Optional[str] = None,
         type_url: str = "https://lab.example/errors/webhook-signature-invalid",
     ) -> "ProblemException":
         return cls(
@@ -186,7 +187,7 @@ class ProblemException(Exception):
             title="PayPal webhook signature verification failed",
             code=ProblemErrorCode.WEBHOOK_SIGNATURE_INVALID,
             type_=type_url,
-            detail="PayPal verify-webhook-signature API rejected the notification signature or headers.",
+            detail=detail or "PayPal verify-webhook-signature API rejected the notification signature or headers.",
             retryable=False,
             next_action="drop_untrusted_event",
             details={"verification_status": "FAILURE"},
