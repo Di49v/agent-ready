@@ -65,7 +65,7 @@
     5. Ordered SSE `RunEvent` stream frames (`agent_step`, `paypal_event`, `store_ledger_row`, `finding`, `run_completed`).
   - **Verify:** `uv run pytest backend/tests/test_config_and_contracts.py` passes 100%.
 
-- [ ] **Task 1.0B — Wired FastAPI `/v1/*` Blueprint Routers, SSE Stream (`events_sse.py`) & `main.py`**
+- [x] **Task 1.0B — Wired FastAPI `/v1/*` Blueprint Routers, SSE Stream (`events_sse.py`) & `main.py`**
   - **Files:** `backend/app/api/v1_router.py`, `backend/app/api/events_sse.py`, `backend/app/services/replay_service.py`, `backend/app/main.py`
   - **Spec Details:** Wire all Section B3.9 endpoints (`POST /v1/targets`, `POST /v1/runs`, `GET /v1/runs/{id}`, `GET /v1/runs/{id}/findings`, `GET /v1/runs/{id}/report`, `POST /v1/runs/{id}/rerun`, `GET /v1/personas`, `GET /v1/badge/{target}.svg`, `GET /v1/runs/{id}/events` SSE stream, `/webhooks/paypal` stub, and `GET /healthz`) with CORS enabled. Route through a clean dispatcher that serves from `replay_service.py` / `app/mocks/replay_fixtures.py` when `settings.use_mock_blueprint` or `replay=true` is set, with clean hook points for live Stage 2–4 services.
   - **Verify:** Start `uv run uvicorn app.main:app --reload` and verify `/openapi.json`, `/v1/personas`, `/v1/runs`, and SSE streaming work end-to-end.
