@@ -87,7 +87,7 @@
 
 ## STAGE 2 (Day 1 Night / Day 2 — Nov 5/6): Live PayPal Sandbox Spikes, Supabase DB & Demo Shops
 
-- [ ] **Task 1.2 — Day-1 PayPal Sandbox Spikes (5 Parallel Buyers, Card Capture, Webhooks & Chargeback)**
+- [x] **Task 1.2 — Day-1 PayPal Sandbox Spikes (5 Parallel Buyers, Card Capture, Webhooks & Chargeback)**
   - **Files:** `backend/app/services/paypal_client.py`, `backend/scripts/day1_spike.py`
   - **Spec Details:** Grounded with the installed **APIMatic Context Plugin for PayPal**, implement async `PayPalSandboxClient` and test:
     1. OAuth2 token caching & auto-refresh (`POST /v1/oauth2/token`).
