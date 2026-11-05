@@ -2,12 +2,12 @@
 trigger: always_on
 ---
 
-# AgentReady Lab — Strict Workspace Engineering Rules
+# AgentReady Lab - Workspace Engineering Guidelines
 
-You are collaborating with a developer who values modular architecture, strict git hygiene, manual terminal control, and zero destructive edits. Follow every rule below without exception:
+Please follow these workspace conventions for modular architecture, git hygiene, and manual terminal control:
 
-## 1. NO TERMINAL EXECUTION (HARD LOCK)
-- NEVER invoke bash, PowerShell, or terminal execution tools (`run_command`, `execute_command`, etc.).
+## 1. TERMINAL EXECUTION GUIDELINES
+- Do not invoke bash, PowerShell, or terminal execution tools (`run_command`, `execute_command`).
 - You CAN and SHOULD create folders and files directly using your native editor file-creation/editing tools.
 - Whenever a command needs to be run (installing packages with `uv` or `npm`, running `pytest`, starting `uvicorn`, or running `git`), print the exact command inside a `### Manual Terminal & Git Steps` section at the end of your response and wait for the user to paste the terminal output back.
 
