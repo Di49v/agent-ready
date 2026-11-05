@@ -668,7 +668,7 @@ def get_mock_run_summary(target_id: str = "naive-shop", seed: int = 42) -> RunSu
             RuleScore(rule_number=1, rule_name="Pay Once", weight=25, failed_carts=1, total_evaluated_carts=1, failure_share=1.0, rule_score=0, status="FAIL"),
             RuleScore(rule_number=2, rule_name="Right Amount", weight=25, failed_carts=3, total_evaluated_carts=3, failure_share=1.0, rule_score=0, status="FAIL"),
             RuleScore(rule_number=3, rule_name="No Orphan Money", weight=15, failed_carts=1, total_evaluated_carts=1, failure_share=1.0, rule_score=0, status="FAIL"),
-            RuleScore(rule_number=4, rule_name="Safe Refunds", weight=10, failed_carts=1, total_evaluated_carts=1, failure_share=0.7, rule_score=3, status="FAIL"),
+            RuleScore(rule_number=4, rule_name="Safe Refunds", weight=10, failed_carts=1, total_evaluated_carts=5, failure_share=0.2, rule_score=8, status="FAIL"),
             RuleScore(rule_number=5, rule_name="Records Agree", weight=15, failed_carts=1, total_evaluated_carts=1, failure_share=1.0, rule_score=0, status="FAIL"),
             RuleScore(rule_number=6, rule_name="Proof Ready", weight=10, failed_carts=0, total_evaluated_carts=2, failure_share=0.0, rule_score=10, status="PASS"),
         ]
@@ -884,7 +884,7 @@ if is_hardened else
 - **Rule 1 (Pay Once):** {'PASS (25/25 pts)' if is_hardened else 'FAIL (0/25 pts) — Double capture detected'}
 - **Rule 2 (Right Amount):** {'PASS (25/25 pts)' if is_hardened else 'FAIL (0/25 pts) — Client price tampering accepted'}
 - **Rule 3 (No Orphan Money):** {'PASS (15/15 pts)' if is_hardened else 'FAIL (0/15 pts) — Capture without order row or tracking'}
-- **Rule 4 (Safe Refunds):** {'PASS (10/10 pts)' if is_hardened else 'FAIL (3/10 pts) — Duplicate refund exceeded original capture'}
+- **Rule 4 (Safe Refunds):** {'PASS (10/10 pts)' if is_hardened else 'FAIL (8/10 pts) — Duplicate refund exceeded original capture'}
 - **Rule 5 (Records Agree):** {'PASS (15/15 pts)' if is_hardened else 'FAIL (0/15 pts) — Unverified webhook updated order to PAID'}
 - **Rule 6 (Proof Ready):** {'PASS (5/10 pts) — Honest residual limitation in black-box mode' if is_hardened else 'PASS (10/10 pts)'}
 
