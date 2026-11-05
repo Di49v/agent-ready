@@ -24,13 +24,14 @@ _engine: Optional[AsyncEngine] = None
 _session_maker: Optional[async_sessionmaker[AsyncSession]] = None
 
 
-def get_db_url() -> str:
+def get_db_url(url: Optional[str] = None) -> str:
     """
     Normalizes database connection string to ensure asyncpg dialect.
     Handles 'postgres://' and 'postgresql://' prefixes from Supabase/Render.
     """
-    settings = get_settings()
-    url = settings.DATABASE_URL
+    if url is None:
+        settings = get_settings()
+        url = settings.DATABASE_URL
     if url.startswith("postgres://"):
         url = url.replace("postgres://", "postgresql+asyncpg://", 1)
     elif url.startswith("postgresql://"):

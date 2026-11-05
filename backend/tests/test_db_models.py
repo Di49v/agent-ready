@@ -97,17 +97,17 @@ def test_finding_and_idempotency_instantiation() -> None:
     assert idem.locked is False
 
 
-def test_db_url_normalization(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_db_url_normalization() -> None:
     """Verifies that postgres:// and postgresql:// prefixes are converted to asyncpg."""
     from app.core import config
     
     # Test postgres:// rewrite
-    test_settings = config.Settings(DATABASE_URL="postgres://user:pass@host:5432/db")
-    monkeypatch.setattr(config, "get_settings", lambda: test_settings)
-    assert get_db_url() == "postgresql+asyncpg://user:pass@host:5432/db"
+    assert get_db_url("postgres://user:pass@host:5432/db") == "postgresql+asyncpg://user:pass@host:5432/db"
 
     # Test postgresql:// rewrite
-    test_settings2 = config.Settings(DATABASE_URL="postgresql://user:pass@host:5432/db")
-    monkeypatch.setattr(config, "get_settings", lambda: test_settings2)
-    assert get_db_url() == "postgresql+asyncpg://user:pass@host:5432/db"
+    assert get_db_url("postgresql://user:pass@host:5432/db") == "postgresql+asyncpg://user:pass@host:5432/db"
+
+    # Test already normalized
+    assert get_db_url("postgresql+asyncpg://user:pass@host:5432/db") == "postgresql+asyncpg://user:pass@host:5432/db"
+
 
