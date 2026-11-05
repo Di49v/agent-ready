@@ -39,3 +39,8 @@ End every response with this exact checklist:
 2. **Roadmap Sync:** Which checkbox in `docs/ROADMAP.md` was completed.
 3. **Run & Test Commands:** Exact `uv run ...` or `npm ...` command for the user to run and what log output to paste back.
 4. **Git Commands:** Exact `git checkout -b ...`, `git add ...`, and `git commit -m "..."` command for this atomic change.
+
+## 7. LIVING DOCUMENTATION & DIAGRAMS
+- Maintain architectural clarity by updating or creating `docs/ARCHITECTURE.md`, `README.md`, and `docs/SETUP.md` alongside major feature completions.
+- Use Mermaid.js (`mermaid` code blocks) within markdown files to visually map out state machines, data flows, and multi-agent orchestrations.
+- Ensure any new environment variables or setup steps are instantly reflected in `docs/SETUP.md`.
