@@ -140,7 +140,7 @@ async def test_webhook_skeptic_persona_state_machine() -> None:
     assert res_naive.outcome == "VULNERABILITY_EXPLOITED"
     assert p4_naive.current_state == "COMPLETED"
 
-    # 2. Execute on HardenedShop -> 401 UNVERIFIED_WEBHOOK_REJECTED
+    # 2. Execute on HardenedShop -> 401 WEBHOOK_SIGNATURE_INVALID
     p4_hardened = WebhookSkepticPersona()
     events_hardened = []
     res_hardened = await p4_hardened.execute(
@@ -150,7 +150,7 @@ async def test_webhook_skeptic_persona_state_machine() -> None:
     )
     assert res_hardened.lane == 4
     assert res_hardened.outcome == "BLOCKED_BY_GUARD"
-    assert res_hardened.error_code == "UNVERIFIED_WEBHOOK_REJECTED"
+    assert res_hardened.error_code == "WEBHOOK_SIGNATURE_INVALID"
     assert "BLOCKED_BY_GUARD" in p4_hardened.state_history
     assert p4_hardened.current_state == "COMPLETED"
 

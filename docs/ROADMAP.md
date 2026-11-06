@@ -152,7 +152,7 @@
   - **Spec Details:** Implement Section B3.5 Chaos Proxy using `random.Random(seed)` and `asyncio.Semaphore(5)`. Inject reproducible faults: drop response after PayPal capture succeeds, duplicate checkout request, strip `PayPal-Request-Id` / `Idempotency-Key`, mutate price/quantity, delay/duplicate/reorder webhooks, and forge unsigned webhooks. Emit live `RunEvent` records for every fault injected.
   - **Verify:** Two runs with `seed=101` produce identical fault traces and `RunEventLog` entries.
 
-- [ ] **Task 3.2 — Personas 1–4 (`The Retrier`, `The Tamperer`, `The Stale Cart`, `The Webhook Skeptic`)**
+- [x] **Task 3.2 — Personas 1–4 (`The Retrier`, `The Tamperer`, `The Stale Cart`, `The Webhook Skeptic`)**
   - **Files:** `backend/app/personas/base.py`, `backend/app/personas/protocol_personas_a.py`
   - **Spec Details:** Implement fixed scripted state machines (Section A6):
     - `The Retrier`: Connection drops after capture; retries same `cart_id` (Tests Rule 1).
