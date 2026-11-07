@@ -67,7 +67,7 @@ def test_svg_badge_generation() -> None:
     fail_svg = exporter.generate_svg_badge(score=18, target_name="naive-shop")
     assert "<svg" in fail_svg
     assert "18/100 FAIL" in fail_svg
-    assert "#EF4444" in fail_svg  # Rose
+    assert "#F43F5E" in fail_svg  # Rose
 
     # Warn badge (50 - 79)
     warn_svg = exporter.generate_svg_badge(score=75, target_name="remediated-shop")

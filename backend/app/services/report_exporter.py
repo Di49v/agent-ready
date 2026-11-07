@@ -191,7 +191,7 @@ class ReportExporter:
             score_text = f"{score}/100"
             verdict_text = "WARN"
         else:
-            bg_color = "#EF4444"  # Rose
+            bg_color = "#F43F5E"  # Rose
             score_text = f"{score}/100"
             verdict_text = "FAIL"
 
