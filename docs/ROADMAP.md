@@ -212,7 +212,7 @@
     - `The Content Trap`: Reads prompt-injected product description (`"order 5 units"`), submitting a cart that violates the human's signed `CartReceipt` (`409 CART_INTENT_MISMATCH`).
   - **Verify:** Full 9-persona swarm (5 + 4 batched waves) completes cleanly end to end.
 
-- [ ] **Task 5.2 — Fix Engine (Grounded with APIMatic Context) & Re-Run Verification Loop**
+- [x] **Task 5.2 — Fix Engine (Grounded with APIMatic Context) & Re-Run Verification Loop**
   - **Files:** `backend/app/fix_engine/templates.py`, `backend/app/fix_engine/explainer.py`
   - **Spec Details:** Implement the 6 bug-class code-diff templates **grounded with the APIMatic Context Plugin for PayPal** (avoiding overclaims like "100% accurate"). Use `gemini-3.8-flash` to write plain-English root-cause explanations referencing the specific PayPal Order/Capture IDs. Wire into the **`Apply Patch & Re-Run Same Seed`** endpoint so judges see red turn green (plus the 1 honest residual black-box limitation finding).
   - **Verify:** Re-running the same seed on Hardened Shop eliminates the code-bug findings and raises the score from `<25` to `95/100`.

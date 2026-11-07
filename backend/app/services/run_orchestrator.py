@@ -141,6 +141,11 @@ class RunOrchestrator:
             run_id=run_id,
             is_black_box=is_black_box,
         )
+
+        # Enrich findings via Fix Engine (APIMatic grounded templates & LLM explanations)
+        from app.fix_engine.explainer import get_fix_explainer
+        explainer = get_fix_explainer()
+        findings = await explainer.batch_explain_findings(findings)
         _ORCHESTRATED_FINDINGS[run_id] = findings
 
         # Broadcast finding events to SSE
