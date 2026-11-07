@@ -173,5 +173,5 @@ def test_paypal_webhook_stub():
     assert res.status_code == 200
     data = res.json()
     assert data["received"] is True
-    assert data["status"] == "queued_for_reconciliation"
+    assert data["status"] == "VERIFIED_AND_PROCESSED"
 

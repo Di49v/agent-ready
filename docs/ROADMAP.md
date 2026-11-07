@@ -161,7 +161,7 @@
     - `The Webhook Skeptic`: Replays, reorders, and sends a forged `PAYMENT.CAPTURE.COMPLETED` webhook without a valid PayPal signature (Tests Rule 5).
   - **Verify:** All 4 personas break `Naive Shop` and get cleanly handled by `Hardened Shop`.
 
-- [ ] **Task 3.3 — Personas 5–7 (`The Refunder`, `The Ghost Order`, `The Disputer`)**
+- [x] **Task 3.3 — Personas 5–7 (`The Refunder`, `The Ghost Order`, `The Disputer`)**
   - **Files:** `backend/app/personas/protocol_personas_b.py`
   - **Spec Details:**
     - `The Refunder`: Requests duplicate partial refund and over-refund (Rule 4).
