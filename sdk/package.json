@@ -1,0 +1,25 @@
+{
+  "name": "@agent-ready/sdk",
+  "version": "1.0.0",
+  "description": "APIMatic-compatible TypeScript SDK for AgentReady Lab API (OpenAPI 3.1)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "keywords": [
+    "agent-ready",
+    "paypal",
+    "apimatic",
+    "sdk",
+    "commerce-safety",
+    "mcp"
+  ],
+  "author": "AgentReady Lab Team",
+  "license": "Apache-2.0"
+}
+

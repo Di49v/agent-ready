@@ -1,0 +1,1440 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AgentReady Lab API",
+    "description": "Adversarial crash-testing, dual-ledger reconciliation, and self-healing for agentic commerce stores.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/healthz": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health check and warm-up",
+        "description": "Returns service vitality and configuration status. Prevents cold starts on Render.",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Healthcheck"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{id}/events": {
+      "get": {
+        "summary": "Stream live run telemetry frames via SSE",
+        "description": "Streams real-time agent_step, paypal_event, store_ledger_row, finding, and run_completed events.",
+        "operationId": "streamRunEvents",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Run identifier",
+              "title": "Id"
+            },
+            "description": "Run identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SSE telemetry stream",
+            "content": {
+              "text/event-stream": {}
+            }
+          },
+          "404": {
+            "description": "Run not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/targets": {
+      "get": {
+        "tags": [
+          "Targets"
+        ],
+        "summary": "List registered targets",
+        "description": "Returns pre-registered demo targets (Naive Shop, Hardened Shop) and user-registered stores.",
+        "operationId": "listTargets",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TargetStore"
+                  },
+                  "type": "array",
+                  "title": "Response Listtargets"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Targets"
+        ],
+        "summary": "Register a target store",
+        "description": "Registers an external or custom target sandbox store.",
+        "operationId": "createTarget",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TargetStore"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TargetStore"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/personas": {
+      "get": {
+        "tags": [
+          "Personas"
+        ],
+        "summary": "List adversarial buyer personas",
+        "description": "Returns metadata for the 9 adversarial AI buyer personas in the test pack.",
+        "operationId": "listPersonas",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PersonaSpec"
+                  },
+                  "type": "array",
+                  "title": "Response Listpersonas"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs": {
+      "post": {
+        "tags": [
+          "Runs"
+        ],
+        "summary": "Start a crash-test run",
+        "description": "Triggers a crash test run with the specified target, pack, seed, and optional callback URL.",
+        "operationId": "createRun",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{id}": {
+      "get": {
+        "tags": [
+          "Runs"
+        ],
+        "summary": "Get run status and score",
+        "description": "Retrieves the current status, Agent-Readiness Score, and summary breakdown.",
+        "operationId": "getRun",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Run ID",
+              "title": "Id"
+            },
+            "description": "Run ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{id}/findings": {
+      "get": {
+        "tags": [
+          "Runs"
+        ],
+        "summary": "List findings with PayPal evidence IDs",
+        "description": "Returns all invariant rule violations detected by the Reconciler.",
+        "operationId": "getRunFindings",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Run ID",
+              "title": "Id"
+            },
+            "description": "Run ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindingDetail"
+                  },
+                  "title": "Response Getrunfindings"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{id}/ledger": {
+      "get": {
+        "tags": [
+          "Runs"
+        ],
+        "summary": "Get side-by-side dual-ledger snapshot",
+        "description": "Returns normalized side-by-side rows comparing PayPal Sandbox records vs Store Probe rows.",
+        "operationId": "getRunLedger",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Run ID",
+              "title": "Id"
+            },
+            "description": "Run ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LedgerSnapshot"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{id}/report": {
+      "get": {
+        "tags": [
+          "Runs"
+        ],
+        "summary": "Get comprehensive audit report",
+        "description": "Returns Markdown or JSON audit report for merchant export.",
+        "operationId": "getRunReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Run ID",
+              "title": "Id"
+            },
+            "description": "Run ID"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Report format: 'json' or 'markdown'",
+              "default": "json",
+              "title": "Format"
+            },
+            "description": "Report format: 'json' or 'markdown'"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JSON audit report or plain Markdown text",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunReportResponse"
+                }
+              },
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{id}/rerun": {
+      "post": {
+        "tags": [
+          "Runs"
+        ],
+        "summary": "Re-run same seed against target",
+        "description": "Re-runs the exact same seed against the target store or an alternative patched target.",
+        "operationId": "rerunRun",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Base run ID to replay",
+              "title": "Id"
+            },
+            "description": "Base run ID to replay"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/RerunRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/badge/{target}.svg": {
+      "get": {
+        "tags": [
+          "Badges"
+        ],
+        "summary": "Get Agent-Readiness SVG badge",
+        "description": "Generates an SVG score badge for README or merchant site.",
+        "operationId": "getScoreBadge",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Target store ID",
+              "title": "Target"
+            },
+            "description": "Target store ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SVG score badge image",
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "image/svg+xml": {}
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/benchmark": {
+      "get": {
+        "tags": [
+          "Benchmark"
+        ],
+        "summary": "Get 12-bug benchmark matrix",
+        "description": "Returns the 12-bug detection matrix with true positive and false alarm verification data.",
+        "operationId": "getBenchmarkMatrix",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Getbenchmarkmatrix"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhooks/paypal": {
+      "post": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "PayPal Webhook Ingestion Endpoint",
+        "description": "Live webhook endpoint registered in PayPal Developer Dashboard. Validates HMAC/RSA signature and dispatches events to dual-ledger.",
+        "operationId": "receivePaypalWebhook",
+        "responses": {
+          "200": {
+            "description": "Webhook received, verified, and queued for reconciliation",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Signature verification failed — forged or tampered webhook rejected"
+          },
+          "409": {
+            "description": "Duplicate webhook delivery rejected (idempotency)"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AutoReversalPolicy": {
+        "type": "string",
+        "enum": [
+          "observe",
+          "assist",
+          "auto"
+        ],
+        "title": "AutoReversalPolicy",
+        "description": "Reconciler auto-reversal modes from Section A8."
+      },
+      "DualLedgerRow": {
+        "properties": {
+          "cart_id": {
+            "type": "string",
+            "title": "Cart Id",
+            "description": "Cart join key (custom_id)"
+          },
+          "persona_id": {
+            "type": "string",
+            "title": "Persona Id",
+            "description": "Persona that executed the lane"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp",
+            "description": "ISO timestamp of the event"
+          },
+          "paypal_order_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paypal Order Id",
+            "description": "PayPal Order ID (e.g. 5O190127TN364715T)"
+          },
+          "paypal_capture_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paypal Capture Id",
+            "description": "PayPal Capture ID (e.g. 2GG279541U471931P)"
+          },
+          "paypal_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paypal Status",
+            "description": "Status in PayPal Sandbox"
+          },
+          "paypal_amount": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paypal Amount",
+            "description": "Amount collected by PayPal"
+          },
+          "store_order_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Store Order Id",
+            "description": "Store internal order ID"
+          },
+          "store_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Store Status",
+            "description": "Order status in Store database"
+          },
+          "store_amount": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Store Amount",
+            "description": "Amount recorded by Store"
+          },
+          "tracking_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tracking Number",
+            "description": "PayPal shipment tracking number"
+          },
+          "has_dispute": {
+            "type": "boolean",
+            "title": "Has Dispute",
+            "description": "Whether a dispute was raised for this cart",
+            "default": false
+          },
+          "dispute_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dispute Id",
+            "description": "Pre-seeded or active PayPal dispute ID"
+          },
+          "disagreements": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Disagreements",
+            "description": "List of detected ledger discrepancies"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cart_id",
+          "persona_id",
+          "timestamp"
+        ],
+        "title": "DualLedgerRow",
+        "description": "Unified side-by-side row comparing PayPal Sandbox records vs. Store Probe records."
+      },
+      "FindingDetail": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique finding ID (e.g. 'find_rule1_double_capture')"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Run Id",
+            "description": "ID of the run that generated this finding"
+          },
+          "rule_number": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 1.0,
+            "title": "Rule Number",
+            "description": "Rule number violated (1 to 6)"
+          },
+          "rule_name": {
+            "type": "string",
+            "title": "Rule Name",
+            "description": "Canonical rule name ('Pay Once', 'Right Amount', etc.)"
+          },
+          "severity": {
+            "$ref": "#/components/schemas/FindingSeverity",
+            "description": "CRITICAL, HIGH, MEDIUM, or LOW"
+          },
+          "persona_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Persona Id",
+            "description": "Adversarial persona that triggered the bug"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Short finding headline"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence Ids",
+            "description": "PayPal Sandbox Order IDs, Capture IDs, or Refund IDs that prove the finding"
+          },
+          "paypal_record": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paypal Record",
+            "description": "PayPal ground-truth record displayed on the left side of the drawer"
+          },
+          "store_record": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Store Record",
+            "description": "Store internal order/ledger record displayed on the right side of the drawer"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation",
+            "description": "Plain-English explanation of why this bug occurred and how it harms merchant/buyer"
+          },
+          "patch_diff": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Patch Diff",
+            "description": "Targeted 10-line unified git diff fixing the root cause in the store checkout code"
+          },
+          "fixed": {
+            "type": "boolean",
+            "title": "Fixed",
+            "description": "Whether this finding was resolved upon re-run",
+            "default": false
+          },
+          "remediation_action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remediation Action",
+            "description": "Suggested automatic or manual reversal action (e.g. 'refund_excess_charge')"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "rule_number",
+          "rule_name",
+          "severity",
+          "title",
+          "explanation"
+        ],
+        "title": "FindingDetail",
+        "description": "Detailed audit finding generated by the Reconciler when an invariant rule is violated.\nPowers the AG Grid rows and the side-by-side Dual-Ledger Inspector drawer."
+      },
+      "FindingSeverity": {
+        "type": "string",
+        "enum": [
+          "CRITICAL",
+          "HIGH",
+          "MEDIUM",
+          "LOW"
+        ],
+        "title": "FindingSeverity",
+        "description": "Deterministic severity ranking matching Section B3.6 / Roadmap Invariants."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LedgerSnapshot": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "title": "Run Id",
+            "description": "Run identifier"
+          },
+          "target_id": {
+            "type": "string",
+            "title": "Target Id",
+            "description": "Target store identifier"
+          },
+          "snapshot_time": {
+            "type": "string",
+            "title": "Snapshot Time",
+            "description": "ISO 8601 timestamp of snapshot creation"
+          },
+          "settle_window_sec": {
+            "type": "integer",
+            "title": "Settle Window Sec",
+            "description": "Webhook settle window applied before grading",
+            "default": 5
+          },
+          "probe_verified": {
+            "type": "boolean",
+            "title": "Probe Verified",
+            "description": "Whether store probe signature was verified",
+            "default": true
+          },
+          "paypal_records": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Paypal Records",
+            "description": "Raw PayPal record snapshots"
+          },
+          "store_records": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Store Records",
+            "description": "Raw Store ledger snapshots"
+          },
+          "dual_rows": {
+            "items": {
+              "$ref": "#/components/schemas/DualLedgerRow"
+            },
+            "type": "array",
+            "title": "Dual Rows",
+            "description": "Reconciled side-by-side comparison rows"
+          }
+        },
+        "type": "object",
+        "required": [
+          "run_id",
+          "target_id",
+          "snapshot_time"
+        ],
+        "title": "LedgerSnapshot",
+        "description": "Full snapshot of dual-ledger data captured at the end of a crash-test run."
+      },
+      "PersonaSpec": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Slug identifier (e.g. 'the_retrier')"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Display title (e.g. 'The Retrier')"
+          },
+          "plain_words": {
+            "type": "string",
+            "title": "Plain Words",
+            "description": "Plain-English explanation of the persona's action"
+          },
+          "rule_number": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 1.0,
+            "title": "Rule Number",
+            "description": "Primary rule tested (1 to 6)"
+          },
+          "rule_name": {
+            "type": "string",
+            "title": "Rule Name",
+            "description": "Canonical rule name ('Pay Once', etc.)"
+          },
+          "driven_by": {
+            "type": "string",
+            "enum": [
+              "fixed_script",
+              "live_llm"
+            ],
+            "title": "Driven By",
+            "description": "Execution engine: 'fixed_script' for deterministic replay or 'live_llm'"
+          },
+          "fault_description": {
+            "type": "string",
+            "title": "Fault Description",
+            "description": "Exact network or data fault applied by the Chaos Proxy"
+          },
+          "expected_behavior": {
+            "type": "string",
+            "title": "Expected Behavior",
+            "description": "What a hardened store must do to pass"
+          },
+          "wave": {
+            "type": "integer",
+            "maximum": 2.0,
+            "minimum": 1.0,
+            "title": "Wave",
+            "description": "Concurrency wave (Wave 1: 1-5, Wave 2: 6-9)",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "plain_words",
+          "rule_number",
+          "rule_name",
+          "driven_by",
+          "fault_description",
+          "expected_behavior"
+        ],
+        "title": "PersonaSpec",
+        "description": "Specification of an adversarial AI buyer persona from Section A6."
+      },
+      "RerunRequest": {
+        "properties": {
+          "target_override": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Override",
+            "description": "Target ID override (e.g. 'hardened-shop' to verify fix remediation)"
+          }
+        },
+        "type": "object",
+        "title": "RerunRequest",
+        "description": "Optional payload for re-running a seed against an alternative target."
+      },
+      "RuleScore": {
+        "properties": {
+          "rule_number": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 1.0,
+            "title": "Rule Number"
+          },
+          "rule_name": {
+            "type": "string",
+            "title": "Rule Name"
+          },
+          "weight": {
+            "type": "integer",
+            "title": "Weight",
+            "description": "Weight in the 100-point formula (25, 25, 15, 10, 15, 10)"
+          },
+          "failed_carts": {
+            "type": "integer",
+            "title": "Failed Carts",
+            "default": 0
+          },
+          "total_evaluated_carts": {
+            "type": "integer",
+            "title": "Total Evaluated Carts",
+            "default": 1
+          },
+          "failure_share": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Failure Share",
+            "default": 0.0
+          },
+          "rule_score": {
+            "type": "integer",
+            "title": "Rule Score",
+            "description": "Weight points earned for this rule"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Status",
+            "default": "PASS"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rule_number",
+          "rule_name",
+          "weight",
+          "rule_score"
+        ],
+        "title": "RuleScore",
+        "description": "Score breakdown for one of the six rules."
+      },
+      "RunCreateRequest": {
+        "properties": {
+          "target": {
+            "type": "string",
+            "title": "Target",
+            "description": "Target store ID or registered alias ('naive-shop', 'hardened-shop')",
+            "default": "naive-shop"
+          },
+          "pack": {
+            "type": "string",
+            "title": "Pack",
+            "description": "Test pack to execute ('full', 'core', 'smoke')",
+            "default": "full"
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "description": "Random seed for deterministic fault injection and replay",
+            "default": 42
+          },
+          "policy": {
+            "$ref": "#/components/schemas/AutoReversalPolicy",
+            "description": "Reconciler reversal policy ('observe', 'assist', 'auto')",
+            "default": "auto"
+          },
+          "replay": {
+            "type": "boolean",
+            "title": "Replay",
+            "description": "If true, serve instant recorded replay fixture instead of making live network calls",
+            "default": false
+          },
+          "callback_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Callback Url",
+            "description": "Optional outbound webhook URL for signed 'run.completed' notification"
+          }
+        },
+        "type": "object",
+        "title": "RunCreateRequest",
+        "description": "Payload to initiate a crash-test run."
+      },
+      "RunStatus": {
+        "type": "string",
+        "enum": [
+          "queued",
+          "running",
+          "grading",
+          "complete",
+          "failed"
+        ],
+        "title": "RunStatus",
+        "description": "Lifecycle statuses for a crash-test run."
+      },
+      "RunSummary": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Run ID (e.g. 'run_42_naive_shop')"
+          },
+          "target": {
+            "type": "string",
+            "title": "Target",
+            "description": "Target store ID"
+          },
+          "target_name": {
+            "type": "string",
+            "title": "Target Name",
+            "description": "Display name of target store"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RunStatus",
+            "description": "Current status of the run"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score",
+            "description": "Agent-Readiness Score (0 to 100)"
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "description": "Seed used for this run",
+            "default": 42
+          },
+          "policy": {
+            "$ref": "#/components/schemas/AutoReversalPolicy",
+            "default": "auto"
+          },
+          "pack": {
+            "type": "string",
+            "title": "Pack",
+            "default": "full"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "ISO 8601 start timestamp"
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At",
+            "description": "ISO 8601 completion timestamp"
+          },
+          "settle_window_sec": {
+            "type": "integer",
+            "title": "Settle Window Sec",
+            "default": 5
+          },
+          "total_findings": {
+            "type": "integer",
+            "title": "Total Findings",
+            "default": 0
+          },
+          "critical_findings": {
+            "type": "integer",
+            "title": "Critical Findings",
+            "default": 0
+          },
+          "high_findings": {
+            "type": "integer",
+            "title": "High Findings",
+            "default": 0
+          },
+          "medium_findings": {
+            "type": "integer",
+            "title": "Medium Findings",
+            "default": 0
+          },
+          "low_findings": {
+            "type": "integer",
+            "title": "Low Findings",
+            "default": 0
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/FindingDetail"
+            },
+            "type": "array",
+            "title": "Findings"
+          },
+          "rule_scores": {
+            "items": {
+              "$ref": "#/components/schemas/RuleScore"
+            },
+            "type": "array",
+            "title": "Rule Scores"
+          },
+          "badge_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Badge Url",
+            "description": "URL to the generated SVG score badge"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "description": "Mandatory disclaimer label",
+            "default": "Score weights are AgentReady Lab's heuristic design, not an official PayPal standard or certification."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "target",
+          "target_name",
+          "status",
+          "created_at"
+        ],
+        "title": "RunSummary",
+        "description": "Complete summary of a crash-test run, score, and findings."
+      },
+      "TargetStore": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique target identifier (e.g. 'naive-shop', 'hardened-shop')"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Human-readable name of the target store"
+          },
+          "base_url": {
+            "type": "string",
+            "title": "Base Url",
+            "description": "Root URL of the target store"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "probe",
+              "black_box"
+            ],
+            "title": "Mode",
+            "description": "'probe' has access to signed /_lab/ledger; 'black_box' evaluates externally",
+            "default": "probe"
+          },
+          "probe_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Probe Url",
+            "description": "Signed internal ledger endpoint (e.g. http://localhost:8000/demo/naive/_lab/ledger)"
+          },
+          "ledger_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ledger Secret",
+            "description": "Shared HMAC-SHA256 secret for verifying the store's signed probe ledger"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Description of the target configuration"
+          },
+          "is_demo": {
+            "type": "boolean",
+            "title": "Is Demo",
+            "description": "Whether this is a pre-registered built-in demo target",
+            "default": true
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "ISO timestamp of target creation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "base_url"
+        ],
+        "title": "TargetStore",
+        "description": "Target e-commerce store under test."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

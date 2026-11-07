@@ -1,0 +1,33 @@
+{
+  "name": "@agent-ready/mcp-server",
+  "version": "1.0.0",
+  "description": "AgentReady Lab Model Context Protocol (MCP) Server for Antigravity IDE and Claude Desktop",
+  "main": "dist/server.js",
+  "type": "module",
+  "bin": {
+    "agent-ready-mcp": "./dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
+  },
+  "keywords": [
+    "model-context-protocol",
+    "mcp",
+    "agent-ready",
+    "paypal",
+    "apimatic",
+    "antigravity"
+  ],
+  "author": "AgentReady Lab Team",
+  "license": "Apache-2.0"
+}
+
