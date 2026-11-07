@@ -327,6 +327,37 @@ Give the Naive Shop twelve independent bug flags, for example `BUG_NO_IDEMPOTENC
 
 No login on the demo path. A Run button that finishes in about 20 seconds. A **Replay last run** button as a fallback. Pre-seeded disputes. A sandbox buyer login listed in the README. A warm server (use a paid instance or a keep-alive ping, since free tiers cold-start slowly). Keep the demo live through judging in mid-December.
 
+#### B3.15 Swiss Precision Telemetry Workbench & Live Channel3 Store/Cart Wire Inspector (Task 4.3)
+
+To ensure protocol telemetry is never shown in sterile isolation, the workbench integrates the **Live Channel3 Store/Cart Wire Inspector (`LiveStoreCartInspector.tsx`)**:
+1. **Tangible E-Commerce Context:** Pairs raw API payloads with real Channel3 product cards (high-res photo, SKU, variant badges, category, authoritative server price, and prompt-injection warning banners).
+2. **Side-by-Side Wire Diff:** Visually contrasts the **Human-Approved HMAC Cart Receipt** against the **Intercepted Agent Wire Payload**, dynamically highlighting:
+   - Price Tampering: Approved `$149.95` $\rightarrow$ Intercepted Wire `$1.50` (crimson strikethrough).
+   - Duplicate Retries: `1x POST /v2/checkout/orders` $\rightarrow$ Rapid `2x Duplicate Capture ($798.00)`.
+   - Ambiguous Options: Multi-variant running shoes submitted without required size/color selection.
+   - Prompt Injection Hijack: Signed intent for 1 unit ($\$149.95$) $\rightarrow$ Intercepted wire payload ordering 5 units ($\$749.75$).
+3. **Store Outcome Indicator:** Side-by-side verification badge contrasting `Naive Shop` (vulnerability exploited / money lost) vs. `Hardened Shop` (clean machine-readable RFC 9457 Problem Details block).
+4. **Swiss Precision Styling:** Built using a 1px exposed structural hairline grid (`gap-px bg-white/[0.07]`), `#08090C` obsidian canvas, `#0D0F14` graphite cards, and JetBrains Mono tabular numbers.
+
+#### B3.16 Self-Explanatory Story Hero, 4-Step Interactive Guided Tour & Deliverables Showcase Hub (Task 6.5)
+
+To ensure any hackathon judge grasps the product within 15 seconds without reading documentation:
+1. **Self-Explanatory Story Hero (`StoryHero.tsx`):**
+   - High-impact headline: *"PayPal Protects the Payment. Who Tests the Store?"*
+   - Explains the critical gap: autonomous AI shopping agents exploit merchant-side order bugs (dropping idempotency, trusting client prices, blind prompt injection) even when PayPal's API functions flawlessly.
+2. **4-Step Interactive Guided Tour (`GuidedTour.tsx`):**
+   - Step 1: *Select Baseline Target* (Naive Shop with 12 toggleable vulnerabilities).
+   - Step 2: *Fire Adversarial Swarm* (Watch 9 personas attack across 2 batched waves).
+   - Step 3: *Inspect Dual-Ledger Discrepancies* (Examine PayPal records vs. internal store DB).
+   - Step 4: *Apply 1-Click Guard Patch & Re-Run* (Watch score rise from 18 to 95/100).
+3. **Deliverables Showcase Hub (`DeliverablesHub.tsx`):**
+   - Tabbed visual showcase giving judges instant 1-click access to all required deliverables:
+     - APIMatic Python SDK (`paypal==2.29` grounded AsyncPaypalClient).
+     - APIMatic TypeScript SDK & Context Plugin.
+     - Public OpenAPI 3.1 Specification.
+     - MCP Server Tool Manifest (`start_crash_test`, `list_findings`, `suggest_fix`).
+     - Postman Collection export & Live SVG Score Badge.
+
 ### B4. Diagrams (Mermaid)
 
 Paste any block into mermaid.live if it does not render in your viewer.

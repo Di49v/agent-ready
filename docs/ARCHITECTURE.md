@@ -10,9 +10,12 @@ This document details the architectural topology, data flows, invariant state ma
 flowchart TD
     subgraph Client ["Client Presentation Tier (Next.js / TypeScript)"]
         Dashboard["Next.js App Router (Page.tsx)"]
-        SwarmStrip["9-Lane Swarm Visualizer (SSE Telemetry)"]
+        StoryHero["Story Hero & 4-Step Guided Tour"]
+        SwarmStrip["9-Lane Swarm Visualizer (Swiss Telemetry)"]
+        CartInspector["Live Channel3 Store/Cart Wire Inspector"]
         Grid["AG Grid Results Matrix (Community v33 Quartz Dark)"]
         Drawer["Dual-Ledger Diff Drawer & PatchViewer"]
+        DeliverablesHub["Deliverables Showcase Hub (SDKs, MCP, Postman)"]
     end
 
     subgraph API ["Gateway & Orchestration Tier (FastAPI / Uvicorn)"]
@@ -161,4 +164,55 @@ PayPal Sandbox imposes strict IP-based rate limiting on rapid payment captures (
    - Base URL is strictly validated against `https://api-m.sandbox.paypal.com`. Any attempt to pass production URLs is rejected at startup.
 3. **Gemini Key Sharder ([`GeminiKeySharder`](../backend/app/core/key_shard.py)):**
    - Round-robin key rotation across `GEMINI_API_KEYS` with an automated 60-second cooldown window on HTTP `429` errors.
+
+---
+
+## 6. Client Presentation Tier & Swiss Precision Telemetry Workbench
+
+The frontend architecture is built with **Next.js (App Router)** and **Tailwind CSS**, adhering strictly to the **Swiss Precision Telemetry** design system (`#08090C` Obsidian Carbon canvas, `#0D0F14` Graphite Slate panels, `gap-px bg-white/[0.07]` hairline structural grid, and `JetBrains Mono` tabular data).
+
+### 6.1 Component Topology & Data Flow
+
+```mermaid
+flowchart TD
+    Page["app/page.tsx (State Orchestrator)"]
+    Page --> StoryHero["StoryHero.tsx (Value Prop & Quick Stats)"]
+    Page --> GuidedTour["GuidedTour.tsx (4-Step Interactive Walkthrough)"]
+    Page --> SwarmLanes["SwarmLanes.tsx (9 Persona Live Wire visualizer)"]
+    Page --> CartInspector["LiveStoreCartInspector.tsx (Channel3 Intent vs Wire Diff)"]
+    Page --> ResultsMatrix["AG Grid ResultsMatrix.tsx (Rule Matrix & Replay Drilldown)"]
+    Page --> LedgerDrawer["DualLedgerDrawer.tsx (Capture vs Probe Diffs & Auto-Patch)"]
+    Page --> DeliverablesHub["DeliverablesHub.tsx (SDKs, MCP Server & Postman)"]
+
+    SwarmLanes -.->|Select Lane ID| CartInspector
+    ResultsMatrix -.->|Open Remediation| LedgerDrawer
+```
+
+### 6.2 Key Architectural Components
+
+1. **`StoryHero.tsx` (Task 6.5):**
+   - Narrative framing explaining the high-stakes risk of autonomous agent commerce (hallucinated amounts, parallel double-charges, prompt injection).
+   - High-contrast visual metric badges (0 to 100 Health Score, Invariant Compliance Status, Total Prevented Leakage in USD).
+
+2. **`GuidedTour.tsx` (Task 6.5):**
+   - 4-step guided progression across the workbench:
+     - **Step 1:** Select target shop (`NaiveShop` vs. `HardenedShop`).
+     - **Step 2:** Trigger the 9-Persona Swarm & observe live wire exploits in real time.
+     - **Step 3:** Inspect the Dual-Ledger Discrepancy and trace captured USD vs. merchant reality.
+     - **Step 4:** Execute One-Click Auto-Remediation and observe Red-to-Green compliance score recovery.
+
+3. **`LiveStoreCartInspector.tsx` (Task 4.3):**
+   - Bridges human e-commerce intent with raw agent protocol wire telemetry.
+   - Synchronized with `SwarmLanes`: clicking any of the 9 persona lanes instantly updates the inspector to display that persona's exact wire transformation.
+   - Displays real Channel3 catalog item (e.g., Ember Travel Mug, Sony WH-1000XM5, Brooks Ghost 16).
+   - Features side-by-side **Human-Approved HMAC Cart Receipt** (signed with authoritative prices, SKUs, and maximum allowable totals) vs. **Intercepted Agent Wire Payload** (highlighting tampered prices `$149.95 → $1.50`, parallel duplicate capture calls, prompt-injected cart quantities, or dropped required variant attributes).
+   - Displays real-time store outcome comparing `NaiveShop` (vulnerable 200 OK acceptance) against `HardenedShop` + `AgentReadyGuard` (RFC 9457 Problem Details rejection).
+
+4. **`DeliverablesHub.tsx` (Task 6.5):**
+   - Complete developer artifact showroom providing instant export and inspection of:
+     - **Python SDK (`agentready-sdk`):** Async APIMatic client wrapper with built-in guard hooks.
+     - **TypeScript SDK (`@agentready/sdk`):** Browser & Edge-ready client with automated HMAC cart signing.
+     - **Model Context Protocol (MCP) Server:** Stdio & SSE tool server exposing `evaluate_shop_readiness`, `inspect_ledger_diff`, and `simulate_persona_swarm`.
+     - **Postman Collection v2.1:** Automated regression test suite covering all 6 commerce invariants.
+
 

@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --bg-canvas: #090A0F;
-  --bg-panel: #11131A;
-  --bg-card: #161922;
-  --bg-card-hover: #1E2230;
-  --border-subtle: #242838;
-  --border-strong: #33394D;
-  --text-main: #F1F5F9;
-  --text-muted: #94A3B8;
-  --text-dim: #64748B;
+  --bg-canvas: #08090C;
+  --bg-panel: #0D0F14;
+  --bg-card: #13161F;
+  --bg-card-hover: #1A1F2C;
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text-main: #F3F4F6;
+  --text-muted: #9CA3AF;
+  --text-dim: #6B7280;
 
-  --signal-pass: #10B981;
+  --signal-pass: #34D399;
   --signal-fail: #F43F5E;
-  --signal-chaos: #F59E0B;
-  --accent-telemetry: #06B6D4;
+  --signal-chaos: #FBBF24;
+  --accent-telemetry: #22D3EE;
   --accent-paypal: #0070BA;
 
   --background: var(--bg-canvas);
@@ -26,6 +26,28 @@ body {
   color: var(--text-main);
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Swiss Precision Hairline Grid Container */
+.hairline-grid {
+  display: grid;
+  gap: 1px;
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* 1px Specular Top-Edge Highlight for Elevated Surfaces */
+.specular-highlight {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Micro-Motion Physical Easing */
+.swiss-motion {
+  transition: all 150ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Custom Telemetry Scrollbars */

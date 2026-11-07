@@ -188,12 +188,12 @@
     4. Implement orphan-capture remediation policies (`observe`, `assist`, `auto` triggering `POST /v2/payments/captures/{id}/refund`). Include the honest black-box residual finding when Probe verification is limited.
   - **Verify:** `pytest` confirms exact score calculation and severity ordering.
 
-- [ ] **Task 4.2 — Live Swarm Orchestrator Wiring & DB-Backed Replay Persistence**
+- [x] **Task 4.2 — Live Swarm Orchestrator Wiring & DB-Backed Replay Persistence**
   - **Files:** `backend/app/services/run_orchestrator.py`, `backend/app/api/v1_router.py`
   - **Spec Details:** Connect `POST /v1/runs` and `POST /v1/runs/{id}/rerun` to `RunOrchestrator` so that when `USE_MOCK_BLUEPRINT=false`, clicking **`Run Crash Test`** executes the real Swarm + Chaos Proxy + PayPal Sandbox + 6-Rule Reconciler, streams live SSE events (`agent_step`, `paypal_event`, `store_ledger_row`, `finding`, `run_completed`) into the Stage 1 Frontend (`SwarmLanes` & `FindingsGrid`), and saves the completed run into `RunEventLog` for **`Replay Last Run`**.
   - **Verify:** End-to-end live Sandbox run streams into the Next.js UI and updates AG Grid in real time.
 
-  - [ ] **Task 4.3 — Swiss Telemetry Workbench Upgrade & Live Channel3 Store/Cart Wire Inspector**
+- [x] **Task 4.3 — Swiss Telemetry Workbench Upgrade & Live Channel3 Store/Cart Wire Inspector**
   - **Files:** `frontend/src/components/LiveStoreCartInspector.tsx`, `frontend/src/components/SwarmLanes.tsx`, `frontend/src/app/globals.css`
   - **Spec Details:**
     1. Apply the **Swiss Precision Telemetry** aesthetic (`1px` exposed hairline bento grid `gap-px bg-white/[0.07]`, `#08090C` obsidian canvas, `#0D0F14` graphite panels, tabular monospace numbers, and subtle status dots).

@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Header } from "@/components/Header";
 import { SwarmLanes, LaneTelemetryState } from "@/components/SwarmLanes";
+import { LiveStoreCartInspector } from "@/components/LiveStoreCartInspector";
 import { FindingsGrid } from "@/components/FindingsGrid";
 import { LedgerDiffDrawer } from "@/components/LedgerDiffDrawer";
 import {
@@ -34,6 +35,7 @@ export default function Home() {
   const [selectedFinding, setSelectedFinding] = useState<FindingDetail | null>(null);
   const [selectedDualRow, setSelectedDualRow] = useState<DualLedgerRow | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [selectedLane, setSelectedLane] = useState<number>(2);
   const [errorBanner, setErrorBanner] = useState<string | null>(null);
 
   // Load initial 9 personas on component mount
@@ -110,6 +112,7 @@ export default function Home() {
                   newStatus = "DISPATCHED";
                 } else if (event.event === "finding") {
                   newStatus = "FAILED";
+                  setSelectedLane(event.lane!);
                 } else if (event.event === "paypal_event") {
                   newStatus = event.status === "COMPLETED" ? "COMPLETED" : "BLOCKED";
                 } else if (event.event === "store_ledger_row") {
@@ -239,11 +242,19 @@ export default function Home() {
           </div>
         )}
 
-        {/* Live Swarm Telemetry Lanes */}
+        {/* Live Swarm Telemetry Lanes (Swiss Precision Telemetry) */}
         <SwarmLanes
           personas={personas}
           laneStates={laneStates}
           isRunning={isRunning}
+          selectedLane={selectedLane}
+          onSelectLane={setSelectedLane}
+        />
+
+        {/* Live Channel3 Store & Cart Wire Inspector */}
+        <LiveStoreCartInspector
+          selectedLane={selectedLane}
+          onSelectLane={setSelectedLane}
         />
 
         {/* AG Grid Results Matrix */}
