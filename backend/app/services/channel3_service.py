@@ -143,6 +143,10 @@ class Channel3Service:
         self._set_in_cache(cache_key, results)
         return results
 
+    async def get_all_products(self) -> List[Product]:
+        """Returns all products from Channel3 catalog or fallback fixtures."""
+        return await self.search_products(query="", limit=50)
+
     async def get_product(self, product_id: str) -> Optional[Product]:
         """Fetches product details by ID with cache check."""
         cache_key = f"product:{product_id}"

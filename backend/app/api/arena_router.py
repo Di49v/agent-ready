@@ -142,7 +142,9 @@ async def execute_arena_scenario(request: ArenaRunRequest) -> ArenaSessionSummar
     )
 
     catalog_svc = get_channel3_service()
-    products = await catalog_svc.get_all_products()
+    products = await catalog_svc.search_products(query="")
+    if not products:
+        products = await catalog_svc.get_all_products()
 
     # Match product based on prompt keywords
     selected_prod = products[0]

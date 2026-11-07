@@ -84,3 +84,13 @@ async def test_cache_ttl_and_clear() -> None:
     service.clear_cache()
     assert len(service._cache) == 0
 
+
+@pytest.mark.asyncio
+async def test_get_all_products() -> None:
+    """Verifies get_all_products returns the full product catalog."""
+    service = Channel3Service()
+    products = await service.get_all_products()
+    assert len(products) >= 5
+    assert any("shoes" in p.title.lower() or "shoe" in p.title.lower() for p in products)
+
+
