@@ -173,7 +173,7 @@
 
 ## STAGE 4 (Day 4 — Nov 8): Live Dual-Ledger Reconciler & Live Orchestrator Wiring
 
-- [ ] **Task 4.1 — Dual-Ledger Collector, 6-Rule Grader & Policy Engine (`observe`, `assist`, `auto`)**
+- [x] **Task 4.1 — Dual-Ledger Collector, 6-Rule Grader & Policy Engine (`observe`, `assist`, `auto`)**
   - **Files:** `backend/app/reconciler/collector.py`, `backend/app/reconciler/grader.py`, `backend/app/reconciler/remediation.py`
   - **Spec Details:**
     1. Wait `WEBHOOK_SETTLE_WINDOW_SEC = 5`, collect PayPal records by `custom_id == cart_id` (`GET /v2/checkout/orders/{id}`, captures, refunds, tracking, disputes) and Store records from `/_lab/ledger`.
