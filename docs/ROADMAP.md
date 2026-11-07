@@ -255,7 +255,7 @@
   - **Spec Details:** Protect public endpoints with `X-Lab-Api-Key` (pre-loaded on the no-login judge demo UI), per-IP rate limiting (`10 runs / 10 mins`), and a strict target allowlist on `POST /v1/targets` (allowing built-in demo stores by default and requiring domain token verification for custom sandbox URLs) so the public lab cannot be used to DDoS arbitrary websites.
   - **Verify:** Unallowlisted external URLs are rejected with `403 TARGET_NOT_ALLOWLISTED`.
 
-- [ ] **Task 6.4 — [FLAGGED FEATURE] The Judge Arena (Interactive Live Agent Shopper + Chaos Toggles)**
+- [x] **Task 6.4 — [FLAGGED FEATURE] The Judge Arena (Interactive Live Agent Shopper + Chaos Toggles)**
   - **Files:** `frontend/src/components/JudgeArena.tsx`, `backend/app/api/arena_router.py`
   - **Spec Details:** Interactive playground tab (`ENABLE_JUDGE_ARENA=true`, Section B11) where a judge types a shopping prompt (e.g., *"Buy running shoes size 8 under $80"*), toggles individual Chaos Switches (`Drop Retry`, `Tamper Price to $1`, `Forge Webhook`, `Inject Prompt Trap`), and watches a single live AI shopper search Channel3 and pay through PayPal Sandbox while streaming `agent_step`, `paypal_event`, `store_ledger_row`, and `finding` events via SSE into AG Grid (`applyTransactionAsync`), with a 10-call cap, call-budget meter, and automatic quota/error fallback to Replay.
   - **Verify:** Toggling `Drop Retry` on `Naive Shop` vs. `Hardened Shop` shows live double-capture vs. idempotent replay in real time.
