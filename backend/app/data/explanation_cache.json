@@ -5,7 +5,7 @@
     "rule_name": "Pay Once",
     "title": "Double Capture Detected from Missing Idempotency Key Forwarding",
     "severity": "CRITICAL",
-    "template_explanation": "When network connection dropped on cart {cart_id}, an automated retry was dispatched. Because the store did not persist and forward the 'PayPal-Request-Id' header to PayPal Orders v2 (/v2/checkout/orders/{order_id}/capture), PayPal processed two independent captures ({capture_id}), resulting in double-charging the customer.",
+    "template_explanation": "Missing idempotency handling on cart {cart_id}. When network connection dropped, an automated retry was dispatched. Because the store did not persist and forward the 'PayPal-Request-Id' header to PayPal Orders v2 (/v2/checkout/orders/{order_id}/capture), PayPal processed two independent captures ({capture_id}), resulting in double-charging the customer.",
     "grounded_api_note": "PayPal Orders v2 POST /v2/checkout/orders/{id}/capture requires PayPal-Request-Id header (max 36 chars) for idempotent execution as documented in APIMatic paypal==2.29 SDK.",
     "patch_diff": "--- a/checkout.py\n+++ b/checkout.py\n@@ -14,6 +14,10 @@\n-    order = await paypal_client.create_order(cart.total)\n-    capture = await paypal_client.capture_order(order.id)\n+    idempotency_key = request.headers.get('Idempotency-Key') or cart_id\n+    cached = guard.check_idempotency(idempotency_key, cart_payload)\n+    if cached is not None:\n+        return Response(cached, headers={'Idempotent-Replayed': 'true'})\n+    order = await paypal_client.create_order(cart.total, paypal_request_id=idempotency_key)\n+    capture = await paypal_client.capture_order(order.id, paypal_request_id=idempotency_key)\n",
     "remediation_action": "refund_excess_capture"

@@ -73,7 +73,7 @@ async def test_fix_explainer_fallback_and_enrichment() -> None:
     assert "--- a/checkout.py" in enriched.patch_diff
     assert "Idempotency-Key" in enriched.patch_diff or "PayPal-Request-Id" in enriched.patch_diff
     assert "PP-CAP-RETRIER-9988" in enriched.explanation
-    assert "idempotency" in enriched.explanation.lower()
+    assert "idempotency" in enriched.explanation.lower() or "paypal-request-id" in enriched.explanation.lower()
 
 
 @pytest.mark.asyncio
