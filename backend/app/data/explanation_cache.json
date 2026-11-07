@@ -1,0 +1,134 @@
+{
+  "BUG_NO_IDEMPOTENCY": {
+    "bug_flag": "BUG_NO_IDEMPOTENCY",
+    "rule_number": 1,
+    "rule_name": "Pay Once",
+    "title": "Double Capture Detected from Missing Idempotency Key Forwarding",
+    "severity": "CRITICAL",
+    "template_explanation": "When network connection dropped on cart {cart_id}, an automated retry was dispatched. Because the store did not persist and forward the 'PayPal-Request-Id' header to PayPal Orders v2 (/v2/checkout/orders/{order_id}/capture), PayPal processed two independent captures ({capture_id}), resulting in double-charging the customer.",
+    "grounded_api_note": "PayPal Orders v2 POST /v2/checkout/orders/{id}/capture requires PayPal-Request-Id header (max 36 chars) for idempotent execution as documented in APIMatic paypal==2.29 SDK.",
+    "patch_diff": "--- a/checkout.py\n+++ b/checkout.py\n@@ -14,6 +14,10 @@\n-    order = await paypal_client.create_order(cart.total)\n-    capture = await paypal_client.capture_order(order.id)\n+    idempotency_key = request.headers.get('Idempotency-Key') or cart_id\n+    cached = guard.check_idempotency(idempotency_key, cart_payload)\n+    if cached is not None:\n+        return Response(cached, headers={'Idempotent-Replayed': 'true'})\n+    order = await paypal_client.create_order(cart.total, paypal_request_id=idempotency_key)\n+    capture = await paypal_client.capture_order(order.id, paypal_request_id=idempotency_key)\n",
+    "remediation_action": "refund_excess_capture"
+  },
+  "BUG_TRUST_CLIENT_PRICE": {
+    "bug_flag": "BUG_TRUST_CLIENT_PRICE",
+    "rule_number": 2,
+    "rule_name": "Right Amount",
+    "title": "Under-Collected Capture from Client Price Tampering",
+    "severity": "CRITICAL",
+    "template_explanation": "Client-submitted payload tampered unit price for cart {cart_id} down to $1.50 instead of authoritative merchant price. Store accepted client pricing without server catalog verification on order {order_id}, under-collecting funds on capture {capture_id}.",
+    "grounded_api_note": "In PayPal Orders v2, purchase_units[0].amount.value must strictly reflect server-side authoritative catalog pricing; client price tampering violates invariant Rule 2.",
+    "patch_diff": "--- a/checkout.py\n+++ b/checkout.py\n@@ -25,4 +25,7 @@\n-    order_amount = client_payload.get('amount')\n-    return await paypal_client.create_order(order_amount)\n+    server_total = await catalog.calculate_authoritative_total(cart.items)\n+    if abs(server_total - float(client_payload.get('amount', 0))) > 0.01:\n+        raise ProblemException.price_mismatch(expected=str(server_total), submitted=str(client_payload.get('amount')))\n+    return await paypal_client.create_order(server_total)\n",
+    "remediation_action": "void_or_request_price_differential"
+  },
+  "BUG_STALE_CART": {
+    "bug_flag": "BUG_STALE_CART",
+    "rule_number": 2,
+    "rule_name": "Right Amount",
+    "title": "Stale Cart Session Checkout Accepted Without Re-Authentication",
+    "severity": "HIGH",
+    "template_explanation": "Store allowed checkout on expired cart token {cart_id} (order {order_id}) after catalog price shifted. Checkouts on stale sessions without fresh customer consent lead to inventory and financial drift.",
+    "grounded_api_note": "Cart sessions must enforce strict TTL limits (<300s); expired carts must return RFC 9457 Problem Details requiring reauthorization before creating PayPal orders.",
+    "patch_diff": "--- a/checkout.py\n+++ b/checkout.py\n@@ -10,3 +10,6 @@\n+    if time.time() - cart.created_at > CART_TTL_SECONDS:\n+        raise ProblemException.cart_expired(cart_id=cart.id)\n     return await paypal_client.create_order(cart.total)\n",
+    "remediation_action": "require_reauthorization_on_price_change"
+  },
+  "BUG_ALLOW_AMBIGUOUS_VARIANT": {
+    "bug_flag": "BUG_ALLOW_AMBIGUOUS_VARIANT",
+    "rule_number": 2,
+    "rule_name": "Right Amount",
+    "title": "Unselected Variant Attributes Accepted on Multi-Option Product",
+    "severity": "HIGH",
+    "template_explanation": "An order on cart {cart_id} was submitted for multi-variant item on order {order_id} without mandatory size or color attributes. Accepting ambiguous orders causes warehouse fulfillment deadlock and customer return disputes.",
+    "grounded_api_note": "E-commerce schemas require validation of requires_selection variant dimensions prior to order creation; returns 422 AMBIGUOUS_VARIANT_CLARIFICATION_REQUIRED.",
+    "patch_diff": "--- a/checkout.py\n+++ b/checkout.py\n@@ -18,3 +18,6 @@\n+    for req in product.requires_selection:\n+        if req not in selected_variants:\n+            raise ProblemException.ambiguous_variant(product_id=product.id, missing_attribute=req)\n",
+    "remediation_action": "request_variant_clarification_from_buyer"
+  },
+  "BUG_NO_CART_INTENT_CHECK": {
+    "bug_flag": "BUG_NO_CART_INTENT_CHECK",
+    "rule_number": 2,
+    "rule_name": "Right Amount",
+    "title": "Prompt Injection Altered Cart Quantity Bypassing Signed Intent",
+    "severity": "CRITICAL",
+    "template_explanation": "Adversarial prompt injection in product catalog tricked autonomous AI buyer into ordering 5 units on cart {cart_id} instead of the 1 unit authorized by human. Store captured order {order_id} without validating HMAC CartReceipt.",
+    "grounded_api_note": "AP2-inspired signed cart receipts bind autonomous AI agent transactions to human-approved HMAC signatures; prevents prompt injection quantity and price hijacks.",
+    "patch_diff": "--- a/acp_sessions.py\n+++ b/acp_sessions.py\n@@ -18,3 +18,6 @@\n+    if not cart_signer.verify_signature(cart_id=cart.id, signature=receipt_hash):\n+        raise ProblemException.cart_intent_mismatch(expected=expected_hash, received=cart.hash)\n     return await paypal_client.create_order(cart.total)\n",
+    "remediation_action": "block_unauthorized_quantity_and_alert_user"
+  },
+  "BUG_NO_WEBHOOK_VERIFY": {
+    "bug_flag": "BUG_NO_WEBHOOK_VERIFY",
+    "rule_number": 5,
+    "rule_name": "Records Agree",
+    "title": "Store Marked Order Paid via Forged Webhook Without Signature",
+    "severity": "HIGH",
+    "template_explanation": "Store received unverified PAYMENT.CAPTURE.COMPLETED notification for cart {cart_id} and marked order {order_id} as PAID without verifying cryptographic signature on PayPal POST /v1/notifications/verify-webhook-signature.",
+    "grounded_api_note": "PayPal Webhooks require validating transmission_sig, cert_url, and auth_algo against PayPal public keys before trusting order fulfillment status.",
+    "patch_diff": "--- a/webhooks.py\n+++ b/webhooks.py\n@@ -10,3 +10,6 @@\n+    is_valid = await paypal_client.verify_webhook_signature(headers=request.headers, raw_body=request.body)\n+    if not is_valid:\n+        raise ProblemException.webhook_signature_invalid()\n     await db.mark_order_paid(event['resource']['custom_id'])\n",
+    "remediation_action": "revoke_unverified_paid_status"
+  },
+  "BUG_WEBHOOK_REPLAY_VULN": {
+    "bug_flag": "BUG_WEBHOOK_REPLAY_VULN",
+    "rule_number": 5,
+    "rule_name": "Records Agree",
+    "title": "Replayed Webhook Event Processed Without Transmission ID Deduplication",
+    "severity": "HIGH",
+    "template_explanation": "Identical PayPal webhook was received multiple times for cart {cart_id}. Store lacked deduplication on PAYPAL-TRANSMISSION-ID, triggering duplicate fulfillment jobs for capture {capture_id}.",
+    "grounded_api_note": "Webhooks must implement idempotent deduplication on transmission_id with TTL storage to prevent replay attacks and duplicate inventory decrement.",
+    "patch_diff": "--- a/webhooks.py\n+++ b/webhooks.py\n@@ -8,3 +8,6 @@\n+    if await db.is_webhook_processed(transmission_id):\n+        return Response(status_code=200, content='ALREADY_PROCESSED')\n+    await db.record_webhook_id(transmission_id)\n",
+    "remediation_action": "deduplicate_webhook_processing"
+  },
+  "BUG_NO_FULFILLMENT_RECORD": {
+    "bug_flag": "BUG_NO_FULFILLMENT_RECORD",
+    "rule_number": 3,
+    "rule_name": "No Orphan Money",
+    "title": "Orphan Capture Without Store Internal Order Record",
+    "severity": "CRITICAL",
+    "template_explanation": "PayPal successfully debited customer for cart {cart_id} on capture {capture_id}, but store backend failed to record order {order_id} in internal database. Customer was charged without goods shipping.",
+    "grounded_api_note": "Order capture and store ledger writes must occur within an atomic database transaction; orphan captures must trigger auto-refund within 8s SLA.",
+    "patch_diff": "--- a/fulfillment.py\n+++ b/fulfillment.py\n@@ -19,4 +19,8 @@\n+    async with db.transaction():\n+        capture = await paypal_client.capture(order_id)\n+        store_order = await db.create_order_or_rollback(cart, capture)\n+    if not store_order:\n+        await paypal_client.refund(capture.id, note='Orphan capture auto-reversal')\n",
+    "remediation_action": "auto_refund_orphan_capture"
+  },
+  "BUG_NO_SHIPMENT_TRACKING": {
+    "bug_flag": "BUG_NO_SHIPMENT_TRACKING",
+    "rule_number": 3,
+    "rule_name": "No Orphan Money",
+    "title": "Order Captured Without PayPal Shipment Tracking Link within SLA",
+    "severity": "HIGH",
+    "template_explanation": "Order {order_id} was successfully captured on capture {capture_id}, but shipment tracking was never uploaded to PayPal Orders Tracking API within the 8-second SLA window.",
+    "grounded_api_note": "PayPal Orders Tracking API (POST /v2/checkout/orders/{id}/track) or @paypal/agent-toolkit create_shipment_tracking is required to qualify for PayPal Seller Protection.",
+    "patch_diff": "--- a/fulfillment.py\n+++ b/fulfillment.py\n@@ -22,3 +22,5 @@\n+    await tracking.sync_paypal_tracking(order_id=store_order.id, tracking_number=tracking_num, carrier='USPS')\n",
+    "remediation_action": "sync_carrier_tracking_to_paypal"
+  },
+  "BUG_DOUBLE_REFUND": {
+    "bug_flag": "BUG_DOUBLE_REFUND",
+    "rule_number": 4,
+    "rule_name": "Safe Refunds",
+    "title": "Parallel Duplicate Refund Requests Processed Due to Race Condition",
+    "severity": "CRITICAL",
+    "template_explanation": "Two parallel partial refund requests were fired against capture {capture_id}. Lacking row-level locking or refund state mutex, store executed duplicate refund calls, refunding more than captured balance.",
+    "grounded_api_note": "Refund operations must acquire an atomic database row lock on order_id to prevent concurrent duplicate refunds on POST /v2/payments/captures/{id}/refund.",
+    "patch_diff": "--- a/refund.py\n+++ b/refund.py\n@@ -12,4 +12,8 @@\n+    async with db.lock_order(order_id):\n+        if await db.is_refund_inflight(order_id):\n+            raise ProblemException.conflict('Refund already in-flight')\n+        return await paypal_client.refund(capture_id, requested_amount)\n",
+    "remediation_action": "reject_concurrent_duplicate_refund"
+  },
+  "BUG_OVER_REFUND": {
+    "bug_flag": "BUG_OVER_REFUND",
+    "rule_number": 4,
+    "rule_name": "Safe Refunds",
+    "title": "Refund Amount Exceeds Original Captured Balance",
+    "severity": "CRITICAL",
+    "template_explanation": "Store accepted refund request of $200.00 on capture {capture_id} which only had a captured balance of $99.99. Submitting over-refunds causes merchant balance deficit.",
+    "grounded_api_note": "PayPal Payments v2 refund endpoint rejects cumulative refunds exceeding original capture amount with 422 REFUND_EXCEEDS_CAPTURE.",
+    "patch_diff": "--- a/refund.py\n+++ b/refund.py\n@@ -14,3 +14,6 @@\n+    remaining = await db.get_refundable_balance(order_id)\n+    if requested_amount > remaining:\n+        raise ProblemException.refund_exceeds_capture(captured=str(remaining), requested=str(requested_amount))\n",
+    "remediation_action": "cap_refund_to_captured_balance"
+  },
+  "BUG_MISSING_DISPUTE_PROOF": {
+    "bug_flag": "BUG_MISSING_DISPUTE_PROOF",
+    "rule_number": 6,
+    "rule_name": "Proof Ready",
+    "title": "Dispute Opened Without Verifiable Tracking Number or Signed Cart Hash",
+    "severity": "MEDIUM",
+    "template_explanation": "A customer dispute was logged on capture {capture_id}. Merchant store lacked verifiable carrier tracking proof and signed cart receipt hash, leading to automatic loss of dispute and chargeback fees.",
+    "grounded_api_note": "Dispute defense requires submitting carrier tracking number and proof of delivery via PayPal Customer Disputes API (POST /v1/customer/disputes/{id}/provide-evidence).",
+    "patch_diff": "--- a/disputes.py\n+++ b/disputes.py\n@@ -10,3 +10,6 @@\n+    evidence = await db.get_dispute_evidence(order_id)\n+    await paypal_client.submit_dispute_evidence(dispute_id=dispute_id, evidence=evidence)\n",
+    "remediation_action": "auto_submit_tracking_evidence_to_dispute"
+  }
+}

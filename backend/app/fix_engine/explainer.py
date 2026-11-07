@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Optional
 
 from app.core.config import get_settings
 from app.core.key_shard import get_sharded_gemini_key
+from app.fix_engine.cache import get_explanation_cache
 from app.fix_engine.templates import BugClass, get_patch_diff, get_template_for_rule
 from app.schemas.contracts import FindingDetail
 
@@ -130,8 +131,24 @@ class FixExplainer:
         if not finding.patch_diff:
             finding.patch_diff = template["patch"]
 
-        # 2. Check if a grounded fallback or cached explanation exists
-        fallback_text = GROUNDED_FALLBACKS.get(finding.id)
+        # 2. Check pre-generated 12-bug explanation cache
+        cache = get_explanation_cache()
+        evidence_id = finding.evidence_ids[0] if finding.evidence_ids else None
+        cached_entry = cache.get_by_finding_id(
+            finding.id,
+            order_id=evidence_id,
+            capture_id=evidence_id,
+        ) or cache.get_by_rule_and_persona(
+            finding.rule_number,
+            finding.persona_id or "",
+            order_id=evidence_id,
+            capture_id=evidence_id,
+        )
+
+        fallback_text = cached_entry.get("explanation") if cached_entry else GROUNDED_FALLBACKS.get(finding.id)
+        if cached_entry:
+            if not finding.remediation_action and cached_entry.get("remediation_action"):
+                finding.remediation_action = cached_entry["remediation_action"]
         if not fallback_text:
             if finding.rule_number == 1:
                 fallback_text = GROUNDED_FALLBACKS["find_r1_double_capture"]

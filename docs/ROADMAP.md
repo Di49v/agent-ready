@@ -217,7 +217,7 @@
   - **Spec Details:** Implement the 6 bug-class code-diff templates **grounded with the APIMatic Context Plugin for PayPal** (avoiding overclaims like "100% accurate"). Use `gemini-3.8-flash` to write plain-English root-cause explanations referencing the specific PayPal Order/Capture IDs. Wire into the **`Apply Patch & Re-Run Same Seed`** endpoint so judges see red turn green (plus the 1 honest residual black-box limitation finding).
   - **Verify:** Re-running the same seed on Hardened Shop eliminates the code-bug findings and raises the score from `<25` to `95/100`.
 
-- [ ] **Task 5.3 — Pre-Generated Explanation Cache (12 Bug Classes)**
+- [x] **Task 5.3 — Pre-Generated Explanation Cache (12 Bug Classes)**
   - **Files:** `backend/app/data/explanation_cache.json`, `backend/app/fix_engine/cache.py`
   - **Spec Details:** Pre-generate and cache high-clarity explanations and code diffs for all 12 bug flags (interpolating live `order_id`, `capture_id`, and `cart_id` at runtime) so demo runs return explanations in `<100ms` even if Gemini API quota is throttled during judging.
   - **Verify:** Disabling network access to Gemini still renders complete, ID-populated explanations and diffs for all 12 bugs.
