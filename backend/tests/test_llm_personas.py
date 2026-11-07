@@ -92,7 +92,7 @@ async def test_content_trap_persona_state_machine() -> None:
     )
     assert res_hardened.lane == 9
     assert res_hardened.outcome == "BLOCKED_BY_GUARD"
-    assert res_hardened.error_code in ("CART_INTENT_MISMATCH", "PRICE_MISMATCH_REAUTHORIZATION_REQUIRED")
+    assert res_hardened.error_code == "CART_INTENT_MISMATCH"
     assert "BLOCKED_BY_GUARD" in p9_hardened.state_history
     assert p9_hardened.current_state == "COMPLETED"
 

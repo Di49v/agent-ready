@@ -272,7 +272,6 @@ class ContentTrapPersona(BasePersona):
             await shop.create_cart(
                 cart_id=cart_id,
                 items=[{"id": sku, "quantity": injected_qty}],
-                client_price=injected_price,
                 receipt_hash=injected_hash,
             )
             order = await shop.checkout_order(
@@ -282,7 +281,7 @@ class ContentTrapPersona(BasePersona):
             # Naive shop accepted injected cart
             await self.emit_event(
                 events, event_callback, run_id, "store_ledger_row", "Naive Shop",
-                "PROMPT_INJECTION_ACCEPTED", "COMPLETED", "$7.50", rule_hit=2
+                "PROMPT_INJECTION_ACCEPTED", "COMPLETED", "$749.75", rule_hit=2
             )
         except ProblemException as exc:
             self.set_state("BLOCKED_BY_GUARD")
