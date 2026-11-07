@@ -260,7 +260,7 @@
   - **Spec Details:** Interactive playground tab (`ENABLE_JUDGE_ARENA=true`, Section B11) where a judge types a shopping prompt (e.g., *"Buy running shoes size 8 under $80"*), toggles individual Chaos Switches (`Drop Retry`, `Tamper Price to $1`, `Forge Webhook`, `Inject Prompt Trap`), and watches a single live AI shopper search Channel3 and pay through PayPal Sandbox while streaming `agent_step`, `paypal_event`, `store_ledger_row`, and `finding` events via SSE into AG Grid (`applyTransactionAsync`), with a 10-call cap, call-budget meter, and automatic quota/error fallback to Replay.
   - **Verify:** Toggling `Drop Retry` on `Naive Shop` vs. `Hardened Shop` shows live double-capture vs. idempotent replay in real time.
 
-- [ ] **Task 6.5 — Self-Explanatory Story Hero, 4-Step Interactive Guided Tour & Deliverables Showcase Hub**
+- [x] **Task 6.5 — Self-Explanatory Story Hero, 4-Step Interactive Guided Tour & Deliverables Showcase Hub**
   - **Files:** `frontend/src/components/WorkflowHeroBanner.tsx`, `frontend/src/components/GuidedWalkthroughBar.tsx`, `frontend/src/components/DeliverablesHub.tsx`, `frontend/src/app/page.tsx`
   - **Spec Details:**
     1. `WorkflowHeroBanner.tsx`: Split-screen top header with the 1-line pitch, plain-English problem summary, sponsor attribution pills (`PayPal Sandbox v2`, `APIMatic SDK v2.29`, `Channel3 Catalog`, `AG Grid Quartz`), and an interactive **3-Card Cart-to-Ledger Mini-Simulator** (*Human Cart Receipt $\rightarrow$ Chaos Fault $\rightarrow$ Without Guard vs. With Guard toggle*).
@@ -272,7 +272,7 @@
 
 ## STAGE 7 (Day 7 — Nov 11 – Nov 12 Morning): Smoke Test, Judge Dry Run, README, Video & Submission
 
-- [ ] **Task 7.0 — Automated Smoke Test & Fresh-Browser External Judge Dry Run**
+- [x] **Task 7.0 — Automated Smoke Test & Fresh-Browser External Judge Dry Run**
   - **Files:** `backend/scripts/smoke_test.py`, `README.md`, `DEVPOST.md`
   - **Spec Details:**
     1. Write `smoke_test.py` asserting: `/healthz` returns `200`, `Naive Shop` run scores `<25/100` with all expected findings, `Hardened Shop` run scores `>=90/100`, `Replay Last Run` returns in `<2s`, and no secrets/card numbers appear in logs.
