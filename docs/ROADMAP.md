@@ -250,7 +250,7 @@
   - **Spec Details:** Generate typed SDK in `sdk/` from `/openapi.json` using **APIMatic**, and expose MCP tools `start_crash_test`, `list_findings`, `explain_finding`, `suggest_fix`, and `rerun`. Register in Antigravity IDE (`Open MCP Config`) for the 10-second video clip.
   - **Verify:** Run `start_crash_test` directly from the IDE MCP tool.
 
-- [ ] **Task 6.3 — Abuse Guard (API Keys, Rate Limits & Target URL Allowlist)**
+- [x] **Task 6.3 — Abuse Guard (API Keys, Rate Limits & Target URL Allowlist)**
   - **Files:** `backend/app/core/abuse_guard.py`
   - **Spec Details:** Protect public endpoints with `X-Lab-Api-Key` (pre-loaded on the no-login judge demo UI), per-IP rate limiting (`10 runs / 10 mins`), and a strict target allowlist on `POST /v1/targets` (allowing built-in demo stores by default and requiring domain token verification for custom sandbox URLs) so the public lab cannot be used to DDoS arbitrary websites.
   - **Verify:** Unallowlisted external URLs are rejected with `403 TARGET_NOT_ALLOWLISTED`.

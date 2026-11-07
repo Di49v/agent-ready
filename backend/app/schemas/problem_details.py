@@ -21,6 +21,8 @@ class ProblemErrorCode:
     RUN_NOT_FOUND = "RUN_NOT_FOUND"
     INVALID_PAYLOAD = "INVALID_PAYLOAD"
     RATE_LIMIT_EXCEEDED = "RATE_LIMIT_EXCEEDED"
+    TARGET_NOT_ALLOWLISTED = "TARGET_NOT_ALLOWLISTED"
+    UNAUTHORIZED_API_KEY = "UNAUTHORIZED_API_KEY"
     INTERNAL_ERROR = "INTERNAL_ERROR"
 
 
@@ -232,4 +234,61 @@ class ProblemException(Exception):
             retryable=False,
             details={"entity": entity, "id": entity_id},
         )
+
+    @classmethod
+    def target_not_allowlisted(
+        cls,
+        target_url: str,
+        reason: Optional[str] = None,
+        type_url: str = "https://lab.example/errors/target-not-allowlisted",
+    ) -> "ProblemException":
+        return cls(
+            status=403,
+            title="Target Store URL Not Allowlisted",
+            code=ProblemErrorCode.TARGET_NOT_ALLOWLISTED,
+            type_=type_url,
+            detail=reason or f"The target URL '{target_url}' is not on the allowed sandbox store registry. Domain token verification required.",
+            retryable=False,
+            next_action="use_built_in_demo_stores_or_verify_domain",
+            details={"target_url": target_url, "allowed_targets": ["naive-shop", "hardened-shop"]},
+        )
+
+    @classmethod
+    def rate_limit_exceeded(
+        cls,
+        retry_after: int,
+        client_ip: Optional[str] = None,
+        limit: int = 10,
+        window_minutes: int = 10,
+        type_url: str = "https://lab.example/errors/rate-limit-exceeded",
+    ) -> "ProblemException":
+        return cls(
+            status=429,
+            title="Rate Limit Exceeded",
+            code=ProblemErrorCode.RATE_LIMIT_EXCEEDED,
+            type_=type_url,
+            detail=f"Rate limit of {limit} runs per {window_minutes} minutes exceeded for IP. Please retry after {retry_after}s or use Replay mode.",
+            retryable=True,
+            next_action="use_replay_last_run_or_wait",
+            headers={"Retry-After": str(retry_after)},
+            details={"retry_after_seconds": retry_after, "client_ip": client_ip, "limit": limit},
+        )
+
+    @classmethod
+    def unauthorized(
+        cls,
+        detail: Optional[str] = None,
+        type_url: str = "https://lab.example/errors/unauthorized",
+    ) -> "ProblemException":
+        return cls(
+            status=401,
+            title="Unauthorized API Key",
+            code=ProblemErrorCode.UNAUTHORIZED_API_KEY,
+            type_=type_url,
+            detail=detail or "Valid X-Lab-Api-Key or Bearer token is required to access AgentReady Lab resources.",
+            retryable=False,
+            next_action="provide_valid_lab_api_key",
+            headers={"WWW-Authenticate": "Bearer realm='AgentReadyLab'"},
+        )
+
 

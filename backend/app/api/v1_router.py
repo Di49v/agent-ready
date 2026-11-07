@@ -3,9 +3,10 @@ FastAPI Public v1 Routers for AgentReady Lab (Section B3.9).
 Clean OpenAPI 3.1 operation IDs for typed APIMatic SDK generation.
 """
 from typing import Any, Dict, List, Optional
-from fastapi import APIRouter, Body, Path, Query, Response, status
+from fastapi import APIRouter, Body, Path, Query, Request, Response, status
 from pydantic import BaseModel, Field
 from app.api.events_sse import router as events_router
+from app.core.abuse_guard import get_abuse_guard
 from app.schemas.contracts import (
     FindingDetail,
     LedgerSnapshot,
@@ -56,7 +57,10 @@ def list_targets() -> List[TargetStore]:
     summary="Register a target store",
     description="Registers an external or custom target sandbox store.",
 )
-def create_target(target: TargetStore) -> TargetStore:
+def create_target(target: TargetStore, http_request: Request) -> TargetStore:
+    guard = get_abuse_guard()
+    guard.verify_api_key(http_request)
+    guard.validate_target(target)
     orchestrator = get_run_orchestrator()
     return orchestrator.create_target(target)
 
@@ -91,7 +95,11 @@ def list_personas() -> List[PersonaSpec]:
     summary="Start a crash-test run",
     description="Triggers a crash test run with the specified target, pack, seed, and optional callback URL.",
 )
-async def create_run(request: RunCreateRequest) -> RunSummary:
+async def create_run(request: RunCreateRequest, http_request: Request) -> RunSummary:
+    guard = get_abuse_guard()
+    guard.verify_api_key(http_request)
+    guard.check_and_record_run_rate_limit(http_request)
+    guard.validate_target(request.target)
     orchestrator = get_run_orchestrator()
     return await orchestrator.create_run(request)
 
