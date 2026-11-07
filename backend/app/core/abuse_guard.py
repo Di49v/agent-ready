@@ -28,6 +28,9 @@ ALLOWED_SANDBOX_DOMAINS = {
     "onrender.com",
     "render.com",
     "lab.example",
+    "example.com",
+    "example.org",
+    "example.net",
 }
 
 
