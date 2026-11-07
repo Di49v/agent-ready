@@ -256,6 +256,22 @@ console.log(\`Remediated Score: \${rerun.score}/100 🟢\`);`;
               </div>
               <ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-purple-400 transition" />
             </a>
+
+            <a
+              href={`${API_BASE_URL}/v1/runs/run_42_naive_shop/postman`}
+              target="_blank"
+              rel="noreferrer"
+              className="p-3 rounded bg-[#13161F] border border-white/[0.07] hover:border-amber-400/40 flex items-center justify-between text-xs font-mono text-zinc-300 hover:text-white transition group"
+            >
+              <div className="flex items-center gap-2.5">
+                <Download className="h-4 w-4 text-amber-400" />
+                <div>
+                  <div className="font-semibold text-white">Postman Collection (v2.1.0)</div>
+                  <div className="text-[10px] text-zinc-500">1-click reproduction tests for failed findings</div>
+                </div>
+              </div>
+              <ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-amber-400 transition" />
+            </a>
           </div>
         </div>
       </div>

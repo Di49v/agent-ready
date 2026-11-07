@@ -280,7 +280,7 @@
     3. Write complete `DEVPOST.md` submission copy.
     4. Have someone outside the dev environment open the live Render URL in an incognito browser with no login and complete the 3-click judge path (`Run Naive` $\rightarrow$ `Inspect Diff` $\rightarrow$ `Re-run Hardened`) in under 60 seconds.
 
-- [ ] **Task 7.1 — Optional Tier 3 Polish (Only If Task 7.0 Is 100% Green)**
+- [x] **Task 7.1 — Optional Tier 3 Polish (Only If Task 7.0 Is 100% Green)**
   - **Files:** `backend/app/services/postman_exporter.py`, `.github/workflows/agent-ready-ci.yml`
   - **Spec Details:** One-click Postman collection export on failed findings and sample GitHub Action workflow.
 
