@@ -30,13 +30,13 @@ def test_openapi_export_and_validity(tmp_path: Path) -> None:
         "/healthz",
         "/v1/targets",
         "/v1/runs",
-        "/v1/runs/{run_id}",
-        "/v1/runs/{run_id}/findings",
-        "/v1/runs/{run_id}/report",
-        "/v1/runs/{run_id}/rerun",
+        "/v1/runs/{id}",
+        "/v1/runs/{id}/findings",
+        "/v1/runs/{id}/report",
+        "/v1/runs/{id}/rerun",
         "/v1/personas",
-        "/v1/badge/{target_id}.svg",
-        "/v1/runs/{run_id}/events",
+        "/v1/badge/{target}.svg",
+        "/v1/runs/{id}/events",
     ]
     for p in expected_paths:
         assert p in paths, f"Missing expected path '{p}' in OpenAPI schema"
