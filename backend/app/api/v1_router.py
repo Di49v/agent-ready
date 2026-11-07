@@ -173,6 +173,31 @@ def get_run_report(
     )
 
 
+@router.get(
+    "/v1/runs/{id}/postman",
+    operation_id="exportRunPostmanCollection",
+    tags=["Runs"],
+    summary="Export Postman collection for run findings",
+    description="Generates a downloadable Postman Collection v2.1.0 with reproduction requests for failed findings.",
+    responses={
+        200: {
+            "content": {"application/json": {}},
+            "description": "Postman Collection v2.1.0 JSON",
+        }
+    },
+)
+def export_run_postman(
+    id: str = Path(..., description="Run ID"),
+) -> Response:
+    orchestrator = get_run_orchestrator()
+    collection_json = orchestrator.export_postman_collection(id)
+    return Response(
+        content=collection_json,
+        media_type="application/json",
+        headers={"Content-Disposition": f'attachment; filename="agent-ready-run-{id}.postman_collection.json"'},
+    )
+
+
 @router.post(
     "/v1/runs/{id}/rerun",
     response_model=RunSummary,

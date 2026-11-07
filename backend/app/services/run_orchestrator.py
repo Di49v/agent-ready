@@ -19,6 +19,7 @@ from app.db.models import Finding, Run, RunEventLog
 from app.db.session import get_db_session
 from app.mocks.replay_fixtures import get_mock_report_markdown
 from app.services.report_exporter import get_report_exporter
+from app.services.postman_exporter import get_postman_exporter
 from app.reconciler.collector import DualLedgerCollector
 from app.reconciler.grader import RuleGrader
 from app.reconciler.remediation import RemediationEngine
@@ -286,6 +287,13 @@ class RunOrchestrator:
             markdown=md,
             generated_at=summary.completed_at or summary.created_at,
         )
+
+    def export_postman_collection(self, run_id: str) -> str:
+        """Generates Postman Collection v2.1.0 for the given run findings."""
+        summary = self.get_run(run_id)
+        findings = self.get_run_findings(run_id)
+        exporter = get_postman_exporter()
+        return exporter.generate_collection_json(summary, findings)
 
     async def rerun_run(self, base_run_id: str, target_override: Optional[str] = None) -> RunSummary:
         """
