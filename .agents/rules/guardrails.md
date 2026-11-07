@@ -18,7 +18,7 @@ Please follow these workspace conventions for modular architecture, git hygiene,
 
 ## 3. BLAST-RADIUS CONTROL (NO RUSHING, NO MULTI-LINE DELETIONS)
 - Implement ONLY the single task or step explicitly requested by the user in the current turn.
-- Modify or create AT MOST 2 to 3 files per turn (unless explicitly asked to scaffold empty boilerplate files).
+- Modify or create AT MOST 2 to 5 files per turn (unless explicitly asked to scaffold empty boilerplate files).
 - NEVER delete existing functions, comments, imports, or logic unless explicitly instructed or required. Never use lazy placeholders like `// ... existing code ...` that overwrite working lines.
 - Keep every source file modular.
 
@@ -44,3 +44,34 @@ End every response with this exact checklist:
 - Maintain architectural clarity by updating or creating `docs/ARCHITECTURE.md`, `README.md`, and `docs/SETUP.md` alongside major feature completions.
 - Use Mermaid.js (`mermaid` code blocks) within markdown files to visually map out state machines, data flows, and multi-agent orchestrations.
 - Ensure any new environment variables or setup steps are instantly reflected in `docs/SETUP.md`.
+
+## 8. PRESCRIPTIVE FRONTEND DESIGN SYSTEM ("SWISS PRECISION TELEMETRY")
+
+Follow these exact visual, typographic, and layout rules across all frontend components:
+
+### A. Exposed Hairline Grid & Tonal Surfaces (Zero Floating Card Clutter)
+- **Exposed 1px Structural Grid:** Group related panels inside a flush container using `grid gap-px bg-white/[0.07] border border-white/[0.07] rounded-lg overflow-hidden`. Each child cell uses a solid dark background (`bg-[#0D0F14]`), creating crisp 1px architectural hairlines between panels instead of floating cards with messy margins.
+- **3-Tier Surface Depth (No Heavy Drop Shadows):**
+  - **Canvas Background:** `#08090C` (Obsidian Carbon)
+  - **Primary Panel Surface:** `#0D0F14` (Graphite Slate)
+  - **Interactive / Elevated Surface:** `#13161F` with a 1px top-edge specular highlight (`shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]`)
+- **Subtle Dot-Matrix Backdrop:** Apply a faint radial dot pattern on the main canvas (`bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:16px_16px]`) so the workbench feels like an engineering instrument.
+
+### B. Strict Typographic Hierarchy & Tabular Monospace Data
+- **Display & Section Headings:** `Geist` or `Inter`, `font-medium` (never heavy cartoon bold), tight tracking `tracking-[-0.02em]`, color `#F3F4F6`.
+- **Instrument Micro-Labels:** All panel headers, column labels, and metadata tags MUST use `font-mono text-[11px] uppercase tracking-[0.08em] text-zinc-400`.
+- **Financials, IDs, Latencies & Scores:** MUST use `font-mono tabular-nums` (`JetBrains Mono`) so numbers never jitter horizontally during live SSE updates.
+
+### C. Semantic Signal Discipline (Dark Surfaces + Crisp Micro-Indicators)
+- Never paint entire card backgrounds bright red or green. Keep panel surfaces dark (`#0D0F14`) and indicate state using:
+  - **Status Dot:** `h-1.5 w-1.5 rounded-full` (`bg-emerald-400` for Pass/Guarded, `bg-rose-500` for Violation, `bg-amber-400` for Fault Injected, `bg-cyan-400` for Active Stream).
+  - **Pill Badge:** `px-2 py-0.5 text-[11px] font-mono rounded border` (`bg-rose-500/10 text-rose-400 border-rose-500/20` for Failures; `bg-emerald-500/10 text-emerald-400 border-emerald-500/20` for Guarded; `bg-amber-500/10 text-amber-300 border-amber-500/20` for Chaos Faults).
+
+### D. Tangible E-Commerce Context Next to Wire Telemetry
+- Never show raw API endpoints (`/v2/checkout/orders`) in isolation. Always pair protocol telemetry with a visual **Channel3 Product & Cart Receipt Card** showing:
+  1. Product thumbnail/icon, title, and selected variant pill (e.g., `Brooks Ghost 16 · Size 8 · $120.00`).
+  2. **Approved Human Intent vs. Wire Payload Diff:** Visually show transformations side by side (e.g., Approved `$150.00` $\rightarrow$ Tampered Wire Payload `$1.50` in crimson strikethrough, or `1x Approved Cart` $\rightarrow$ `2x Duplicate Capture ($240.00)`).
+
+### E. Choreographed Micro-Motion
+- Use fast, physical easing (`transition-all duration-150 ease-[cubic-bezier(0.22,1,0.36,1)]`). Avoid bouncy spring animations.
+- Use a `2px` horizontal progress bar at the top of active persona cells and AG Grid `enableCellChangeFlash={true}` when ledger rows update.

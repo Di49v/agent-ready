@@ -193,6 +193,14 @@
   - **Spec Details:** Connect `POST /v1/runs` and `POST /v1/runs/{id}/rerun` to `RunOrchestrator` so that when `USE_MOCK_BLUEPRINT=false`, clicking **`Run Crash Test`** executes the real Swarm + Chaos Proxy + PayPal Sandbox + 6-Rule Reconciler, streams live SSE events (`agent_step`, `paypal_event`, `store_ledger_row`, `finding`, `run_completed`) into the Stage 1 Frontend (`SwarmLanes` & `FindingsGrid`), and saves the completed run into `RunEventLog` for **`Replay Last Run`**.
   - **Verify:** End-to-end live Sandbox run streams into the Next.js UI and updates AG Grid in real time.
 
+  - [ ] **Task 4.3 — Swiss Telemetry Workbench Upgrade & Live Channel3 Store/Cart Wire Inspector**
+  - **Files:** `frontend/src/components/LiveStoreCartInspector.tsx`, `frontend/src/components/SwarmLanes.tsx`, `frontend/src/app/globals.css`
+  - **Spec Details:**
+    1. Apply the **Swiss Precision Telemetry** aesthetic (`1px` exposed hairline bento grid `gap-px bg-white/[0.07]`, `#08090C` obsidian canvas, `#0D0F14` graphite panels, tabular monospace numbers, and subtle status dots).
+    2. Build `LiveStoreCartInspector.tsx` displaying the live **Channel3 Product Card** (title, category, authoritative server price, variant options, and prompt-injection warning banner) side-by-side with the **Human-Approved HMAC Cart Receipt vs. Intercepted Agent Wire Payload** (highlighting price mutations `$150.00 -> $1.50`, duplicate retries `2x POST /orders`, and quantity hijacks `1 -> 5 units`).
+    3. Connect `SwarmLanes.tsx` and `FindingsGrid.tsx` so clicking any persona lane or finding row updates `LiveStoreCartInspector.tsx` with that persona's exact cart and wire trace.
+  - **Verify:** Clicking through all 9 personas visually shows the exact product, cart receipt, wire mutation, and store outcome (`Naive` vs. `Hardened`).
+
 ---
 
 ## STAGE 5 (Day 5 — Nov 9): LLM Personas, APIMatic-Grounded Fix Engine, Explanation Cache & 12-Bug Matrix
@@ -251,6 +259,14 @@
   - **Files:** `frontend/src/components/JudgeArena.tsx`, `backend/app/api/arena_router.py`
   - **Spec Details:** Interactive playground tab (`ENABLE_JUDGE_ARENA=true`, Section B11) where a judge types a shopping prompt (e.g., *"Buy running shoes size 8 under $80"*), toggles individual Chaos Switches (`Drop Retry`, `Tamper Price to $1`, `Forge Webhook`, `Inject Prompt Trap`), and watches a single live AI shopper search Channel3 and pay through PayPal Sandbox while streaming `agent_step`, `paypal_event`, `store_ledger_row`, and `finding` events via SSE into AG Grid (`applyTransactionAsync`), with a 10-call cap, call-budget meter, and automatic quota/error fallback to Replay.
   - **Verify:** Toggling `Drop Retry` on `Naive Shop` vs. `Hardened Shop` shows live double-capture vs. idempotent replay in real time.
+
+- [ ] **Task 6.5 — Self-Explanatory Story Hero, 4-Step Interactive Guided Tour & Deliverables Showcase Hub**
+  - **Files:** `frontend/src/components/WorkflowHeroBanner.tsx`, `frontend/src/components/GuidedWalkthroughBar.tsx`, `frontend/src/components/DeliverablesHub.tsx`, `frontend/src/app/page.tsx`
+  - **Spec Details:**
+    1. `WorkflowHeroBanner.tsx`: Split-screen top header with the 1-line pitch, plain-English problem summary, sponsor attribution pills (`PayPal Sandbox v2`, `APIMatic SDK v2.29`, `Channel3 Catalog`, `AG Grid Quartz`), and an interactive **3-Card Cart-to-Ledger Mini-Simulator** (*Human Cart Receipt $\rightarrow$ Chaos Fault $\rightarrow$ Without Guard vs. With Guard toggle*).
+    2. `GuidedWalkthroughBar.tsx`: Interactive 4-step judge tour (`Step 1: Run Naive Crash Test (18/100)` $\rightarrow$ `Step 2: Inspect Cart & Dual-Ledger Diff` $\rightarrow$ `Step 3: Review APIMatic 10-Line Patch` $\rightarrow$ `Step 4: Re-Run Hardened Shop (95/100)`) that auto-triggers and spotlights each step on click.
+    3. `DeliverablesHub.tsx` & 4-Tab Workspace Navigation in `page.tsx`: Organize the workbench into 4 clean tabs (`1. Crash-Test Workbench`, `2. Judge Arena`, `3. 12-Bug Benchmark Matrix`, `4. Platform & Sponsor Hub` featuring live SVG Badge preview, MCP server config, APIMatic SDK snippets, and JSON/Markdown/Postman export buttons).
+  - **Verify:** A first-time visitor can click `Start 4-Step Guided Tour` and understand the entire problem, cart interaction, reconciliation proof, and ecosystem deliverables in under 45 seconds.
 
 ---
 
