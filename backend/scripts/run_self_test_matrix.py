@@ -145,14 +145,14 @@ class BenchmarkMatrixRunner:
 
         elif flag == BugFlag.BUG_ALLOW_AMBIGUOUS_VARIANT:
             # Naive shop allows cart creation without selecting mandatory variants
-            c = await naive_shop.create_cart(f"c_variant_{uid}", [{"id": "prod_brooks_ghost_16", "quantity": 1}], selected_variants=None, receipt_hash=fixed_hash)
+            c = await naive_shop.create_cart(f"c_variant_{uid}", [{"id": "prod_running_shoes_002", "quantity": 1}], selected_variants=None, receipt_hash=fixed_hash)
             if c["status"] == "OPEN":
                 naive_detected = True
                 naive_evidence = "Ambiguous variant accepted without size/width selection"
 
             # Hardened shop enforces variant selection
             try:
-                await hardened_shop.create_cart(f"c_variant_h_{uid}", [{"id": "prod_brooks_ghost_16", "quantity": 1}], selected_variants=None, receipt_hash=fixed_hash)
+                await hardened_shop.create_cart(f"c_variant_h_{uid}", [{"id": "prod_running_shoes_002", "quantity": 1}], selected_variants=None, receipt_hash=fixed_hash)
             except ProblemException as exc:
                 if exc.problem.status in (409, 422):
                     hardened_guarded = True
