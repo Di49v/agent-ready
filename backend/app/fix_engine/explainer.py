@@ -154,8 +154,8 @@ class FixExplainer:
         # 3. Interpolate evidence IDs into explanation
         if finding.evidence_ids:
             primary_id = finding.evidence_ids[0]
-            if primary_id not in fallback_text and not fallback_text.endswith("."):
-                fallback_text = f"{fallback_text} (Evidence ID: {primary_id})"
+            if primary_id not in fallback_text:
+                fallback_text = f"{fallback_text.rstrip('.')} (Evidence ID: {primary_id})."
 
         # 4. Attempt live LLM explanation if real Gemini credentials exist
         llm_text = await self._generate_llm_explanation(finding, template.get("grounded_api", ""))
