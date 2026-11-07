@@ -245,7 +245,7 @@
     - Signed `run.completed` outbound webhook callback.
   - **Verify:** Export `openapi.json` and validate with APIMatic linter.
 
-- [ ] **Task 6.2 — `agent-ready` MCP Server & APIMatic Generated SDK**
+- [x] **Task 6.2 — `agent-ready` MCP Server & APIMatic Generated SDK**
   - **Files:** `mcp/server.ts`, `sdk/`
   - **Spec Details:** Generate typed SDK in `sdk/` from `/openapi.json` using **APIMatic**, and expose MCP tools `start_crash_test`, `list_findings`, `explain_finding`, `suggest_fix`, and `rerun`. Register in Antigravity IDE (`Open MCP Config`) for the 10-second video clip.
   - **Verify:** Run `start_crash_test` directly from the IDE MCP tool.
