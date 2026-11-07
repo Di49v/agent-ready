@@ -18,6 +18,7 @@ from app.core.config import get_settings
 from app.db.models import Finding, Run, RunEventLog
 from app.db.session import get_db_session
 from app.mocks.replay_fixtures import get_mock_report_markdown
+from app.services.report_exporter import get_report_exporter
 from app.reconciler.collector import DualLedgerCollector
 from app.reconciler.grader import RuleGrader
 from app.reconciler.remediation import RemediationEngine
@@ -196,7 +197,13 @@ class RunOrchestrator:
         )
         _ORCHESTRATED_RUNS[run_id] = summary
 
-        # 6. Attempt Optional DB Persistence (Graceful fallback if DB offline)
+        # 6. Dispatch Signed Callback if requested
+        if req.callback_url:
+            asyncio.create_task(
+                get_report_exporter().dispatch_signed_callback(req.callback_url, summary)
+            )
+
+        # 7. Attempt Optional DB Persistence (Graceful fallback if DB offline)
         asyncio.create_task(self._persist_to_db(summary, findings, _ORCHESTRATED_EVENTS[run_id]))
 
         return summary
@@ -265,9 +272,14 @@ class RunOrchestrator:
         return self.replay_service.get_ledger_snapshot(run_id)
 
     def get_run_report(self, run_id: str) -> RunReportResponse:
-        """Generates audit report in Markdown and JSON."""
+        """Generates audit report in Markdown and JSON using ReportExporter."""
         summary = self.get_run(run_id)
-        md = get_mock_report_markdown(run_id)
+        dual_rows = None
+        if run_id in _ORCHESTRATED_SNAPSHOTS:
+            dual_rows = _ORCHESTRATED_SNAPSHOTS[run_id].dual_rows
+
+        exporter = get_report_exporter()
+        md = exporter.generate_markdown_report(summary, dual_rows=dual_rows)
         return RunReportResponse(
             run_id=run_id,
             summary=summary,
@@ -298,8 +310,23 @@ class RunOrchestrator:
         return await self.create_run(req)
 
     def get_badge_svg(self, target_id: str) -> str:
-        """Generates SVG score badge."""
-        return self.replay_service.get_badge_svg(target_id)
+        """Generates dynamic SVG score badge using ReportExporter."""
+        score: Optional[int] = None
+
+        # Look for most recent run score for this target
+        for r in reversed(list(_ORCHESTRATED_RUNS.values())):
+            if r.target == target_id and r.score is not None:
+                score = r.score
+                break
+
+        # Fallback to standard target scores if not yet run
+        if score is None:
+            if "hardened" in target_id.lower():
+                score = 95
+            elif "naive" in target_id.lower():
+                score = 18
+
+        return get_report_exporter().generate_svg_badge(score, target_name=target_id)
 
     async def stream_run_events(
         self,

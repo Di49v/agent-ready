@@ -1,8 +1,9 @@
 """
 FastAPI Public v1 Routers for AgentReady Lab (Section B3.9).
+Clean OpenAPI 3.1 operation IDs for typed APIMatic SDK generation.
 """
-from typing import List, Optional
-from fastapi import APIRouter, Body, Path, Response, status
+from typing import Any, Dict, List, Optional
+from fastapi import APIRouter, Body, Path, Query, Response, status
 from pydantic import BaseModel, Field
 from app.api.events_sse import router as events_router
 from app.schemas.contracts import (
@@ -36,6 +37,8 @@ class RerunRequest(BaseModel):
 @router.get(
     "/v1/targets",
     response_model=List[TargetStore],
+    operation_id="listTargets",
+    tags=["Targets"],
     summary="List registered targets",
     description="Returns pre-registered demo targets (Naive Shop, Hardened Shop) and user-registered stores.",
 )
@@ -48,6 +51,8 @@ def list_targets() -> List[TargetStore]:
     "/v1/targets",
     response_model=TargetStore,
     status_code=status.HTTP_201_CREATED,
+    operation_id="createTarget",
+    tags=["Targets"],
     summary="Register a target store",
     description="Registers an external or custom target sandbox store.",
 )
@@ -63,6 +68,8 @@ def create_target(target: TargetStore) -> TargetStore:
 @router.get(
     "/v1/personas",
     response_model=List[PersonaSpec],
+    operation_id="listPersonas",
+    tags=["Personas"],
     summary="List adversarial buyer personas",
     description="Returns metadata for the 9 adversarial AI buyer personas in the test pack.",
 )
@@ -79,8 +86,10 @@ def list_personas() -> List[PersonaSpec]:
     "/v1/runs",
     response_model=RunSummary,
     status_code=status.HTTP_202_ACCEPTED,
+    operation_id="createRun",
+    tags=["Runs"],
     summary="Start a crash-test run",
-    description="Triggers a crash test run with the specified target, pack, and seed.",
+    description="Triggers a crash test run with the specified target, pack, seed, and optional callback URL.",
 )
 async def create_run(request: RunCreateRequest) -> RunSummary:
     orchestrator = get_run_orchestrator()
@@ -90,6 +99,8 @@ async def create_run(request: RunCreateRequest) -> RunSummary:
 @router.get(
     "/v1/runs/{id}",
     response_model=RunSummary,
+    operation_id="getRun",
+    tags=["Runs"],
     summary="Get run status and score",
     description="Retrieves the current status, Agent-Readiness Score, and summary breakdown.",
 )
@@ -101,6 +112,8 @@ def get_run(id: str = Path(..., description="Run ID")) -> RunSummary:
 @router.get(
     "/v1/runs/{id}/findings",
     response_model=List[FindingDetail],
+    operation_id="getRunFindings",
+    tags=["Runs"],
     summary="List findings with PayPal evidence IDs",
     description="Returns all invariant rule violations detected by the Reconciler.",
 )
@@ -112,6 +125,8 @@ def get_run_findings(id: str = Path(..., description="Run ID")) -> List[FindingD
 @router.get(
     "/v1/runs/{id}/ledger",
     response_model=LedgerSnapshot,
+    operation_id="getRunLedger",
+    tags=["Runs"],
     summary="Get side-by-side dual-ledger snapshot",
     description="Returns normalized side-by-side rows comparing PayPal Sandbox records vs Store Probe rows.",
 )
@@ -122,19 +137,40 @@ def get_run_ledger(id: str = Path(..., description="Run ID")) -> LedgerSnapshot:
 
 @router.get(
     "/v1/runs/{id}/report",
-    response_model=RunReportResponse,
+    operation_id="getRunReport",
+    tags=["Runs"],
     summary="Get comprehensive audit report",
-    description="Returns Markdown and JSON audit report for merchant export.",
+    description="Returns Markdown or JSON audit report for merchant export.",
+    responses={
+        200: {
+            "description": "JSON audit report or plain Markdown text",
+            "content": {
+                "application/json": {"schema": {"$ref": "#/components/schemas/RunReportResponse"}},
+                "text/markdown": {"schema": {"type": "string"}},
+            },
+        }
+    },
 )
-def get_run_report(id: str = Path(..., description="Run ID")) -> RunReportResponse:
+def get_run_report(
+    id: str = Path(..., description="Run ID"),
+    format: Optional[str] = Query(default="json", description="Report format: 'json' or 'markdown'"),
+) -> Response:
     orchestrator = get_run_orchestrator()
-    return orchestrator.get_run_report(id)
+    report = orchestrator.get_run_report(id)
+    if format and format.lower() in ("markdown", "md"):
+        return Response(content=report.markdown, media_type="text/markdown; charset=utf-8")
+    return Response(
+        content=report.model_dump_json(),
+        media_type="application/json",
+    )
 
 
 @router.post(
     "/v1/runs/{id}/rerun",
     response_model=RunSummary,
     status_code=status.HTTP_202_ACCEPTED,
+    operation_id="rerunRun",
+    tags=["Runs"],
     summary="Re-run same seed against target",
     description="Re-runs the exact same seed against the target store or an alternative patched target.",
 )
@@ -148,11 +184,13 @@ async def rerun_run(
 
 
 # -----------------------------------------------------------------------------
-# Badge & Webhooks
+# Badge & Benchmark
 # -----------------------------------------------------------------------------
 
 @router.get(
     "/v1/badge/{target}.svg",
+    operation_id="getScoreBadge",
+    tags=["Badges"],
     summary="Get Agent-Readiness SVG badge",
     description="Generates an SVG score badge for README or merchant site.",
     responses={
@@ -166,5 +204,19 @@ def get_badge(target: str = Path(..., description="Target store ID")) -> Respons
     orchestrator = get_run_orchestrator()
     svg = orchestrator.get_badge_svg(target)
     return Response(content=svg, media_type="image/svg+xml")
+
+
+@router.get(
+    "/v1/benchmark",
+    operation_id="getBenchmarkMatrix",
+    tags=["Benchmark"],
+    summary="Get 12-bug benchmark matrix",
+    description="Returns the 12-bug detection matrix with true positive and false alarm verification data.",
+)
+def get_benchmark_matrix() -> Dict[str, Any]:
+    from app.fix_engine.cache import get_explanation_cache
+    cache = get_explanation_cache()
+    return {"bugs": list(cache._cache.values()), "total": len(cache._cache)}
+
 
 

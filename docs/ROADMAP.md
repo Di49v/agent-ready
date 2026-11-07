@@ -231,7 +231,7 @@
 
 ## STAGE 6 (Day 6 — Nov 10): Report Exporter, MCP Server, APIMatic SDK, Abuse Guard & Flagged Judge Arena
 
-- [ ] **Task 6.1 — Complete `/v1/*` Report Exporter (JSON/Markdown), SVG Badge & Signed Callback**
+- [x] **Task 6.1 — Complete `/v1/*` Report Exporter (JSON/Markdown), SVG Badge & Signed Callback**
   - **Files:** `backend/app/services/report_exporter.py`, `backend/app/api/v1_router.py`
   - **Spec Details:** Finalize all Section B3.9 endpoints with clean OpenAPI 3.1 operation IDs:
     - `POST /v1/targets` (register sandbox store)

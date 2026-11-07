@@ -34,6 +34,7 @@ def is_duplicate_webhook(event_id: str) -> bool:
 
 @router.post(
     "/webhooks/paypal",
+    operation_id="receivePaypalWebhook",
     summary="PayPal Webhook Ingestion Endpoint",
     description="Live webhook endpoint registered in PayPal Developer Dashboard. Validates HMAC/RSA signature and dispatches events to dual-ledger.",
     responses={

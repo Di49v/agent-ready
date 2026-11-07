@@ -10,6 +10,7 @@ router = APIRouter()
 
 @router.get(
     "/v1/runs/{id}/events",
+    operation_id="streamRunEvents",
     summary="Stream live run telemetry frames via SSE",
     description="Streams real-time agent_step, paypal_event, store_ledger_row, finding, and run_completed events.",
     response_class=StreamingResponse,

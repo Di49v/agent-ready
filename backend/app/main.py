@@ -79,6 +79,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 @app.get(
     "/healthz",
     tags=["Health"],
+    operation_id="healthCheck",
     summary="Health check and warm-up",
     description="Returns service vitality and configuration status. Prevents cold starts on Render.",
 )

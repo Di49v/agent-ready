@@ -211,6 +211,10 @@ class RunCreateRequest(BaseModel):
         default=False,
         description="If true, serve instant recorded replay fixture instead of making live network calls",
     )
+    callback_url: Optional[str] = Field(
+        default=None,
+        description="Optional outbound webhook URL for signed 'run.completed' notification",
+    )
 
 
 class RuleScore(BaseModel):
