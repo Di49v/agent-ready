@@ -13,10 +13,10 @@ from app.services.run_orchestrator import RunOrchestrator, get_run_orchestrator
 async def test_orchestrator_live_run_execution() -> None:
     """Verifies that RunOrchestrator executes live Swarm, Reconciler, and Grader end-to-end."""
     settings = get_settings()
-    original_mock = settings.use_mock_blueprint
+    original_mock = settings.USE_MOCK_BLUEPRINT
     try:
         # Enable live execution mode
-        settings.use_mock_blueprint = False
+        settings.USE_MOCK_BLUEPRINT = False
 
         orchestrator = RunOrchestrator()
         req = RunCreateRequest(
@@ -46,16 +46,16 @@ async def test_orchestrator_live_run_execution() -> None:
         ledger = orchestrator.get_ledger_snapshot(summary.id)
         assert len(ledger.dual_rows) == 9
     finally:
-        settings.use_mock_blueprint = original_mock
+        settings.USE_MOCK_BLUEPRINT = original_mock
 
 
 @pytest.mark.asyncio
 async def test_orchestrator_rerun_red_to_green() -> None:
     """Verifies rerun_run on HardenedShop transitions score from red to green (95/100)."""
     settings = get_settings()
-    original_mock = settings.use_mock_blueprint
+    original_mock = settings.USE_MOCK_BLUEPRINT
     try:
-        settings.use_mock_blueprint = False
+        settings.USE_MOCK_BLUEPRINT = False
         orchestrator = RunOrchestrator()
 
         # 1. Base run on NaiveShop
@@ -70,7 +70,7 @@ async def test_orchestrator_rerun_red_to_green() -> None:
         # HardenedShop achieves 95/100
         assert rerun_summary.score == 95
     finally:
-        settings.use_mock_blueprint = original_mock
+        settings.USE_MOCK_BLUEPRINT = original_mock
 
 
 @pytest.mark.asyncio

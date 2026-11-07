@@ -175,6 +175,11 @@ class Settings(BaseSettings):
         """Convenience property for lowercase access."""
         return self.USE_MOCK_BLUEPRINT
 
+    @use_mock_blueprint.setter
+    def use_mock_blueprint(self, val: bool) -> None:
+        """Allows toggling mock/blueprint mode dynamically in tests and runner."""
+        self.USE_MOCK_BLUEPRINT = val
+
 
 @lru_cache()
 def get_settings() -> Settings:
