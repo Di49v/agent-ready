@@ -17,15 +17,16 @@ def test_postman_exporter_collection_generation():
     summary = RunSummary(
         id="run_test_postman_001",
         target="naive-shop",
+        target_name="Naive Shop",
         pack="full",
         seed=42,
         status=RunStatus.COMPLETE,
         score=18,
         total_findings=3,
-        critical_count=2,
-        high_count=1,
-        medium_count=0,
-        low_count=0,
+        critical_findings=2,
+        high_findings=1,
+        medium_findings=0,
+        low_findings=0,
         created_at="2026-11-07T12:00:00Z",
     )
 
@@ -106,15 +107,16 @@ def test_postman_exporter_json_serialization():
     summary = RunSummary(
         id="run_empty_findings",
         target="hardened-shop",
+        target_name="Hardened Shop",
         pack="full",
         seed=101,
         status=RunStatus.COMPLETE,
         score=95,
         total_findings=0,
-        critical_count=0,
-        high_count=0,
-        medium_count=0,
-        low_count=0,
+        critical_findings=0,
+        high_findings=0,
+        medium_findings=0,
+        low_findings=0,
         created_at="2026-11-07T12:00:00Z",
     )
 

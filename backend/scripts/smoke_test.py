@@ -58,6 +58,10 @@ class SmokeTestRunner:
         # 5. Sensitive Data Redaction
         self.test_sensitive_data_redaction()
 
+        # 6. Postman Collection Export
+        if naive_run_id:
+            self.test_postman_collection_export(naive_run_id)
+
         # Summary
         print("-" * 78)
         passed_count = sum(1 for _, p, _, _ in self.results if p)
@@ -202,6 +206,25 @@ class SmokeTestRunner:
             "5. Secret & PAN Redaction Active",
             all_redacted,
             "16-digit PANs, Bearer tokens & client secrets redacted",
+            elapsed,
+        )
+
+    def test_postman_collection_export(self, run_id: str) -> None:
+        t0 = time.perf_counter()
+        res = self.client.get(f"/v1/runs/{run_id}/postman")
+        elapsed = (time.perf_counter() - t0) * 1000
+
+        if res.status_code != 200:
+            self._record("6. Postman Collection Export", False, f"HTTP {res.status_code}", elapsed)
+            return
+
+        data = res.json()
+        has_schema = "schema.getpostman.com" in data.get("info", {}).get("schema", "")
+        has_items = len(data.get("item", [])) >= 3
+        self._record(
+            "6. Postman Collection (v2.1.0)",
+            has_schema and has_items,
+            f"{len(data.get('item', []))} requests exported with tests & vars",
             elapsed,
         )
 
