@@ -3,7 +3,7 @@ Server-Sent Events (SSE) telemetry router for live swarm lanes and Judge Arena (
 """
 from fastapi import APIRouter, Path
 from fastapi.responses import StreamingResponse
-from app.services.replay_service import get_replay_service
+from app.services.run_orchestrator import get_run_orchestrator
 
 router = APIRouter()
 
@@ -24,12 +24,12 @@ router = APIRouter()
 async def stream_run_events(
     id: str = Path(..., description="Run identifier"),
 ):
-    service = get_replay_service()
+    orchestrator = get_run_orchestrator()
     # Eagerly validate run existence; raises 404 ProblemException if not found
-    service.get_run(id)
+    orchestrator.get_run(id)
 
     return StreamingResponse(
-        service.stream_run_events(id),
+        orchestrator.stream_run_events(id),
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache",

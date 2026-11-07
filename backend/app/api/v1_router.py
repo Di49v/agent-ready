@@ -14,7 +14,7 @@ from app.schemas.contracts import (
     RunSummary,
     TargetStore,
 )
-from app.services.replay_service import get_replay_service
+from app.services.run_orchestrator import get_run_orchestrator
 
 router = APIRouter()
 # Mount SSE event stream router
@@ -40,8 +40,8 @@ class RerunRequest(BaseModel):
     description="Returns pre-registered demo targets (Naive Shop, Hardened Shop) and user-registered stores.",
 )
 def list_targets() -> List[TargetStore]:
-    service = get_replay_service()
-    return service.list_targets()
+    orchestrator = get_run_orchestrator()
+    return orchestrator.list_targets()
 
 
 @router.post(
@@ -52,8 +52,8 @@ def list_targets() -> List[TargetStore]:
     description="Registers an external or custom target sandbox store.",
 )
 def create_target(target: TargetStore) -> TargetStore:
-    service = get_replay_service()
-    return service.create_target(target)
+    orchestrator = get_run_orchestrator()
+    return orchestrator.create_target(target)
 
 
 # -----------------------------------------------------------------------------
@@ -67,8 +67,8 @@ def create_target(target: TargetStore) -> TargetStore:
     description="Returns metadata for the 9 adversarial AI buyer personas in the test pack.",
 )
 def list_personas() -> List[PersonaSpec]:
-    service = get_replay_service()
-    return service.list_personas()
+    orchestrator = get_run_orchestrator()
+    return orchestrator.list_personas()
 
 
 # -----------------------------------------------------------------------------
@@ -82,9 +82,9 @@ def list_personas() -> List[PersonaSpec]:
     summary="Start a crash-test run",
     description="Triggers a crash test run with the specified target, pack, and seed.",
 )
-def create_run(request: RunCreateRequest) -> RunSummary:
-    service = get_replay_service()
-    return service.create_run(request)
+async def create_run(request: RunCreateRequest) -> RunSummary:
+    orchestrator = get_run_orchestrator()
+    return await orchestrator.create_run(request)
 
 
 @router.get(
@@ -94,8 +94,8 @@ def create_run(request: RunCreateRequest) -> RunSummary:
     description="Retrieves the current status, Agent-Readiness Score, and summary breakdown.",
 )
 def get_run(id: str = Path(..., description="Run ID")) -> RunSummary:
-    service = get_replay_service()
-    return service.get_run(id)
+    orchestrator = get_run_orchestrator()
+    return orchestrator.get_run(id)
 
 
 @router.get(
@@ -105,8 +105,8 @@ def get_run(id: str = Path(..., description="Run ID")) -> RunSummary:
     description="Returns all invariant rule violations detected by the Reconciler.",
 )
 def get_run_findings(id: str = Path(..., description="Run ID")) -> List[FindingDetail]:
-    service = get_replay_service()
-    return service.get_run_findings(id)
+    orchestrator = get_run_orchestrator()
+    return orchestrator.get_run_findings(id)
 
 
 @router.get(
@@ -116,8 +116,8 @@ def get_run_findings(id: str = Path(..., description="Run ID")) -> List[FindingD
     description="Returns normalized side-by-side rows comparing PayPal Sandbox records vs Store Probe rows.",
 )
 def get_run_ledger(id: str = Path(..., description="Run ID")) -> LedgerSnapshot:
-    service = get_replay_service()
-    return service.get_ledger_snapshot(id)
+    orchestrator = get_run_orchestrator()
+    return orchestrator.get_ledger_snapshot(id)
 
 
 @router.get(
@@ -127,8 +127,8 @@ def get_run_ledger(id: str = Path(..., description="Run ID")) -> LedgerSnapshot:
     description="Returns Markdown and JSON audit report for merchant export.",
 )
 def get_run_report(id: str = Path(..., description="Run ID")) -> RunReportResponse:
-    service = get_replay_service()
-    return service.get_run_report(id)
+    orchestrator = get_run_orchestrator()
+    return orchestrator.get_run_report(id)
 
 
 @router.post(
@@ -138,13 +138,13 @@ def get_run_report(id: str = Path(..., description="Run ID")) -> RunReportRespon
     summary="Re-run same seed against target",
     description="Re-runs the exact same seed against the target store or an alternative patched target.",
 )
-def rerun_run(
+async def rerun_run(
     id: str = Path(..., description="Base run ID to replay"),
     body: Optional[RerunRequest] = Body(default=None),
 ) -> RunSummary:
-    service = get_replay_service()
+    orchestrator = get_run_orchestrator()
     target_override = body.target_override if body else None
-    return service.rerun_run(base_run_id=id, target_override=target_override)
+    return await orchestrator.rerun_run(base_run_id=id, target_override=target_override)
 
 
 # -----------------------------------------------------------------------------
@@ -163,8 +163,8 @@ def rerun_run(
     },
 )
 def get_badge(target: str = Path(..., description="Target store ID")) -> Response:
-    service = get_replay_service()
-    svg = service.get_badge_svg(target)
+    orchestrator = get_run_orchestrator()
+    svg = orchestrator.get_badge_svg(target)
     return Response(content=svg, media_type="image/svg+xml")
 
 
