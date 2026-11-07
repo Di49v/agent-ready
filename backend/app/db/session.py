@@ -74,6 +74,12 @@ def get_session_maker() -> async_sessionmaker[AsyncSession]:
     return _session_maker
 
 
+def get_db_session() -> AsyncSession:
+    """Returns an async session context manager for standalone operations."""
+    factory = get_session_maker()
+    return factory()
+
+
 async def get_db() -> AsyncIterator[AsyncSession]:
     """FastAPI dependency yielding an async database session."""
     session_factory = get_session_maker()
