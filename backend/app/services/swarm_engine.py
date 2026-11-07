@@ -433,6 +433,7 @@ class SwarmEngine:
     async def execute_swarm(
         self,
         target_id: str,
+        seed: int = 42,
         run_id: Optional[str] = None,
         event_callback: Optional[Callable[[RunEvent], None]] = None,
     ) -> SwarmExecutionResult:
@@ -440,7 +441,8 @@ class SwarmEngine:
         Executes all 9 persona lanes against the target store.
         Splits into 2 waves using asyncio.Semaphore(5) with network jitter.
         """
-        run_id = run_id or f"run_{uuid.uuid4().hex[:12]}"
+        random.seed(seed)
+        run_id = run_id or f"run_{seed}_{target_id.replace('-', '_')}"
         t_start = time.perf_counter()
         events: List[RunEvent] = []
 
