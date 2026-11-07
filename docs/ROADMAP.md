@@ -284,5 +284,5 @@
   - **Files:** `backend/app/services/postman_exporter.py`, `.github/workflows/agent-ready-ci.yml`
   - **Spec Details:** One-click Postman collection export on failed findings and sample GitHub Action workflow.
 
-- [ ] **Task 7.2 — Record the 2:45 YouTube Demo Video & Submit Early**
+- [x] **Task 7.2 — Record the 2:45 YouTube Demo Video & Submit Early**
   - **Spec Details:** Record the 5-scene video (`0:00–2:45`), verify public YouTube visibility, submit the APIMatic Free Subscription / Repo Proof form, and finalize Devpost submission well before **Nov 12, 12:00 PM PT (Nov 13, 1:30 AM IST)**.
