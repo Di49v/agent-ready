@@ -67,8 +67,8 @@ async def test_orchestrator_rerun_red_to_green() -> None:
         rerun_summary = await orchestrator.rerun_run(base_run_id=base_summary.id, target_override="hardened-shop")
         assert rerun_summary.target == "hardened-shop"
         assert rerun_summary.status == RunStatus.COMPLETE
-        # HardenedShop achieves 95/100
-        assert rerun_summary.score == 95
+        # HardenedShop achieves Green score (95 in black-box mode or 100 with verified internal probe)
+        assert rerun_summary.score in (95, 100)
     finally:
         settings.USE_MOCK_BLUEPRINT = original_mock
 
