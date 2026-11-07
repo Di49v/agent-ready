@@ -205,7 +205,7 @@
 
 ## STAGE 5 (Day 5 — Nov 9): LLM Personas, APIMatic-Grounded Fix Engine, Explanation Cache & 12-Bug Matrix
 
-- [ ] **Task 5.1 — Live LLM Personas (`The Misreader` & `The Content Trap`)**
+- [x] **Task 5.1 — Live LLM Personas (`The Misreader` & `The Content Trap`)**
   - **Files:** `backend/app/personas/llm_personas.py`
   - **Spec Details:** Use `gemini-3.8-flash` via `GeminiKeySharder` and `@paypal/agent-toolkit` definitions (with cached fallback outputs):
     - `The Misreader`: Selects from ambiguous Channel3 size/color listings.
