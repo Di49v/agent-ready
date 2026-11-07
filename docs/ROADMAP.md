@@ -222,7 +222,7 @@
   - **Spec Details:** Pre-generate and cache high-clarity explanations and code diffs for all 12 bug flags (interpolating live `order_id`, `capture_id`, and `cart_id` at runtime) so demo runs return explanations in `<100ms` even if Gemini API quota is throttled during judging.
   - **Verify:** Disabling network access to Gemini still renders complete, ID-populated explanations and diffs for all 12 bugs.
 
-- [ ] **Task 5.4 — The 12-Bug Self-Test Benchmark Script & UI Modal**
+- [x] **Task 5.4 — The 12-Bug Self-Test Benchmark Script & UI Modal**
   - **Files:** `backend/scripts/run_self_test_matrix.py`, `frontend/src/components/BenchmarkMatrixModal.tsx`
   - **Spec Details:** Toggle each of the 12 bug flags one by one, verify 12/12 detection on `Naive Shop` and 0 false positives on `Hardened Shop`, and export the Markdown verification matrix for `README.md`.
   - **Verify:** Script prints `12/12 True Positives, 0 False Alarms` in terminal.

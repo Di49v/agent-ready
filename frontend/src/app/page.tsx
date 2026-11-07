@@ -6,6 +6,7 @@ import { SwarmLanes, LaneTelemetryState } from "@/components/SwarmLanes";
 import { LiveStoreCartInspector } from "@/components/LiveStoreCartInspector";
 import { FindingsGrid } from "@/components/FindingsGrid";
 import { LedgerDiffDrawer } from "@/components/LedgerDiffDrawer";
+import { BenchmarkMatrixModal } from "@/components/BenchmarkMatrixModal";
 import {
   createRun,
   fetchPersonas,
@@ -36,6 +37,7 @@ export default function Home() {
   const [selectedDualRow, setSelectedDualRow] = useState<DualLedgerRow | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [selectedLane, setSelectedLane] = useState<number>(2);
+  const [isBenchmarkOpen, setIsBenchmarkOpen] = useState<boolean>(false);
   const [errorBanner, setErrorBanner] = useState<string | null>(null);
 
   // Load initial 9 personas on component mount
@@ -225,6 +227,7 @@ export default function Home() {
         isRunning={isRunning}
         onRunCrashTest={() => handleStartRun(false)}
         onReplayLastRun={() => handleStartRun(true)}
+        onOpenBenchmark={() => setIsBenchmarkOpen(true)}
         currentScore={currentRun?.score}
         targetName={currentRun?.target_name}
       />
@@ -296,6 +299,12 @@ export default function Home() {
         dualRow={selectedDualRow}
         onApplyPatchAndRerun={handleApplyPatchAndRerun}
         isRerunning={isRerunning}
+      />
+
+      {/* 12-Bug Benchmark & Grounded APIMatic Matrix Modal */}
+      <BenchmarkMatrixModal
+        isOpen={isBenchmarkOpen}
+        onClose={() => setIsBenchmarkOpen(false)}
       />
     </div>
   );

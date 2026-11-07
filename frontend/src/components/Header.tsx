@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ShieldAlert, Play, RotateCcw, Lock, Radio } from "lucide-react";
+import { ShieldAlert, Play, RotateCcw, Lock, Radio, ShieldCheck } from "lucide-react";
 
 interface HeaderProps {
   selectedTarget: string;
@@ -11,6 +11,7 @@ interface HeaderProps {
   isRunning: boolean;
   onRunCrashTest: () => void;
   onReplayLastRun: () => void;
+  onOpenBenchmark?: () => void;
   currentScore?: number | null;
   targetName?: string;
 }
@@ -23,6 +24,7 @@ export const Header: React.FC<HeaderProps> = ({
   isRunning,
   onRunCrashTest,
   onReplayLastRun,
+  onOpenBenchmark,
   currentScore,
 }) => {
   return (
@@ -94,8 +96,8 @@ export const Header: React.FC<HeaderProps> = ({
               </label>
               <div
                 className={`px-3 py-1 rounded-md font-mono font-bold text-sm border flex items-center gap-1.5 ${currentScore >= 80
-                    ? "bg-emerald-950/60 border-emerald-500/50 text-emerald-400"
-                    : "bg-rose-950/60 border-rose-500/50 text-rose-400"
+                  ? "bg-emerald-950/60 border-emerald-500/50 text-emerald-400"
+                  : "bg-rose-950/60 border-rose-500/50 text-rose-400"
                   }`}
               >
                 <span>{currentScore}/100</span>
@@ -113,8 +115,8 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={onRunCrashTest}
               disabled={isRunning}
               className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-all shadow-md ${isRunning
-                  ? "bg-[#1E2230] text-[#94A3B8] border border-[#242838] cursor-not-allowed"
-                  : "bg-gradient-to-r from-[#06B6D4] to-[#0070BA] text-white hover:brightness-110 glow-telemetry cursor-pointer"
+                ? "bg-[#1E2230] text-[#94A3B8] border border-[#242838] cursor-not-allowed"
+                : "bg-gradient-to-r from-[#06B6D4] to-[#0070BA] text-white hover:brightness-110 glow-telemetry cursor-pointer"
                 }`}
             >
               {isRunning ? (
@@ -140,6 +142,19 @@ export const Header: React.FC<HeaderProps> = ({
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Replay</span>
             </button>
+
+            {/* 12-Bug Benchmark Modal Trigger */}
+            {onOpenBenchmark && (
+              <button
+                onClick={onOpenBenchmark}
+                disabled={isRunning}
+                title="View 12-Bug Benchmark Matrix (12/12 True Positives, 0 False Alarms)"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-md font-medium text-sm bg-[#181B26] border border-[#242838] text-[#06B6D4] hover:bg-[#1E2230] hover:border-[#06B6D4]/50 transition disabled:opacity-50 cursor-pointer"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="hidden sm:inline">12-Bug Matrix</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

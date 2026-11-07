@@ -140,6 +140,16 @@ class NaiveShop:
                     received_hash=cart.get("receipt_hash", ""),
                 )
 
+        # Stale cart session check (BUG_STALE_CART)
+        if not self.bugs.is_enabled(BugFlag.BUG_STALE_CART):
+            if cart.get("is_stale", False):
+                raise ProblemException(
+                    status=409,
+                    title="Cart session has expired or price has shifted",
+                    code="CART_EXPIRED_REAUTHORIZATION_REQUIRED",
+                    detail=f"Cart {cart_id} is stale and requires buyer reauthorization.",
+                )
+
         # Generate simulated or real PayPal transaction IDs
         paypal_order_id = mock_paypal_order_id or f"PP-ORD-{uuid.uuid4().hex[:12].upper()}"
         paypal_capture_id = f"PP-CAP-{uuid.uuid4().hex[:12].upper()}"
@@ -293,6 +303,24 @@ class NaiveShop:
                     order["status"] = "PAID"
 
         return {"status": "PROCESSED", "event_id": event_id}
+
+    def get_dispute_proof(self, order_id: str) -> Dict[str, Any]:
+        """Returns dispute proof readiness bundle for an order (Rule 6)."""
+        if self.bugs.is_enabled(BugFlag.BUG_MISSING_DISPUTE_PROOF):
+            return {
+                "order_id": order_id,
+                "proof_ready": False,
+                "reason": "Missing carrier tracking number and human-signed HMAC receipt.",
+                "carrier_tracking": None,
+                "signed_receipt": None,
+            }
+        order = self.orders.get(order_id)
+        return {
+            "order_id": order_id,
+            "proof_ready": True,
+            "carrier_tracking": order.get("tracking_number") if order else "1Z9999999999999999",
+            "signed_receipt": "hmac_sha256_verified",
+        }
 
     # -------------------------------------------------------------------------
     # 5. Dual-Ledger Internal Probe Snapshot
