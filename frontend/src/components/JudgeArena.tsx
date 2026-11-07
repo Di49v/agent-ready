@@ -506,8 +506,8 @@ export const JudgeArena: React.FC = () => {
             theme={darkGridTheme}
             rowData={events}
             columnDefs={colDefs}
+            defaultColDef={{ enableCellChangeFlash: true }}
             animateRows={true}
-            enableCellChangeFlash={true}
             rowHeight={40}
             headerHeight={36}
             overlayNoRowsTemplate="<div class='text-zinc-500 font-mono text-xs py-8'>Click 'Execute Mission' to stream live agent steps and PayPal Sandbox calls.</div>"

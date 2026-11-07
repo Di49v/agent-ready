@@ -274,3 +274,15 @@ class HardenedShop:
             "guard_protected": True,
         }
 
+
+_hardened_shop: Optional[HardenedShop] = None
+
+
+def get_hardened_shop() -> HardenedShop:
+    """Returns singleton instance of HardenedShop."""
+    global _hardened_shop
+    if _hardened_shop is None:
+        _hardened_shop = HardenedShop()
+    return _hardened_shop
+
+

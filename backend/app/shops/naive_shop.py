@@ -340,3 +340,15 @@ class NaiveShop:
             "total_payments": len(self.payments),
         }
 
+
+_naive_shop: Optional[NaiveShop] = None
+
+
+def get_naive_shop() -> NaiveShop:
+    """Returns singleton instance of NaiveShop."""
+    global _naive_shop
+    if _naive_shop is None:
+        _naive_shop = NaiveShop()
+    return _naive_shop
+
+

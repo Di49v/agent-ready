@@ -20,8 +20,6 @@ from app.schemas.contracts import FindingDetail, FindingSeverity
 from app.schemas.problem_details import ProblemException
 from app.services.cart_signer import get_cart_signer
 from app.services.channel3_service import get_channel3_service
-from app.shops.hardened_shop import get_hardened_shop
-from app.shops.naive_shop import get_naive_shop
 
 logger = logging.getLogger(__name__)
 
