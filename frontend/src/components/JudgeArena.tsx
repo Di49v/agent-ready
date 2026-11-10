@@ -7,22 +7,18 @@ import {
   ColDef,
   ModuleRegistry,
   themeQuartz,
-  colorSchemeDark,
   ValidationModule,
 } from "ag-grid-community";
 import {
   AlertCircle,
   AlertTriangle,
   Bot,
-  CheckCircle2,
   Cpu,
   Flame,
   Play,
-  RotateCcw,
   ShieldAlert,
   ShieldCheck,
   ShoppingBag,
-  Sparkles,
   Zap,
 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
@@ -30,12 +26,15 @@ import { API_BASE_URL } from "@/lib/api";
 // Register AG Grid Community modules
 ModuleRegistry.registerModules([AllCommunityModule, ValidationModule]);
 
-const darkGridTheme = themeQuartz.withPart(colorSchemeDark).withParams({
-  backgroundColor: "#0D0F14",
-  headerBackgroundColor: "#13161F",
-  borderColor: "rgba(255,255,255,0.07)",
-  foregroundColor: "#F1F5F9",
-  rowHoverColor: "#1A1D27",
+const gridTheme = themeQuartz.withParams({
+  backgroundColor: "var(--surface)",
+  headerBackgroundColor: "var(--surface-sunken)",
+  borderColor: "var(--border)",
+  foregroundColor: "var(--text)",
+  rowHoverColor: "var(--surface-hover)",
+  selectedRowBackgroundColor: "var(--surface-hover)",
+  accentColor: "var(--accent)",
+  fontFamily: "var(--font-body)",
 });
 
 interface ChaosToggles {
@@ -164,7 +163,7 @@ export const JudgeArena: React.FC = () => {
         field: "timestamp",
         headerName: "Time",
         width: 110,
-        cellClass: "font-mono text-[11px] text-zinc-400 tabular-nums",
+        cellClass: "font-mono text-[11px] text-[var(--text-muted)] tabular-nums",
       },
       {
         field: "actor",
@@ -172,12 +171,7 @@ export const JudgeArena: React.FC = () => {
         width: 140,
         cellRenderer: (params: any) => {
           const val = params.value || "";
-          let badgeStyle = "bg-zinc-800 text-zinc-300 border-zinc-700";
-          if (val === "AI Agent") badgeStyle = "bg-blue-500/10 text-blue-400 border-blue-500/20";
-          if (val === "Chaos Proxy") badgeStyle = "bg-amber-500/10 text-amber-300 border-amber-500/20";
-          if (val === "PayPal Sandbox") badgeStyle = "bg-cyan-500/10 text-cyan-300 border-cyan-500/20";
-          if (val === "Store Guard") badgeStyle = "bg-purple-500/10 text-purple-300 border-purple-500/20";
-          if (val === "Reconciler") badgeStyle = "bg-emerald-500/10 text-emerald-300 border-emerald-500/20";
+          const badgeStyle = "bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border)]";
 
           return (
             <span className={`px-2 py-0.5 text-[11px] font-mono rounded border ${badgeStyle}`}>
@@ -191,7 +185,7 @@ export const JudgeArena: React.FC = () => {
         headerName: "Action & Payload Trace",
         flex: 2,
         minWidth: 320,
-        cellClass: "text-zinc-200 text-[12px] font-sans truncate",
+        cellClass: "text-[var(--text)] text-[12px] font-sans truncate",
       },
       {
         field: "ref_id",
@@ -199,18 +193,18 @@ export const JudgeArena: React.FC = () => {
         width: 150,
         cellRenderer: (params: any) =>
           params.value ? (
-            <span className="font-mono text-[11px] text-cyan-400 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-800/40">
+            <span className="font-mono text-[11px] text-[var(--text-muted)] bg-[var(--surface-sunken)] px-1.5 py-0.5 rounded border border-[var(--border)]">
               {params.value}
             </span>
           ) : (
-            <span className="text-zinc-600 font-mono text-[11px]">—</span>
+            <span className="text-[var(--text-dim)] font-mono text-[11px]">—</span>
           ),
       },
       {
         field: "amount",
         headerName: "Amount",
         width: 100,
-        cellClass: "font-mono text-[11px] tabular-nums text-zinc-300",
+        cellClass: "font-mono text-[11px] tabular-nums text-[var(--text)]",
       },
       {
         field: "status",
@@ -218,21 +212,21 @@ export const JudgeArena: React.FC = () => {
         width: 130,
         cellRenderer: (params: any) => {
           const status = params.value || "INFO";
-          let badgeClass = "bg-zinc-800 text-zinc-400 border-zinc-700";
-          let dotClass = "bg-zinc-400";
+          let badgeClass = "bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border-strong)]";
+          let dotClass = "bg-[var(--surface)]";
 
           if (status === "GUARDED") {
-            badgeClass = "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
-            dotClass = "bg-emerald-400";
+            badgeClass = "bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border)]";
+            dotClass = "bg-[var(--pass)]";
           } else if (status === "VIOLATION") {
-            badgeClass = "bg-rose-500/10 text-rose-400 border-rose-500/20";
-            dotClass = "bg-rose-500 animate-pulse";
+            badgeClass = "bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border)]";
+            dotClass = "bg-[var(--fail)] animate-pulse";
           } else if (status === "MUTATION") {
-            badgeClass = "bg-amber-500/10 text-amber-300 border-amber-500/20";
-            dotClass = "bg-amber-400";
+            badgeClass = "bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border)]";
+            dotClass = "bg-[var(--warn)]";
           } else if (status === "CAPTURED") {
-            badgeClass = "bg-cyan-500/10 text-cyan-300 border-cyan-500/20";
-            dotClass = "bg-cyan-400";
+            badgeClass = "bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border)]";
+            dotClass = "bg-[var(--accent)]";
           }
 
           return (
@@ -247,7 +241,7 @@ export const JudgeArena: React.FC = () => {
         field: "rule_hit",
         headerName: "Invariant Rule",
         width: 170,
-        cellClass: "font-mono text-[11px] text-zinc-400",
+        cellClass: "font-mono text-[11px] text-[var(--text-muted)]",
       },
     ],
     []
@@ -256,32 +250,32 @@ export const JudgeArena: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Banner & Story Introduction */}
-      <div className="bg-[#0D0F14] border border-white/[0.07] rounded-lg p-5">
+      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-lg p-5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
-              <h2 className="text-lg font-medium text-white tracking-[-0.02em] flex items-center gap-2">
-                The Judge Arena <span className="text-zinc-500 font-mono text-xs uppercase px-2 py-0.5 rounded bg-white/5 border border-white/10">Section B11</span>
+              <span className="h-2 w-2 rounded-full bg-[var(--accent)] animate-pulse" />
+              <h2 className="text-lg font-medium text-[var(--accent)] tracking-[-0.02em] flex items-center gap-2">
+                The Judge Arena <span className="text-[var(--text-dim)] font-mono text-xs uppercase px-2 py-0.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)]">Section B11</span>
               </h2>
             </div>
-            <p className="text-zinc-400 text-sm max-w-2xl leading-relaxed">
+            <p className="text-[var(--text-muted)] text-sm max-w-2xl leading-relaxed">
               Test an autonomous AI shopper in real time against live PayPal Sandbox payments.
-              Type a shopping instruction, flip intentional chaos switches, and watch how <strong className="text-white">Naive Shop</strong> loses money while <strong className="text-emerald-400">Hardened Shop</strong> enforces self-healing guardrails.
+              Type a shopping instruction, flip intentional chaos switches, and watch how <strong className="text-[var(--text)]">Naive Shop</strong> loses money while <strong className="text-[var(--text)]">Hardened Shop</strong> enforces self-healing guardrails.
             </p>
           </div>
 
           {/* Call-Budget Meter */}
-          <div className="bg-[#13161F] border border-white/[0.07] rounded-lg p-3 min-w-[200px]">
+          <div className="bg-[var(--surface-sunken)] border border-[var(--border)] rounded-lg p-3 min-w-[200px]">
             <div className="flex items-center justify-between text-xs font-mono mb-1.5">
-              <span className="text-zinc-400 uppercase tracking-[0.08em] flex items-center gap-1">
-                <Cpu className="h-3.5 w-3.5 text-cyan-400" /> Call Budget
+              <span className="text-[var(--text-muted)] uppercase tracking-[0.08em] flex items-center gap-1">
+                <Cpu className="h-3.5 w-3.5 text-[var(--text-muted)]" /> Call Budget
               </span>
-              <span className="text-white tabular-nums">{budgetRemaining} / 10 remaining</span>
+              <span className="text-[var(--text)] tabular-nums">{budgetRemaining} / 10 remaining</span>
             </div>
-            <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+            <div className="w-full bg-[var(--surface-sunken)] h-1.5 rounded-full overflow-hidden">
               <div
-                className={`h-full transition-all duration-300 ${budgetRemaining > 4 ? "bg-emerald-400" : budgetRemaining > 1 ? "bg-amber-400" : "bg-rose-500"
+                className={`h-full transition-all duration-300 ${budgetRemaining > 4 ? "bg-[var(--pass)]" : budgetRemaining > 1 ? "bg-[var(--warn)]" : "bg-[var(--fail)]"
                   }`}
                 style={{ width: `${(budgetRemaining / 10) * 100}%` }}
               />
@@ -290,15 +284,15 @@ export const JudgeArena: React.FC = () => {
         </div>
 
         {/* Quick Scenario Preset Pills */}
-        <div className="mt-4 pt-4 border-t border-white/[0.07] flex flex-wrap items-center gap-2">
-          <span className="text-zinc-500 font-mono text-[11px] uppercase tracking-[0.08em] mr-1">
+        <div className="mt-4 pt-4 border-t border-[var(--border)] flex flex-wrap items-center gap-2">
+          <span className="text-[var(--text-dim)] font-mono text-[11px] uppercase tracking-[0.08em] mr-1">
             Judge Presets:
           </span>
           {PRESETS.map((preset) => (
             <button
               key={preset.id}
               onClick={() => selectPreset(preset)}
-              className="px-2.5 py-1 text-xs font-mono rounded bg-[#13161F] text-zinc-300 hover:text-white border border-white/[0.08] hover:border-cyan-400/50 transition-all cursor-pointer"
+              className="px-2.5 py-1 text-xs font-mono rounded bg-[var(--surface-sunken)] text-[var(--text)] hover:text-[var(--text)] border border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-hover)] transition-all cursor-pointer"
             >
               {preset.title}
             </button>
@@ -307,11 +301,11 @@ export const JudgeArena: React.FC = () => {
       </div>
 
       {/* Control Panel: Prompt, Target & Chaos Switches */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-white/[0.07] border border-white/[0.07] rounded-lg overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-[var(--surface-sunken)] border border-[var(--border)] rounded-lg overflow-hidden">
         {/* Left: Natural Language Input & Target Selector */}
-        <div className="lg:col-span-7 bg-[#0D0F14] p-5 space-y-4">
+        <div className="lg:col-span-7 bg-[var(--surface)] p-5 space-y-4">
           <div>
-            <label className="block text-zinc-400 font-mono text-[11px] uppercase tracking-[0.08em] mb-2">
+            <label className="block text-[var(--text-muted)] font-mono text-[11px] uppercase tracking-[0.08em] mb-2">
               Natural Language Shopping Instruction
             </label>
             <div className="relative">
@@ -320,15 +314,15 @@ export const JudgeArena: React.FC = () => {
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="e.g. Buy running shoes size 8 under $150 with standard shipping"
-                className="w-full bg-[#13161F] border border-white/[0.1] rounded-lg px-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-400 transition-colors font-sans"
+                className="w-full bg-[var(--surface-sunken)] border border-[var(--border)] rounded-lg px-4 py-2.5 text-sm text-[var(--text)] placeholder-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors font-sans"
               />
-              <ShoppingBag className="absolute right-3.5 top-3 h-4 w-4 text-zinc-500" />
+              <ShoppingBag className="absolute right-3.5 top-3 h-4 w-4 text-[var(--text-dim)]" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-zinc-400 font-mono text-[11px] uppercase tracking-[0.08em] mb-2">
+              <label className="block text-[var(--text-muted)] font-mono text-[11px] uppercase tracking-[0.08em] mb-2">
                 Target Store Implementation
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -336,43 +330,43 @@ export const JudgeArena: React.FC = () => {
                   type="button"
                   onClick={() => setTarget("naive-shop")}
                   className={`px-3 py-2 text-xs font-mono rounded border text-left transition-all cursor-pointer ${target === "naive-shop"
-                      ? "bg-rose-500/10 text-rose-300 border-rose-500/30"
-                      : "bg-[#13161F] text-zinc-400 border-white/[0.06] hover:text-white"
+                      ? "bg-[var(--surface-sunken)] text-[var(--text)] border-[var(--accent)]"
+                      : "bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border)] hover:text-[var(--text)]"
                     }`}
                 >
                   <div className="font-semibold">Naive Shop</div>
-                  <div className="text-[10px] text-zinc-500">Vulnerable Baseline</div>
+                  <div className="text-[10px] text-[var(--text-dim)]">Vulnerable Baseline</div>
                 </button>
                 <button
                   type="button"
                   onClick={() => setTarget("hardened-shop")}
                   className={`px-3 py-2 text-xs font-mono rounded border text-left transition-all cursor-pointer ${target === "hardened-shop"
-                      ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30"
-                      : "bg-[#13161F] text-zinc-400 border-white/[0.06] hover:text-white"
+                      ? "bg-[var(--surface-sunken)] text-[var(--text)] border-[var(--accent)]"
+                      : "bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border)] hover:text-[var(--text)]"
                     }`}
                 >
                   <div className="font-semibold">Hardened Shop</div>
-                  <div className="text-[10px] text-zinc-500">AgentReady Guard</div>
+                  <div className="text-[10px] text-[var(--text-dim)]">AgentReady Guard</div>
                 </button>
               </div>
             </div>
 
             <div>
-              <label className="block text-zinc-400 font-mono text-[11px] uppercase tracking-[0.08em] mb-2">
+              <label className="block text-[var(--text-muted)] font-mono text-[11px] uppercase tracking-[0.08em] mb-2">
                 Execution Action
               </label>
               <button
                 type="button"
                 onClick={handleRun}
                 disabled={isRunning || !prompt.trim()}
-                className={`w-full py-2.5 px-4 rounded font-mono text-xs uppercase tracking-[0.08em] flex items-center justify-center gap-2 transition-all cursor-pointer ${isRunning
-                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 cursor-wait"
-                    : "bg-cyan-500 hover:bg-cyan-400 text-black font-semibold shadow-lg shadow-cyan-500/20"
+                className={`w-full py-2.5 px-4 rounded font-mono text-xs uppercase tracking-[0.08em] flex items-center justify-center gap-2 transition-all cursor-pointer border border-[var(--border-strong)] ${isRunning
+                    ? "bg-[var(--surface-sunken)] text-[var(--text-muted)] cursor-wait"
+                    : "bg-[var(--surface)] hover:bg-[var(--surface-hover)] text-[var(--text)] font-semibold shadow-none "
                   }`}
               >
                 {isRunning ? (
                   <>
-                    <span className="h-3.5 w-3.5 rounded-full border-2 border-cyan-300 border-t-transparent animate-spin" />
+                    <span className="h-3.5 w-3.5 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin" />
                     Shopper in Sandbox...
                   </>
                 ) : (
@@ -386,7 +380,7 @@ export const JudgeArena: React.FC = () => {
           </div>
 
           {errorMsg && (
-            <div className="p-3 rounded bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs flex items-center gap-2 font-mono">
+            <div className="p-3 rounded bg-[var(--surface-sunken)] border border-[var(--border)] text-[var(--fail)] text-xs flex items-center gap-2 font-mono">
               <AlertCircle className="h-4 w-4 shrink-0" />
               <span>{errorMsg}</span>
             </div>
@@ -394,8 +388,8 @@ export const JudgeArena: React.FC = () => {
         </div>
 
         {/* Right: Chaos Fault Switches */}
-        <div className="lg:col-span-5 bg-[#0D0F14] p-5 space-y-3">
-          <label className="block text-zinc-400 font-mono text-[11px] uppercase tracking-[0.08em] mb-1">
+        <div className="lg:col-span-5 bg-[var(--surface)] p-5 space-y-3">
+          <label className="block text-[var(--text-muted)] font-mono text-[11px] uppercase tracking-[0.08em] mb-1">
             Chaos Fault Switches (Protocol Injections)
           </label>
 
@@ -414,21 +408,22 @@ export const JudgeArena: React.FC = () => {
                   type="button"
                   onClick={() => toggleSwitch(key as keyof ChaosToggles)}
                   className={`w-full p-2.5 rounded border text-left flex items-center justify-between transition-all cursor-pointer ${active
-                      ? "bg-amber-500/10 border-amber-500/30 text-amber-300"
-                      : "bg-[#13161F] border-white/[0.06] text-zinc-400 hover:text-zinc-300"
+                      ? "bg-[var(--surface-sunken)] border-[var(--accent)] text-[var(--text)]"
+                      : "bg-[var(--surface-sunken)] border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
                     }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <Icon className={`h-4 w-4 ${active ? "text-amber-400" : "text-zinc-500"}`} />
+                    <Icon className="h-4 w-4 text-[var(--text-muted)]" />
                     <div>
                       <div className="text-xs font-sans font-medium">{label}</div>
-                      <div className="text-[10px] font-mono text-zinc-500">{rule}</div>
+                      <div className="text-[10px] font-mono text-[var(--text-dim)]">{rule}</div>
                     </div>
                   </div>
                   <span
-                    className={`px-2 py-0.5 text-[10px] font-mono rounded uppercase tracking-wider ${active ? "bg-amber-400 text-black font-semibold" : "bg-zinc-800 text-zinc-500"
+                    className={`px-2 py-0.5 text-[10px] font-mono rounded uppercase tracking-wider ${active ? "bg-[var(--surface-sunken)] text-[var(--text-muted)] font-semibold" : "bg-[var(--surface-sunken)] text-[var(--text-dim)]"
                       }`}
                   >
+                    {active && <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-[var(--warn)]" />}
                     {active ? "ON" : "OFF"}
                   </span>
                 </button>
@@ -440,45 +435,45 @@ export const JudgeArena: React.FC = () => {
 
       {/* Live Results & Outcomes Panel (if summary present) */}
       {summary && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.07] border border-white/[0.07] rounded-lg overflow-hidden">
-          <div className="bg-[#0D0F14] p-4">
-            <span className="text-zinc-500 font-mono text-[11px] uppercase tracking-[0.08em] block mb-1">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[var(--surface-sunken)] border border-[var(--border)] rounded-lg overflow-hidden">
+          <div className="bg-[var(--surface)] p-4">
+            <span className="text-[var(--text-dim)] font-mono text-[11px] uppercase tracking-[0.08em] block mb-1">
               Safety Score
             </span>
             <div className="flex items-baseline gap-2">
-              <span className={`text-2xl font-mono font-semibold tabular-nums ${summary.score >= 80 ? "text-emerald-400" : "text-rose-500"}`}>
+              <span className={`text-2xl font-mono font-semibold tabular-nums ${summary.score >= 80 ? "text-[var(--pass)]" : "text-[var(--fail)]"}`}>
                 {summary.score} / 100
               </span>
-              <span className={`px-2 py-0.5 text-[11px] font-mono rounded border ${summary.score >= 80 ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "bg-rose-500/10 text-rose-400 border-rose-500/20"
-                }`}>
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-mono rounded border bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border)]">
+                <span className={`h-1.5 w-1.5 rounded-full ${summary.score >= 80 ? "bg-[var(--pass)]" : "bg-[var(--fail)]"}`} />
                 {summary.score >= 80 ? "PASSED · GUARDED" : "FAILED · VULNERABLE"}
               </span>
             </div>
           </div>
 
-          <div className="bg-[#0D0F14] p-4">
-            <span className="text-zinc-500 font-mono text-[11px] uppercase tracking-[0.08em] block mb-1">
+          <div className="bg-[var(--surface)] p-4">
+            <span className="text-[var(--text-dim)] font-mono text-[11px] uppercase tracking-[0.08em] block mb-1">
               Target Evaluated
             </span>
-            <div className="text-sm font-sans font-medium text-white">
+            <div className="text-sm font-sans font-medium text-[var(--text)]">
               {summary.target_name}
             </div>
-            <div className="text-xs text-zinc-400 font-mono">
+            <div className="text-xs text-[var(--text-muted)] font-mono">
               Findings: {summary.total_findings} violation{summary.total_findings === 1 ? "" : "s"}
             </div>
           </div>
 
-          <div className="bg-[#0D0F14] p-4">
-            <span className="text-zinc-500 font-mono text-[11px] uppercase tracking-[0.08em] block mb-1">
+          <div className="bg-[var(--surface)] p-4">
+            <span className="text-[var(--text-dim)] font-mono text-[11px] uppercase tracking-[0.08em] block mb-1">
               Financial Outcome
             </span>
-            <div className="text-xs font-sans text-zinc-300">
+            <div className="text-xs font-sans text-[var(--text)]">
               {summary.target === "naive-shop" ? (
-                <span className="text-rose-400 flex items-center gap-1.5">
+                <span className="text-[var(--fail)] flex items-center gap-1.5">
                   <ShieldAlert className="h-4 w-4" /> Money Lost: Unchecked captures or client-tampered prices accepted.
                 </span>
               ) : (
-                <span className="text-emerald-400 flex items-center gap-1.5">
+                <span className="text-[var(--pass)] flex items-center gap-1.5">
                   <ShieldCheck className="h-4 w-4" /> Capital Protected: Guard blocked tampering with RFC 9457 errors.
                 </span>
               )}
@@ -488,29 +483,29 @@ export const JudgeArena: React.FC = () => {
       )}
 
       {/* Live AG Grid Telemetry Table */}
-      <div className="bg-[#0D0F14] border border-white/[0.07] rounded-lg overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.07] flex items-center justify-between">
+      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-lg overflow-hidden">
+        <div className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-cyan-400" />
-            <span className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-300">
+            <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+            <span className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--text)]">
               Live Wire Telemetry Stream (AG Grid)
             </span>
           </div>
-          <span className="font-mono text-[11px] text-zinc-500">
+          <span className="font-mono text-[11px] text-[var(--text-dim)]">
             {events.length} frame{events.length === 1 ? "" : "s"} captured
           </span>
         </div>
 
         <div className="ag-theme-quartz-dark" style={{ height: "380px", width: "100%" }}>
           <AgGridReact
-            theme={darkGridTheme}
+            theme={gridTheme}
             rowData={events}
             columnDefs={colDefs}
             defaultColDef={{ enableCellChangeFlash: true }}
             animateRows={true}
             rowHeight={40}
             headerHeight={36}
-            overlayNoRowsTemplate="<div class='text-zinc-500 font-mono text-xs py-8'>Click 'Execute Mission' to stream live agent steps and PayPal Sandbox calls.</div>"
+            overlayNoRowsTemplate="<div class='text-[var(--text-dim)] font-mono text-xs py-8'>Click 'Execute Mission' to stream live agent steps and PayPal Sandbox calls.</div>"
           />
         </div>
       </div>

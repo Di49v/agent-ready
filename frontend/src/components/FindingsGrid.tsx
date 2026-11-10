@@ -7,28 +7,27 @@ import {
   ColDef,
   ModuleRegistry,
   themeQuartz,
-  colorSchemeDark,
   ValidationModule,
 } from "ag-grid-community";
 import {
   AlertTriangle,
   Database,
   ExternalLink,
-  Layers,
-  Sparkles,
 } from "lucide-react";
 import { FindingDetail, DualLedgerRow } from "@/lib/api";
 
 // Register AG Grid Community modules
 ModuleRegistry.registerModules([AllCommunityModule, ValidationModule]);
 
-// AG Grid v36 Dark Quartz Theme
-const darkGridTheme = themeQuartz.withPart(colorSchemeDark).withParams({
-  backgroundColor: "#11131A",
-  headerBackgroundColor: "#181B26",
-  borderColor: "#242838",
-  foregroundColor: "#F1F5F9",
-  rowHoverColor: "#1E2230",
+const gridTheme = themeQuartz.withParams({
+  backgroundColor: "var(--surface)",
+  headerBackgroundColor: "var(--surface-sunken)",
+  borderColor: "var(--border)",
+  foregroundColor: "var(--text)",
+  rowHoverColor: "var(--surface-hover)",
+  selectedRowBackgroundColor: "var(--surface-hover)",
+  accentColor: "var(--accent)",
+  fontFamily: "var(--font-body)",
 });
 
 interface FindingsGridProps {
@@ -67,16 +66,15 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         },
         cellRenderer: (params: any) => {
           const sev = params.value;
-          let badgeColor = "bg-rose-950/80 border-rose-700/80 text-rose-300";
+          let badgeColor = "bg-[var(--surface-sunken)] border-[var(--border)] text-[var(--text-muted)]";
           if (sev === "HIGH")
-            badgeColor = "bg-amber-950/80 border-amber-700/80 text-amber-300";
+            badgeColor = "bg-[var(--surface-sunken)] border-[var(--border)] text-[var(--text-muted)]";
           else if (sev === "LOW")
-            badgeColor = "bg-slate-900 border-slate-700 text-slate-300";
+            badgeColor = "bg-[var(--surface-sunken)] border-[var(--border-strong)] text-[var(--text)]";
 
           return (
-            <span
-              className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider uppercase border ${badgeColor}`}
-            >
+            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider uppercase border ${badgeColor}`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${sev === "LOW" ? "bg-[var(--text-dim)]" : sev === "HIGH" ? "bg-[var(--warn)]" : "bg-[var(--fail)]"}`} />
               {sev}
             </span>
           );
@@ -88,7 +86,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         width: 170,
         cellRenderer: (params: any) => {
           return (
-            <span className="font-mono text-xs text-[#06B6D4]">
+            <span className="font-mono text-xs text-[var(--text-muted)]">
               Rule {params.value}: {params.data?.rule_name}
             </span>
           );
@@ -100,7 +98,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         flex: 1,
         minWidth: 260,
         cellRenderer: (params: any) => (
-          <span className="font-medium text-white">{params.value}</span>
+          <span className="font-medium text-[var(--text)]">{params.value}</span>
         ),
       },
       {
@@ -119,13 +117,13 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
               {ids.slice(0, 2).map((id, i) => (
                 <span
                   key={i}
-                  className="px-1.5 py-0.5 rounded bg-[#181B26] border border-[#242838] font-mono text-[10px] text-[#06B6D4] truncate"
+                  className="px-1.5 py-0.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] font-mono text-[10px] text-[var(--text-muted)] truncate"
                 >
                   {id}
                 </span>
               ))}
               {ids.length > 2 && (
-                <span className="text-[10px] text-[#64748B]">
+                <span className="text-[10px] text-[var(--text-dim)]">
                   +{ids.length - 2}
                 </span>
               )}
@@ -139,7 +137,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         cellRenderer: (params: any) => (
           <button
             onClick={() => onSelectFinding(params.data)}
-            className="flex items-center gap-1 px-2.5 py-1 rounded bg-[#181B26] hover:bg-[#242838] border border-[#33394D] text-[11px] font-medium text-[#06B6D4] hover:text-white transition cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1 rounded bg-[var(--surface-sunken)] hover:bg-[var(--surface-hover)] border border-[var(--border-strong)] text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition cursor-pointer"
           >
             <span>Inspect</span>
             <ExternalLink className="w-3 h-3" />
@@ -158,7 +156,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         headerName: "Cart Join Key",
         width: 170,
         cellRenderer: (p: any) => (
-          <span className="font-mono text-xs text-[#94A3B8]">{p.value}</span>
+          <span className="font-mono text-xs text-[var(--text-muted)]">{p.value}</span>
         ),
       },
       {
@@ -166,7 +164,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         headerName: "Persona",
         width: 150,
         cellRenderer: (p: any) => (
-          <span className="font-medium text-xs text-white capitalize">
+          <span className="font-medium text-xs text-[var(--text)] capitalize">
             {p.value?.replace(/_/g, " ")}
           </span>
         ),
@@ -176,7 +174,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         headerName: "PayPal Capture",
         width: 140,
         cellRenderer: (p: any) => (
-          <span className="font-mono font-bold text-xs text-emerald-400 tabular-nums">
+          <span className="font-mono font-bold text-xs text-[var(--ledger-paypal)] tabular-nums">
             {p.value || "—"}
           </span>
         ),
@@ -186,7 +184,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         headerName: "Store Ledger",
         width: 140,
         cellRenderer: (p: any) => (
-          <span className="font-mono font-bold text-xs text-[#F1F5F9] tabular-nums">
+          <span className="font-mono font-bold text-xs text-[var(--ledger-store)] tabular-nums">
             {p.value || "—"}
           </span>
         ),
@@ -203,11 +201,12 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
             status?.includes("CRASH");
           return (
             <span
-              className={`px-2 py-0.5 rounded text-[10px] font-mono border ${isError
-                ? "bg-rose-950/60 border-rose-800/60 text-rose-300"
-                : "bg-slate-900 border-slate-700 text-slate-300"
+              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono border ${isError
+                ? "bg-[var(--surface-sunken)] border-[var(--border)] text-[var(--text-muted)]"
+                : "bg-[var(--surface-sunken)] border-[var(--border-strong)] text-[var(--text)]"
                 }`}
             >
+              {status && <span className={`h-1.5 w-1.5 rounded-full ${isError ? "bg-[var(--fail)]" : "bg-[var(--pass)]"}`} />}
               {status || "UNKNOWN"}
             </span>
           );
@@ -227,13 +226,13 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
           const list: string[] = p.value || [];
           if (list.length === 0) {
             return (
-              <span className="text-emerald-400 text-xs font-mono">
+              <span className="text-[var(--pass)] text-xs font-mono">
                 ✓ Records In Agreement
               </span>
             );
           }
           return (
-            <span className="text-rose-400 text-xs font-medium truncate">
+            <span className="text-[var(--fail)] text-xs font-medium truncate">
               {list[0]}
             </span>
           );
@@ -245,7 +244,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
         cellRenderer: (p: any) => (
           <button
             onClick={() => onSelectDualRow(p.data)}
-            className="flex items-center gap-1 px-2.5 py-1 rounded bg-[#181B26] hover:bg-[#242838] border border-[#33394D] text-[11px] font-medium text-[#06B6D4] hover:text-white transition cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1 rounded bg-[var(--surface-sunken)] hover:bg-[var(--surface-hover)] border border-[var(--border-strong)] text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition cursor-pointer"
           >
             <span>Diff</span>
             <ExternalLink className="w-3 h-3" />
@@ -257,21 +256,21 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
   );
 
   return (
-    <section className="w-full bg-[#11131A] border border-[#242838] rounded-xl p-5 shadow-xl flex flex-col gap-4">
+    <section className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-md p-5 shadow-none flex flex-col gap-4">
       {/* Table Navigation Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-[#242838]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-[var(--border)]">
         <div className="flex items-center gap-2">
           {/* Findings Tab */}
           <button
             onClick={() => setActiveTab("findings")}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition font-mono cursor-pointer ${activeTab === "findings"
-              ? "bg-[#181B26] text-[#06B6D4] border border-[#06B6D4]/50 shadow-md"
-              : "text-[#94A3B8] hover:text-white hover:bg-[#181B26]/50"
+              ? "bg-[var(--surface-sunken)] text-[var(--accent)] border border-[var(--accent)]/50 shadow-none"
+              : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)]"
               }`}
           >
-            <AlertTriangle className="w-4 h-4 text-rose-400" />
+            <AlertTriangle className="w-4 h-4 text-[var(--fail)]" />
             <span>Invariant Violations</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-rose-950/80 text-rose-300 border border-rose-800/80">
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-[var(--surface-sunken)] text-[var(--text-muted)] border border-[var(--border)]">
               {findings.length}
             </span>
           </button>
@@ -280,31 +279,31 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
           <button
             onClick={() => setActiveTab("dual_ledger")}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition font-mono cursor-pointer ${activeTab === "dual_ledger"
-              ? "bg-[#181B26] text-[#06B6D4] border border-[#06B6D4]/50 shadow-md"
-              : "text-[#94A3B8] hover:text-white hover:bg-[#181B26]/50"
+              ? "bg-[var(--surface-sunken)] text-[var(--accent)] border border-[var(--accent)]/50 shadow-none"
+              : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)]"
               }`}
           >
-            <Database className="w-4 h-4 text-[#06B6D4]" />
+            <Database className="w-4 h-4 text-[var(--accent)]" />
             <span>Dual-Ledger Matrix (9 Carts)</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-900 text-slate-300 border border-slate-700">
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-[var(--surface-sunken)] text-[var(--text-muted)] border border-[var(--border)]">
               {dualRows.length || 9}
             </span>
           </button>
         </div>
 
-        <div className="text-xs font-mono text-[#64748B]">
+        <div className="text-xs font-mono text-[var(--text-dim)]">
           Powered by AG Grid Community • Quartz Dark
         </div>
       </div>
 
       {/* Grid Container */}
       <div
-        className="w-full h-[360px] rounded-lg overflow-hidden border border-[#242838]"
+        className="w-full h-[360px] rounded-lg overflow-hidden border border-[var(--border)]"
         style={{ width: "100%", height: "360px" }}
       >
         {activeTab === "findings" ? (
           <AgGridReact<FindingDetail>
-            theme={darkGridTheme}
+            theme={gridTheme}
             rowData={findings}
             columnDefs={findingColDefs}
             onRowClicked={(e) => e.data && onSelectFinding(e.data)}
@@ -316,7 +315,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
           />
         ) : (
           <AgGridReact<DualLedgerRow>
-            theme={darkGridTheme}
+            theme={gridTheme}
             rowData={dualRows}
             columnDefs={dualLedgerColDefs}
             onRowClicked={(e) => e.data && onSelectDualRow(e.data)}
@@ -331,4 +330,3 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
     </section>
   );
 };
-

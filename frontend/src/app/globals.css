@@ -1,108 +1,339 @@
 @import "tailwindcss";
 
-:root {
-  --bg-canvas: #08090C;
-  --bg-panel: #0D0F14;
-  --bg-card: #13161F;
-  --bg-card-hover: #1A1F2C;
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-strong: rgba(255, 255, 255, 0.14);
-  --text-main: #F3F4F6;
-  --text-muted: #9CA3AF;
-  --text-dim: #6B7280;
+@theme {
+  --color-background: var(--bg);
+  --color-card: var(--surface);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-heading: var(--text-heading);
+  --color-text-muted: var(--text-muted);
+  --color-text-dim: var(--text-dim);
 
-  --signal-pass: #34D399;
-  --signal-fail: #F43F5E;
-  --signal-chaos: #FBBF24;
-  --accent-telemetry: #22D3EE;
-  --accent-paypal: #0070BA;
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-highlight: var(--highlight);
+  --color-highlight-soft: var(--highlight-soft);
 
-  --background: var(--bg-canvas);
-  --foreground: var(--text-main);
+  --color-pass: var(--pass);
+  --color-pass-soft: var(--pass-soft);
+  --color-pass-border: var(--pass-border);
+  --color-fail: var(--fail);
+  --color-fail-soft: var(--fail-soft);
+  --color-fail-border: var(--fail-border);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-border: var(--warn-border);
+  --color-ledger-paypal: var(--ledger-paypal);
+  --color-ledger-store: var(--ledger-store);
+
+  --font-heading: var(--font-fraunces), Georgia, serif;
+  --font-body: var(--font-instrument-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+:root,
+[data-theme="light"] {
+  --bg: #F4F3EE;
+  --surface-sunken: #ECEAE3;
+  --surface: #FBFAF6;
+  --surface-hover: #E6E4DC;
+  --border: #DAD7CC;
+  --border-strong: #BDB9AB;
+  --text: #14151A;
+  --text-heading: #14151A;
+  --text-muted: #545865;
+  --text-dim: #5F6370;
+
+  --accent: #14724B;
+  --accent-hover: #0F5C3C;
+  --accent-soft: rgba(20, 114, 75, 0.08);
+  --accent-foreground: #F4FBF7;
+  --highlight: #14151A;
+  --highlight-soft: rgba(20, 21, 26, 0.05);
+
+  --pass: #14724B;
+  --pass-soft: rgba(20, 114, 75, 0.08);
+  --pass-border: rgba(20, 114, 75, 0.28);
+  --fail: #B83232;
+  --fail-soft: rgba(184, 50, 50, 0.07);
+  --fail-border: rgba(184, 50, 50, 0.28);
+  --warn: #865C0B;
+  --warn-soft: rgba(134, 92, 11, 0.08);
+  --warn-border: rgba(134, 92, 11, 0.28);
+
+  --code-bg: #EFEDE6;
+  --code-border: #DAD7CC;
+  --code-text: #2A2C34;
+  --ledger-paypal: #2F5F9E;
+  --ledger-store: #6B614A;
+}
+
+[data-theme="dark"] {
+  --bg: #08090C;
+  --surface-sunken: #0B0D11;
+  --surface: #0F1217;
+  --surface-hover: #151921;
+  --border: #1C2028;
+  --border-strong: #2B303B;
+  --text: #E9EAEE;
+  --text-heading: #E9EAEE;
+  --text-muted: #A0A5B1;
+  --text-dim: #7B8190;
+
+  --accent: #56C98A;
+  --accent-hover: #6FD89C;
+  --accent-soft: rgba(86, 201, 138, 0.10);
+  --accent-foreground: #06130C;
+  --highlight: #E9EAEE;
+  --highlight-soft: rgba(233, 234, 238, 0.06);
+
+  --pass: #56C98A;
+  --pass-soft: rgba(86, 201, 138, 0.10);
+  --pass-border: rgba(86, 201, 138, 0.28);
+  --fail: #F2675F;
+  --fail-soft: rgba(242, 103, 95, 0.10);
+  --fail-border: rgba(242, 103, 95, 0.30);
+  --warn: #E0A93B;
+  --warn-soft: rgba(224, 169, 59, 0.10);
+  --warn-border: rgba(224, 169, 59, 0.28);
+
+  --code-bg: #0A0C10;
+  --code-border: #1C2028;
+  --code-text: #C9CCD6;
+  --ledger-paypal: #8FB0DA;
+  --ledger-store: #D9D3C3;
+}
+
+[data-theme="dark"] .landing-dark-spacing > section {
+  padding-block: 5rem;
+}
+
+[data-theme="dark"] .landing-dark-spacing #features .hairline-grid {
+  gap: 0.75rem;
+  overflow: visible;
+  border: 0;
+  background-color: transparent;
+}
+
+[data-theme="dark"] .landing-dark-spacing #features .hairline-grid > div {
+  padding: clamp(1.75rem, 3vw, 2.25rem);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+}
+
+[data-theme="dark"] .workbench-dark-spacing {
+  gap: 1.75rem;
+  padding: 2rem clamp(1.5rem, 3vw, 2.5rem);
+}
+
+[data-theme="dark"] .workbench-dark-spacing > .space-y-6 > * + * {
+  margin-block-start: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  [data-theme="dark"] .landing-dark-spacing > section {
+    padding-block: 6.5rem;
+  }
 }
 
 body {
-  background-color: var(--bg-canvas);
-  color: var(--text-main);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
   overflow-x: hidden;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 16px 16px;
+  transition: background-color 150ms ease-out, color 150ms ease-out;
 }
 
-/* Swiss Precision Hairline Grid Container */
+/* Headings use Fraunces serif */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  color: var(--text-heading);
+}
+
+h2 {
+  color: var(--accent);
+}
+
+/* Hairline Grid & Surfaces */
 .hairline-grid {
   display: grid;
   gap: 1px;
-  background-color: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 0.5rem;
+  background-color: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 6px;
   overflow: hidden;
 }
 
-/* 1px Specular Top-Edge Highlight for Elevated Surfaces */
-.specular-highlight {
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+/* Monospace & Tabular Numerals */
+.font-mono,
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
 }
 
-/* Micro-Motion Physical Easing */
-.swiss-motion {
-  transition: all 150ms cubic-bezier(0.22, 1, 0.36, 1);
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
-/* Custom Telemetry Scrollbars */
+/* Subtle flat border surface */
+.surface-flat {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.surface-flat:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+
+/* Focus ring accessibility in accent */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090A0F;
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #242838;
+  background: var(--border-strong);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #33394D;
+  background: var(--text-dim);
 }
 
-/* Tabular Numerals for Finance & Telemetry */
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
+/* AG Grid Dark & Light Theme Token Bindings */
+.ag-theme-quartz,
+.ag-theme-quartz-dark {
+  --ag-background-color: var(--surface) !important;
+  --ag-header-background-color: var(--surface-sunken) !important;
+  --ag-border-color: var(--border) !important;
+  --ag-row-border-color: var(--border) !important;
+  --ag-foreground-color: var(--text) !important;
+  --ag-secondary-foreground-color: var(--text-muted) !important;
+  --ag-data-color: var(--text) !important;
+  --ag-header-foreground-color: var(--text-muted) !important;
+  --ag-odd-row-background-color: var(--surface) !important;
+  --ag-row-hover-color: var(--surface-hover) !important;
+  --ag-selected-row-background-color: var(--surface-hover) !important;
+  --ag-font-family: var(--font-body) !important;
+  --ag-font-size: 13px !important;
+  --ag-cell-horizontal-border: solid var(--border) !important;
 }
 
-/* Pulse signal glow effects */
-@keyframes signal-glow {
+/* Unified Diff Line Styling */
+.diff-line-add {
+  background-color: var(--pass-soft);
+  color: var(--pass);
+  border-left: 3px solid var(--pass);
+}
 
-  0%,
-  100% {
-    box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
+.diff-line-del {
+  background-color: var(--fail-soft);
+  color: var(--fail);
+  border-left: 3px solid var(--fail);
+}
+
+@keyframes audit-drawer-enter {
+  from {
+    opacity: 0.9;
+    transform: translateX(16px);
   }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
+@keyframes audit-log-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes audit-progress-draw {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes audit-led-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
   50% {
-    box-shadow: 0 0 20px rgba(6, 182, 212, 0.55);
+    opacity: 0.55;
   }
 }
 
-.glow-telemetry {
-  animation: signal-glow 2.5s infinite ease-in-out;
-}
-
-@keyframes fail-pulse {
-
-  0%,
-  100% {
-    box-shadow: 0 0 8px rgba(244, 63, 94, 0.2);
+@keyframes audit-fade-in {
+  from {
+    opacity: 0;
   }
-
-  50% {
-    box-shadow: 0 0 16px rgba(244, 63, 94, 0.6);
+  to {
+    opacity: 1;
   }
 }
 
-.glow-fail {
-  animation: fail-pulse 2s infinite ease-in-out;
+.audit-drawer-enter {
+  animation: audit-drawer-enter 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.audit-log-enter {
+  animation: audit-log-enter 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.audit-progress-draw {
+  animation: audit-progress-draw 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.audit-status-led {
+  animation: audit-led-pulse 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audit-drawer-enter,
+  .audit-log-enter,
+  .audit-progress-draw {
+    animation: audit-fade-in 120ms ease-out both;
+  }
+
+  .audit-status-led {
+    animation: none;
+  }
 }
