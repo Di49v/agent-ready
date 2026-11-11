@@ -48,7 +48,7 @@ export const DocumentationHub: React.FC = () => {
         {/* Tabbed Documentation Reader */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 rounded border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8">
           {/* Left: Tab Sidebar (Cols 3) */}
-          <div className="lg:col-span-3 lg:sticky lg:top-20 flex flex-col gap-1.5 border-b lg:border-b-0 lg:border-r border-[var(--border)] pb-6 lg:pb-0 lg:pr-6">
+          <div className="lg:col-span-3 lg:sticky lg:top-24 self-start flex flex-col gap-1.5 border-b lg:border-b-0 lg:border-r border-[var(--border)] pb-6 lg:pb-0 lg:pr-6 transition-all duration-300">
             <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--text-dim)] px-2 mb-2">
               Documentation Index
             </span>
