@@ -36,6 +36,15 @@ export const InteractiveDemoPreview: React.FC = () => {
     setIsSimulating(false);
   };
 
+  // Determine chart values
+  const scoreValue = !hasCompleted && !isSimulating ? 0 : (selectedShop === "naive" ? 18 : 95);
+  const displayScore = !hasCompleted && !isSimulating ? "--" : scoreValue.toString();
+  const themeColor = !hasCompleted && !isSimulating
+    ? "text-[var(--border-strong)]"
+    : selectedShop === "naive"
+    ? "text-[var(--fail)]"
+    : "text-[var(--pass)]";
+
   return (
     <section id="preview" className="py-16 md:py-24 border-b border-[var(--border)] bg-[var(--bg)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -125,38 +134,48 @@ export const InteractiveDemoPreview: React.FC = () => {
 
           {/* Simulator Content Area */}
           <div className="p-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-            {/* Left: Score & Status Ring (Col 4) */}
-            <div className="md:col-span-4 flex flex-col items-center justify-center p-6 rounded-md border border-[var(--border)] bg-[var(--surface-sunken)] text-center">
-              <span className="text-[11px] font-mono text-[var(--text-dim)] uppercase tracking-wider mb-3">
+            {/* Left: Score & Radial Chart (Col 4) */}
+            <div className="md:col-span-4 flex flex-col items-center justify-center p-6 rounded-md border border-[var(--border)] bg-[var(--surface-sunken)] text-center h-full">
+              <span className="text-[11px] font-mono text-[var(--text-dim)] uppercase tracking-wider mb-2">
                 Simulated Score
               </span>
 
-              <div
-                className={`w-24 h-24 rounded-full border-2 flex flex-col items-center justify-center transition-colors ${
-                  !hasCompleted && !isSimulating
-                    ? "border-[var(--border-strong)] text-[var(--text-muted)]"
-                    : selectedShop === "naive"
-                    ? "border-[var(--fail)] text-[var(--fail)]"
-                    : "border-[var(--pass)] text-[var(--pass)]"
-                }`}
-              >
-                <span className="text-3xl font-mono font-semibold tabular-nums">
-                  {!hasCompleted && !isSimulating
-                    ? "--"
-                    : selectedShop === "naive"
-                    ? "18"
-                    : "95"}
-                </span>
-                <span className="text-[10px] font-mono uppercase tracking-wider font-semibold">
-                  {!hasCompleted && !isSimulating
-                    ? "IDLE"
-                    : selectedShop === "naive"
-                    ? "CRITICAL"
-                    : "PASSED"}
-                </span>
+              {/* Side-by-Side Pie Chart and Score */}
+              <div className="flex items-center justify-center gap-5 my-4">
+                {/* SVG Solid Pie Chart */}
+                <div className="relative w-[72px] h-[72px] rounded-full overflow-hidden border border-[var(--border-strong)] bg-[var(--surface)]">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 32 32">
+                    {/* Progress Fill (Solid Pie Slice) */}
+                    <circle
+                      cx="16"
+                      cy="16"
+                      r="8"
+                      fill="transparent"
+                      stroke="currentColor"
+                      strokeWidth="16"
+                      strokeDasharray="50.265 50.265"
+                      strokeDashoffset={50.265 - (scoreValue / 100) * 50.265}
+                      className={`transition-all duration-1000 ease-out ${themeColor}`}
+                    />
+                  </svg>
+                </div>
+
+                {/* Score Number & Status */}
+                <div className="flex flex-col items-start text-left">
+                  <span className={`text-4xl font-mono font-semibold tabular-nums leading-none ${themeColor}`}>
+                    {displayScore}
+                  </span>
+                  <span className={`text-[10px] mt-1 font-mono uppercase tracking-wider font-bold ${themeColor}`}>
+                    {!hasCompleted && !isSimulating
+                      ? "IDLE"
+                      : selectedShop === "naive"
+                      ? "CRITICAL"
+                      : "PASSED"}
+                  </span>
+                </div>
               </div>
 
-              <div className="mt-4 text-xs font-mono">
+              <div className="mt-2 text-xs font-mono">
                 {selectedShop === "naive" ? (
                   <span className="text-[var(--fail)] font-medium">
                     3 Invariant Breaches
