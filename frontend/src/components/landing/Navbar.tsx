@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { PLAYGROUND_URL, GITHUB_REPO_URL } from "@/lib/constants";
 import { ThemeToggle } from "./ThemeToggle";
+import PillNav from "./PillNav"; // Import the new PillNav component
 import {
   Zap,
   Menu,
@@ -22,7 +23,8 @@ const GithubIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" })
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navLinks = [
+  // Formatted specifically for PillNav props
+  const navItems = [
     { label: "Overview", href: "#about" },
     { label: "Threats", href: "#threats" },
     { label: "Features", href: "#features" },
@@ -51,18 +53,31 @@ export const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 text-[13px] font-sans">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="px-2.5 py-1 rounded text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)] transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
+        {/* Desktop Navigation Links (PillNav Integration) */}
+        <div className="hidden lg:flex items-center justify-center flex-1">
+          <PillNav
+            items={navItems}
+            activeHref="#about" 
+            itemStyle="plain" 
+            hoverEffect="glide"
+            indicator="pill" // <-- CRITICAL FIX: This makes the oval rest on the active item!
+            layout="split"
+            surface="none"
+            size="sm"
+            bounce={0.2}
+            stretch={0.4}
+            collapse="never"
+            intro={false}
+            style={{
+              // Makes the oval shape clearly visible in both Light and Dark mode
+              "--pn-pill": "var(--surface-sunken)", 
+              "--pn-pill-shadow": "inset 0 0 0 1px var(--border)", 
+              "--pn-pill-ink": "var(--text)", 
+              "--pn-strong": "var(--text)", 
+              "--pn-text": "var(--text-muted)", 
+            } as React.CSSProperties}
+          />
+        </div>
 
         {/* Action Controls & Primary CTA */}
         <div className="flex items-center gap-2">
@@ -104,7 +119,7 @@ export const Navbar: React.FC = () => {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-[var(--border)] bg-[var(--surface)] px-4 pt-3 pb-5 flex flex-col gap-1.5">
-          {navLinks.map((link) => (
+          {navItems.map((link) => (
             <a
               key={link.label}
               href={link.href}
