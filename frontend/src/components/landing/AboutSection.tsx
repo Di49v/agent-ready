@@ -7,6 +7,42 @@ import {
   Target,
   Users,
 } from "lucide-react";
+import AccordionGallery from "./AccordionGallery";
+
+const PIPELINE_STAGES = [
+  {
+    stage: "STAGE 01",
+    title: "Adversarial Swarm",
+    description: "9 specialized buyer personas execute in 2 batched waves (`asyncio.Semaphore(5)`) to stress-test the store without triggering PayPal 429 rate limits.",
+    footer: "Input: Target Store URL + Seed",
+    accentText: "text-[var(--text)]",
+    accentBorder: "border-[var(--text-muted)]/50"
+  },
+  {
+    stage: "STAGE 02",
+    title: "Seeded Chaos Proxy",
+    description: "Deterministic faults: drops payment response, strips idempotency keys, mutates prices to $1.50, and forges unverified webhook payloads.",
+    footer: "Reproducible: `seed=42`",
+    accentText: "text-[var(--warn)]",
+    accentBorder: "border-[var(--warn)]/50"
+  },
+  {
+    stage: "STAGE 03",
+    title: "Dual-Ledger Reconciler",
+    description: "Cross-examines PayPal Sandbox API ground truth against merchant internal ledger (`/_lab/ledger`) joined on `custom_id == cart_id`.",
+    footer: "Evaluates: 6 Invariant Rules",
+    accentText: "text-[var(--accent)]",
+    accentBorder: "border-[var(--accent)]/50"
+  },
+  {
+    stage: "STAGE 04",
+    title: "Grounded Fix Engine",
+    description: "Synthesizes plain-English root causes with exact PayPal IDs, generates verified 10-line Git patches, and triggers 1-click re-run verification.",
+    footer: "Output: Score Recovery (18 → 95)",
+    accentText: "text-[var(--pass)]",
+    accentBorder: "border-[var(--pass)]/50"
+  }
+];
 
 export const AboutSection: React.FC = () => {
   return (
@@ -100,95 +136,23 @@ export const AboutSection: React.FC = () => {
           </div>
         </div>
 
-        {/* The 4-Stage Operational Pipeline */}
+        {/* The 4-Stage Operational Pipeline (Using Accordion Gallery) */}
         <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 shadow-sm">
-          <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
+          <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border)] pb-5">
             <div>
               <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
                 Core Execution Pipeline
               </span>
-              <h3 className="font-heading font-semibold text-xl text-[var(--text)] mt-0.5">
+              <h3 className="font-heading font-semibold text-xl text-[var(--text)] mt-1">
                 How AgentReady Lab Works (Swarm &rarr; Chaos &rarr; Recon &rarr; Fix)
               </h3>
             </div>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono bg-[var(--surface-sunken)] border border-[var(--border)] text-[var(--text-muted)]">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono bg-[var(--surface-sunken)] border border-[var(--border)] text-[var(--text-muted)]">
               End-to-End Latency: ~12s
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {/* Stage 1 */}
-            <div className="group rounded-lg border border-[var(--border)] bg-[var(--surface-sunken)] p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-[var(--text-muted)]/50 cursor-default">
-              <div>
-                <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)] transition-colors group-hover:border-[var(--text-muted)]/30">
-                  STAGE 01
-                </span>
-                <h4 className="font-heading font-semibold text-base text-[var(--text)] mt-3">
-                  Adversarial Swarm
-                </h4>
-                <p className="text-xs text-[var(--text-muted)] mt-1.5 leading-relaxed font-sans">
-                  9 specialized buyer personas execute in 2 batched waves (`asyncio.Semaphore(5)`) to stress-test the store without triggering PayPal 429 rate limits.
-                </p>
-              </div>
-              <div className="mt-4 pt-2.5 border-t border-[var(--border)] text-[11px] font-mono text-[var(--text-dim)]">
-                Input: Target Store URL + Seed
-              </div>
-            </div>
-
-            {/* Stage 2 */}
-            <div className="group rounded-lg border border-[var(--border)] bg-[var(--surface-sunken)] p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-[var(--warn)]/50 cursor-default">
-              <div>
-                <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)] transition-colors group-hover:border-[var(--warn)]/30 group-hover:text-[var(--warn)]">
-                  STAGE 02
-                </span>
-                <h4 className="font-heading font-semibold text-base text-[var(--text)] mt-3 group-hover:text-[var(--warn)] transition-colors">
-                  Seeded Chaos Proxy
-                </h4>
-                <p className="text-xs text-[var(--text-muted)] mt-1.5 leading-relaxed font-sans">
-                  Deterministic faults: drops payment response, strips idempotency keys, mutates prices to $1.50, and forges unverified webhook payloads.
-                </p>
-              </div>
-              <div className="mt-4 pt-2.5 border-t border-[var(--border)] text-[11px] font-mono text-[var(--text-dim)]">
-                Reproducible: `seed=42`
-              </div>
-            </div>
-
-            {/* Stage 3 */}
-            <div className="group rounded-lg border border-[var(--border)] bg-[var(--surface-sunken)] p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-[var(--accent)]/50 cursor-default">
-              <div>
-                <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)] transition-colors group-hover:border-[var(--accent)]/30 group-hover:text-[var(--accent)]">
-                  STAGE 03
-                </span>
-                <h4 className="font-heading font-semibold text-base text-[var(--text)] mt-3 group-hover:text-[var(--accent)] transition-colors">
-                  Dual-Ledger Reconciler
-                </h4>
-                <p className="text-xs text-[var(--text-muted)] mt-1.5 leading-relaxed font-sans">
-                  Cross-examines PayPal Sandbox API ground truth against merchant internal ledger (`/_lab/ledger`) joined on `custom_id == cart_id`.
-                </p>
-              </div>
-              <div className="mt-4 pt-2.5 border-t border-[var(--border)] text-[11px] font-mono text-[var(--text-dim)]">
-                Evaluates: 6 Invariant Rules
-              </div>
-            </div>
-
-            {/* Stage 4 */}
-            <div className="group rounded-lg border border-[var(--border)] bg-[var(--surface-sunken)] p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-[var(--pass)]/50 cursor-default">
-              <div>
-                <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)] transition-colors group-hover:border-[var(--pass)]/30 group-hover:text-[var(--pass)]">
-                  STAGE 04
-                </span>
-                <h4 className="font-heading font-semibold text-base text-[var(--text)] mt-3 group-hover:text-[var(--pass)] transition-colors">
-                  Grounded Fix Engine
-                </h4>
-                <p className="text-xs text-[var(--text-muted)] mt-1.5 leading-relaxed font-sans">
-                  Synthesizes plain-English root causes with exact PayPal IDs, generates verified 10-line Git patches, and triggers 1-click re-run verification.
-                </p>
-              </div>
-              <div className="mt-4 pt-2.5 border-t border-[var(--border)] text-[11px] font-mono text-[var(--text-dim)]">
-                Output: Score Recovery (18 &rarr; 95)
-              </div>
-            </div>
-          </div>
+          <AccordionGallery items={PIPELINE_STAGES} />
         </div>
       </div>
     </section>
