@@ -3,17 +3,11 @@
 import React, { useState } from "react";
 import {
   ShoppingBag,
-  ShieldAlert,
-  ShieldCheck,
-  ArrowRight,
   Lock,
-  Hash,
   AlertTriangle,
   Code2,
   CheckCircle2,
   XCircle,
-  Layers,
-  Sparkles,
 } from "lucide-react";
 
 interface ProductContext {
@@ -511,7 +505,7 @@ const SCENARIOS: Record<number, WireDiffScenario> = {
       naive: {
         status: "VIOLATED",
         httpCode: 200,
-        message: "Dispute opened with 0 store evidence submitted. PayPal auto-decides in buyer's favor after timeout.",
+        message: "Dispute opened with 0 store evidence submitted. PayPal au in buyer's favor after timeout.",
         financialLoss: "-$199.00 + $20 Chargeback Fee",
       },
       hardened: {
@@ -684,22 +678,22 @@ export const LiveStoreCartInspector: React.FC<LiveStoreCartInspectorProps> = ({
   };
 
   return (
-    <section className="w-full bg-[#0D0F14] border border-white/[0.07] rounded-lg p-5 specular-highlight">
+    <section className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-lg p-5 specular-highlight">
       {/* Header with Title and Persona Selector Pills */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 mb-4 border-b border-white/[0.07]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 mb-4 border-b border-[var(--border)]">
         <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+          <div className="p-1.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] text-[var(--text-muted)]">
             <ShoppingBag className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-zinc-400 flex items-center gap-2">
+              <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--accent)] flex items-center gap-2">
                 Live Channel3 Store &amp; Cart Wire Inspector
-                <span className="text-zinc-600">/</span>
-                <span className="text-zinc-200">Protocol Telemetry</span>
+                <span className="text-[var(--text-dim)]">/</span>
+                <span className="text-[var(--text)]">Protocol Telemetry</span>
               </h2>
             </div>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-[var(--text-muted)] mt-0.5">
               Side-by-side verification: Real Channel3 product &bull; Human-approved HMAC intent &bull; Intercepted agent wire diff
             </p>
           </div>
@@ -714,8 +708,8 @@ export const LiveStoreCartInspector: React.FC<LiveStoreCartInspectorProps> = ({
                 key={laneNum}
                 onClick={() => handleSelect(laneNum)}
                 className={`px-2.5 py-1 text-[11px] font-mono rounded border transition-all duration-150 whitespace-nowrap cursor-pointer ${isCurrent
-                    ? "bg-cyan-500/10 text-cyan-300 border-cyan-500/30 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] font-semibold"
-                    : "bg-white/[0.02] text-zinc-400 border-white/[0.07] hover:bg-white/[0.06] hover:text-zinc-200"
+                    ? "bg-[var(--surface-sunken)] text-[var(--text)] border-[var(--accent)] font-semibold"
+                    : "bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border)] hover:bg-[var(--surface-hover)] hover:text-[var(--text)]"
                   }`}
               >
                 L{laneNum}: {SCENARIOS[laneNum]?.personaName.replace("The ", "") || `Lane ${laneNum}`}
@@ -726,90 +720,90 @@ export const LiveStoreCartInspector: React.FC<LiveStoreCartInspectorProps> = ({
       </div>
 
       {/* Exposed 1px Structural Grid Container (Swiss Hairline 3-Column Bento) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-white/[0.07] border border-white/[0.07] rounded-lg overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-[var(--surface-sunken)] border border-[var(--border)] rounded-lg overflow-hidden">
         {/* Panel 1: Tangible Channel3 Product Card (3 cols) */}
-        <div className="lg:col-span-3 bg-[#0D0F14] p-4 flex flex-col justify-between">
+        <div className="lg:col-span-3 bg-[var(--surface)] p-4 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-zinc-400">
+              <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)]">
                 Channel3 Catalog
               </span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.03] text-zinc-400 border border-white/[0.07]">
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-[var(--surface-sunken)] text-[var(--text-muted)] border border-[var(--border)]">
                 TTL 300s
               </span>
             </div>
 
             {/* Product Image & Thumbnail */}
-            <div className="relative w-full h-36 rounded-md overflow-hidden border border-white/[0.07] bg-[#08090C] mb-3 group">
+            <div className="relative w-full h-36 rounded-md overflow-hidden border border-[var(--border)] bg-[var(--bg)] mb-3 group">
               <img
                 src={scenario.product.image}
                 alt={scenario.product.title}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#08090C]/85 text-emerald-400 border border-emerald-500/30 backdrop-blur-sm">
+              <div className="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[var(--surface-sunken)] text-[var(--text-muted)] border border-[var(--border)]">
                 ${scenario.product.price.toFixed(2)}
               </div>
             </div>
 
             {/* Title & SKU */}
-            <h3 className="font-medium text-sm text-zinc-100 leading-snug tracking-tight mb-1">
+            <h3 className="font-medium text-sm text-[var(--text)] leading-snug tracking-tight mb-1">
               {scenario.product.title}
             </h3>
-            <p className="font-mono text-[11px] text-zinc-500 mb-2">
+            <p className="font-mono text-[11px] text-[var(--text-dim)] mb-2">
               SKU: {scenario.product.sku}
             </p>
 
             {/* Variants & Stock */}
             <div className="flex flex-wrap gap-1.5 mb-3">
               {scenario.product.hasVariants && scenario.product.variantsText && (
-                <span className="px-2 py-0.5 text-[10px] font-mono rounded bg-white/[0.03] text-zinc-300 border border-white/[0.07]">
+                <span className="px-2 py-0.5 text-[10px] font-mono rounded bg-[var(--surface-sunken)] text-[var(--text)] border border-[var(--border)]">
                   {scenario.product.variantsText}
                 </span>
               )}
-              <span className="px-2 py-0.5 text-[10px] font-mono rounded bg-white/[0.03] text-zinc-400 border border-white/[0.07]">
+              <span className="px-2 py-0.5 text-[10px] font-mono rounded bg-[var(--surface-sunken)] text-[var(--text-muted)] border border-[var(--border)]">
                 Stock: {scenario.product.inventory} units
               </span>
             </div>
 
             {/* Prompt Injection Warning if Present */}
             {scenario.product.injectionWarning && (
-              <div className="p-2.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px] font-mono mb-2">
+              <div className="p-2.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] text-[var(--warn)] text-[11px] font-mono mb-2">
                 <div className="flex items-center gap-1.5 font-bold mb-1">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+                  <AlertTriangle className="w-3.5 h-3.5 text-[var(--warn)]" />
                   Trap Injected in Description:
                 </div>
-                <p className="text-[10px] text-amber-200/80 leading-tight">
+                <p className="text-[10px] text-[var(--warn)] leading-tight">
                   {scenario.product.injectionWarning}
                 </p>
               </div>
             )}
           </div>
 
-          <div className="pt-3 border-t border-white/[0.05] flex items-center justify-between text-[11px] font-mono text-zinc-400">
+          <div className="pt-3 border-t border-[var(--border)] flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
             <span>Authoritative Price:</span>
-            <span className="text-zinc-100 font-bold tabular-nums">
+            <span className="text-[var(--text)] font-bold tabular-nums">
               ${scenario.product.price.toFixed(2)} USD
             </span>
           </div>
         </div>
 
         {/* Panel 2: Side-by-Side Wire Diff (5 cols) */}
-        <div className="lg:col-span-5 bg-[#0D0F14] p-4 flex flex-col justify-between border-t lg:border-t-0 border-white/[0.07]">
+        <div className="lg:col-span-5 bg-[var(--surface)] p-4 flex flex-col justify-between border-t lg:border-t-0 border-[var(--border)]">
           <div>
             {/* Header: Persona and Rule Hit */}
             <div className="flex items-center justify-between mb-3">
-              <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-zinc-400">
+              <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)]">
                 Adversarial Wire Diff
               </span>
-              <span className="px-2 py-0.5 text-[10px] font-mono rounded border bg-rose-500/10 text-rose-400 border-rose-500/20 font-semibold flex items-center gap-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
+              <span className="px-2 py-0.5 text-[10px] font-mono rounded border bg-[var(--surface-sunken)] text-[var(--text-muted)] border-[var(--border)] font-semibold flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--fail)]" />
                 {scenario.wirePayload.diffBadge.label}
               </span>
             </div>
 
             {/* Visual Transformation Diff Banner */}
-            <div className="p-2.5 rounded-md bg-[#08090C] border border-white/[0.07] mb-3 flex items-center justify-between gap-2 font-mono text-xs">
-              <span className="text-zinc-400 truncate">
+            <div className="p-2.5 rounded-md bg-[var(--bg)] border border-[var(--border)] mb-3 flex items-center justify-between gap-2 font-mono text-xs">
+              <span className="text-[var(--text-muted)] truncate">
                 {scenario.wirePayload.faultHighlight}
               </span>
             </div>
@@ -817,166 +811,165 @@ export const LiveStoreCartInspector: React.FC<LiveStoreCartInspectorProps> = ({
             {/* Side-by-Side Cards: Human Intent vs. Wire Payload */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
               {/* Left: Human Intent */}
-              <div className="p-3 rounded bg-[#08090C] border border-white/[0.07] flex flex-col justify-between">
+              <div className="p-3 rounded bg-[var(--bg)] border border-[var(--border)] flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-400 mb-2">
-                    <Lock className="w-3 h-3 text-emerald-400" />
+                  <div className="flex items-center gap-1.5 text-[10px] font-mono text-[var(--text-muted)] mb-2">
+                    <Lock className="w-3 h-3 text-[var(--pass)]" />
                     Human-Approved Intent
                   </div>
                   <div className="space-y-1 font-mono text-[11px]">
-                    <div className="flex justify-between text-zinc-400">
+                    <div className="flex justify-between text-[var(--text-muted)]">
                       <span>Quantity:</span>
-                      <span className="text-zinc-200 tabular-nums">
+                      <span className="text-[var(--text)] tabular-nums">
                         {scenario.humanIntent.quantity}
                       </span>
                     </div>
-                    <div className="flex justify-between text-zinc-400">
+                    <div className="flex justify-between text-[var(--text-muted)]">
                       <span>Approved Price:</span>
-                      <span className="text-emerald-400 font-bold tabular-nums">
+                      <span className="text-[var(--text)] font-bold tabular-nums">
                         {scenario.humanIntent.approvedUnitPrice}
                       </span>
                     </div>
-                    <div className="flex justify-between text-zinc-400">
+                    <div className="flex justify-between text-[var(--text-muted)]">
                       <span>Max Total:</span>
-                      <span className="text-zinc-100 font-bold tabular-nums">
+                      <span className="text-[var(--text)] font-bold tabular-nums">
                         {scenario.humanIntent.approvedTotal}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-white/[0.05] flex items-center justify-between text-[10px] font-mono">
-                  <span className="text-zinc-500">HMAC Sig:</span>
-                  <span className="text-emerald-400/90 truncate max-w-[90px]">
+                <div className="mt-3 pt-2 border-t border-[var(--border)] flex items-center justify-between text-[10px] font-mono">
+                  <span className="text-[var(--text-dim)]">HMAC Sig:</span>
+                  <span className="text-[var(--text-muted)] truncate max-w-[90px]">
                     {scenario.humanIntent.signature}
                   </span>
                 </div>
               </div>
 
               {/* Right: Agent Wire Interception */}
-              <div className="p-3 rounded bg-[#13161F] border border-rose-500/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] flex flex-col justify-between">
+              <div className="p-3 rounded bg-[var(--surface-sunken)] border border-[var(--border)] flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-1.5 text-[10px] font-mono text-rose-400 mb-2 font-semibold">
-                    <AlertTriangle className="w-3 h-3 text-rose-500" />
+                  <div className="flex items-center gap-1.5 text-[10px] font-mono text-[var(--fail)] mb-2 font-semibold">
+                    <AlertTriangle className="w-3 h-3 text-[var(--fail)]" />
                     Intercepted Wire Payload
                   </div>
                   <div className="space-y-1 font-mono text-[11px]">
-                    <div className="flex justify-between text-zinc-400">
+                    <div className="flex justify-between text-[var(--text-muted)]">
                       <span>Endpoint:</span>
-                      <span className="text-zinc-300 truncate max-w-[100px]">
+                      <span className="text-[var(--text)] truncate max-w-[100px]">
                         {scenario.wirePayload.endpoint}
                       </span>
                     </div>
-                    <div className="flex justify-between text-zinc-400">
+                    <div className="flex justify-between text-[var(--text-muted)]">
                       <span>Header:</span>
-                      <span className="text-rose-400 truncate max-w-[100px]">
+                      <span className="text-[var(--fail)] truncate max-w-[100px]">
                         {scenario.wirePayload.headers["PayPal-Request-Id"] || "None"}
                       </span>
                     </div>
-                    <div className="flex justify-between text-zinc-400">
+                    <div className="flex justify-between text-[var(--text-muted)]">
                       <span>Wire Action:</span>
-                      <span className="text-amber-300 font-bold truncate max-w-[100px]">
+                      <span className="text-[var(--warn)] font-bold truncate max-w-[100px]">
                         {scenario.wirePayload.diffBadge.type}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-white/[0.05] flex items-center justify-between text-[10px] font-mono">
-                  <span className="text-zinc-500">Status:</span>
-                  <span className="text-rose-400 font-bold">MUTATED</span>
+                <div className="mt-3 pt-2 border-t border-[var(--border)] flex items-center justify-between text-[10px] font-mono">
+                  <span className="text-[var(--text-dim)]">Status:</span>
+                  <span className="text-[var(--fail)] font-bold">MUTATED</span>
                 </div>
               </div>
             </div>
 
             {/* Wire Payload JSON Preview */}
-            <div className="rounded bg-[#08090C] border border-white/[0.07] p-2.5 font-mono text-[10px] text-zinc-300 overflow-x-auto max-h-32">
-              <div className="text-zinc-500 mb-1 flex items-center gap-1">
-                <Code2 className="w-3 h-3 text-cyan-400" />
+            <div className="rounded bg-[var(--bg)] border border-[var(--border)] p-2.5 font-mono text-[10px] text-[var(--text)] overflow-x-auto max-h-32">
+              <div className="text-[var(--text-dim)] mb-1 flex items-center gap-1">
+                <Code2 className="w-3 h-3 text-[var(--text-muted)]" />
                 Raw Wire Frame: {scenario.wirePayload.method} {scenario.wirePayload.endpoint}
               </div>
-              <pre className="text-zinc-300 leading-tight">
+              <pre className="text-[var(--text)] leading-tight">
                 {scenario.wirePayload.bodyDiff}
               </pre>
             </div>
           </div>
 
-          <div className="pt-3 border-t border-white/[0.05] text-[11px] font-mono text-zinc-400 flex items-center justify-between">
+          <div className="pt-3 border-t border-[var(--border)] text-[11px] font-mono text-[var(--text-muted)] flex items-center justify-between">
             <span>Evaluated Invariant:</span>
-            <span className="text-zinc-200">{scenario.ruleViolated}</span>
+            <span className="text-[var(--text)]">{scenario.ruleViolated}</span>
           </div>
         </div>
 
         {/* Panel 3: Naive Shop vs Hardened Shop Outcome (4 cols) */}
-        <div className="lg:col-span-4 bg-[#0D0F14] p-4 flex flex-col justify-between border-t lg:border-t-0 border-white/[0.07]">
+        <div className="lg:col-span-4 bg-[var(--surface)] p-4 flex flex-col justify-between border-t lg:border-t-0 border-[var(--border)]">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-zinc-400">
+              <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)]">
                 Store Defense Outcome
               </span>
-              <span className="font-mono text-[10px] text-zinc-500">
+              <span className="font-mono text-[10px] text-[var(--text-dim)]">
                 RFC 9457 Telemetry
               </span>
             </div>
 
             {/* Outcome 1: Naive Shop (Vulnerable) */}
-            <div className="p-3 rounded-md bg-[#08090C] border border-rose-500/20 mb-3">
+            <div className="p-3 rounded-md bg-[var(--surface-sunken)] border border-[var(--border)] mb-3">
               <div className="flex items-center justify-between mb-1.5">
-                <div className="flex items-center gap-1.5 font-mono text-xs font-semibold text-rose-400">
-                  <XCircle className="w-3.5 h-3.5 text-rose-500" />
+                <div className="flex items-center gap-1.5 font-mono text-xs font-semibold text-[var(--fail)]">
+                  <XCircle className="w-3.5 h-3.5 text-[var(--fail)]" />
                   Naive Shop Outcome
                 </div>
-                <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-[var(--surface-sunken)] text-[var(--text-muted)] border border-[var(--border)]">
                   HTTP {scenario.outcomes.naive.httpCode}
                 </span>
               </div>
-              <p className="text-xs text-zinc-300 mb-2 leading-relaxed">
+              <p className="text-xs text-[var(--text)] mb-2 leading-relaxed">
                 {scenario.outcomes.naive.message}
               </p>
-              <div className="flex items-center justify-between font-mono text-[11px] pt-1.5 border-t border-white/[0.05]">
-                <span className="text-zinc-500">Financial Impact:</span>
-                <span className="text-rose-400 font-bold tabular-nums">
+              <div className="flex items-center justify-between font-mono text-[11px] pt-1.5 border-t border-[var(--border)]">
+                <span className="text-[var(--text-dim)]">Financial Impact:</span>
+                <span className="text-[var(--fail)] font-bold tabular-nums">
                   {scenario.outcomes.naive.financialLoss}
                 </span>
               </div>
             </div>
 
             {/* Outcome 2: Hardened Shop + AgentReadyGuard (Protected) */}
-            <div className="p-3 rounded-md bg-[#13161F] border border-emerald-500/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
+            <div className="p-3 rounded-md bg-[var(--surface-sunken)] border border-[var(--border)]">
               <div className="flex items-center justify-between mb-1.5">
-                <div className="flex items-center gap-1.5 font-mono text-xs font-semibold text-emerald-400">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <div className="flex items-center gap-1.5 font-mono text-xs font-semibold text-[var(--pass)]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[var(--pass)]" />
                   Hardened Shop + Guard
                 </div>
-                <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-[var(--surface-sunken)] text-[var(--text-muted)] border border-[var(--border)]">
                   HTTP {scenario.outcomes.hardened.httpCode}
                 </span>
               </div>
-              <p className="text-xs text-zinc-300 mb-2 leading-relaxed">
+              <p className="text-xs text-[var(--text)] mb-2 leading-relaxed">
                 {scenario.outcomes.hardened.message}
               </p>
-              <div className="flex items-center justify-between font-mono text-[11px] pt-1.5 border-t border-white/[0.05]">
-                <span className="text-zinc-500">RFC 9457 Code:</span>
-                <span className="text-cyan-400 text-[10px] truncate max-w-[170px]">
+              <div className="flex items-center justify-between font-mono text-[11px] pt-1.5 border-t border-[var(--border)]">
+                <span className="text-[var(--text-dim)]">RFC 9457 Code:</span>
+                <span className="text-[var(--text-muted)] text-[10px] truncate max-w-[170px]">
                   {scenario.outcomes.hardened.rfc9457Code}
                 </span>
               </div>
               <div className="flex items-center justify-between font-mono text-[11px] pt-1">
-                <span className="text-zinc-500">Protected Leakage:</span>
-                <span className="text-emerald-400 font-bold tabular-nums">
+                <span className="text-[var(--text-dim)]">Protected Leakage:</span>
+                <span className="text-[var(--pass)] font-bold tabular-nums">
                   {scenario.outcomes.hardened.financialLoss}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="pt-3 border-t border-white/[0.05] flex items-center justify-between text-[11px] font-mono text-zinc-400">
+          <div className="pt-3 border-t border-[var(--border)] flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
             <span>Guard Policy:</span>
-            <span className="text-emerald-400 font-semibold">Active Invariant Defense</span>
+            <span className="text-[var(--pass)] font-semibold">Active Invariant Defense</span>
           </div>
         </div>
       </div>
     </section>
   );
 };
-

@@ -12,7 +12,9 @@ Part A explains AgentReady Lab in plain language: what it is, what form it takes
 
 AI shopping assistants (ChatGPT, Gemini and others) are starting to buy things for people. PayPal protects the payment itself. But nobody checks whether the store’s own checkout code behaves correctly when an AI shopper hits it: retries, odd quantities, price changes, repeated notifications. AgentReady Lab is a crash-test facility for online checkouts. It sends a swarm of test AI shoppers into a store’s PayPal sandbox checkout, deliberately makes things go wrong, compares PayPal’s records with the store’s own records, flags every mismatch, explains the cause in plain English, proposes the code fix, and re-runs the test to prove the fix works.
 
-**The pitch sentence:** *PayPal protects the payment. Nobody tests the merchant’s side of an agent order. AgentReady Lab does.*
+**The pitch sentence:** *PayPal protects the payment. 
+Nobody tests the merchant’s side of an agent order.
+AgentReady Lab does.*
 
 ### A2. The problem, as a story
 

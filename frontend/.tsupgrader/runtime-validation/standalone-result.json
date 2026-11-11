@@ -1,0 +1,153 @@
+{
+  "planHash": "e32f33c666ac0a837e34f28ed370e75473ac02103b649d3449adffc2b955b497",
+  "phase": "standalone",
+  "recordedAtUtc": "2026-11-10T08:53:44.4114130Z",
+  "retryCount": 3,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 0,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "production-build",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E frontend@0.1.0 build\r\n\u003E next build\r\n\r\n\u25B2 Next.js 16.4.5 (Turbopack)\r\n\u2713 Running next.config.ts took 118ms\r\n- Cache Components enabled\r\n- Partial Prefetching enabled\r\n\r\n  Creating an optimized production build ...\r\n\u2713 Compiled successfully in 2.9s\r\n  Running TypeScript ...\r\n  Finished TypeScript in 15.4s ...\r\n  Collecting page data using 7 workers ...\r\n  Generating static pages using 7 workers (0/6) ...\r\n  Generating static pages using 7 workers (1/6) \r\n  Generating static pages using 7 workers (2/6) \r\n  Generating static pages using 7 workers (4/6) \r\n\u2713 Generating static pages using 7 workers (6/6) in 5.8s\r\n  Finalizing page optimization ...\r\n\r\nRoute (app)\r\n\u250C \u25CB /\r\n\u251C \u25CB /_not-found\r\n\u251C \u25CB /dashboard\r\n\u2514 \u25CB /simulate\r\n\r\n\r\n\u25CB  (Static)  prerendered as static content\r\n\r\n",
+        "durationMs": 34711
+      },
+      {
+        "name": "tsc-no-emit",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "",
+        "durationMs": 14147
+      },
+      {
+        "name": "tests-pass",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E frontend@0.1.0 test\r\n\u003E vitest run\r\n\r\n\r\n RUN  v4.1.12 D:/AgentLab/agent-ready/frontend\r\n\r\n\r\n Test Files  1 passed (1)\r\n      Tests  5 passed (5)\r\n   Start at  14:23:36\r\n   Duration  917ms (transform 148ms, setup 0ms, import 210ms, tests 48ms, environment 0ms)\r\n\r\n",
+        "durationMs": 4605,
+        "testResults": {
+          "testFramework": "vitest",
+          "runnerDetectedFrom": "package_json",
+          "testsTotal": 5,
+          "testsPassed": 5,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": false
+        }
+      },
+      {
+        "name": "landing-route-200",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n\u003C!DOCTYPE html\u003E\u003Chtml lang=\u0022en\u0022 class=\u0022Jg8Z5W_variable gH3yGq_variable _5Hl15a_variable h-full antialiased\u0022\u003E\u003Chead\u003E\u003Cmeta charSet=\u0022utf-8\u0022/\u003E\u003Cmeta name=\u0022viewport\u0022 content=\u0022width=device-width, initial-scale=1\u0022/\u003E\u003Clink rel=\u0022stylesheet\u0022 href=\u0022/_next/static/chunks/2cyg5qlh8lpz9.css\u0022 data-precedence=\u0022next\u0022/\u003E\u003Clink rel=\u0022preload\u0022 as=\u0022script\u0022 fetchPriority=\u0022low\u0022 href=\u0022/_next/static/chunks/0uk63h0tuavo5.js\u0022/\u003E\u003Cscript src=\u0022/_next/static/chunks/27lurnt78us9u.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/2xbu7vbjlke9r.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/41yg3r8a3egyx.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/turbopack-2u1d16houkiyo.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/1vlgwjx8l8fx9.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/3as2hnlia0uzd.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/1xjbankjtye-5.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cmeta name=\u0022next-size-adjust\u0022 content=\u0022\u0022/\u003E\u003Ctitle\u003EAgentReady Lab \u2014 Crash-Testing \u0026amp; Dual-Ledger Safety for Agentic Commerce\u003C/title\u003E\u003Cmeta name=\u0022description\u0022 content=\u0022Adversarial crash-testing, dual-ledger compliance auditing, and self-healing for autonomous AI agent commerce on the PayPal Sandbox.\u0022/\u003E\u003Clink rel=\u0022icon\u0022 href=\u0022/favicon.ico?favicon.117ezoe8m31dk.ico\u0022 sizes=\u002248x48\u0022 type=\u0022image/x-icon\u0022/\u003E\u003Cscript\u003E(self.__next_s=self.__next_s||[]).push([0,{\u0022children\u0022:\u0022(() =\\u003e {\\n  const savedTheme = localStorage.getItem(\\\u0022agentready_theme\\\u0022);\\n  const theme = savedTheme === \\\u0022dark\\\u0022 ? \\\u0022dark\\\u0022 : \\\u0022light\\\u0022;\\n  document.documentElement.setAttribute(\\\u0022data-theme\\\u0022, theme);\\n  document.documentElement.classList.toggle(\\\u0022dark\\\u0022, theme === \\\u0022dark\\\u0022);\\n})();\u0022,\u0022id\u0022:\u0022theme-initializer\u0022}])\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/0cz1d0mv5g_q7.js\u0022 noModule=\u0022\u0022\u003E\u003C/script\u003E\u003C/head\u003E\u003Cbody class=\u0022min-h-full flex flex-col font-sans bg-[var(--bg)] text-[var(--text)] transition-colors duration-150\u0022\u003E\u003Cdiv hidden=\u0022\u0022\u003E\u003C!--$--\u003E\u003C!--/$--\u003E\u003C/div\u003E\u003C!--\u0026--\u003E\u003Cdiv class=\u0022min-h-screen bg-[var(--bg)] text-[var(--text)] flex flex-col font-sans transition-colors duration-200\u0022\u003E\u003Cheader class=\u0022sticky top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-sm transition-colors\u0022\u003E\u003Cdiv class=\u0022max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4\u0022\u003E\u003Cdiv class=\u0022flex items-center gap-3\u0022\u003E\u003Ca class=\u0022flex items-center gap-2 group\u0022 href=\u0022/\u0022\u003E\u003Cspan class=\u0022audit-status-led w-2 h-2 rounded-full bg-[var(--accent)]\u0022\u003E\u003C/span\u003E\u003Cdiv class=\u0022flex items-center gap-2\u0022\u003E\u003Cspan class=\u0022font-heading font-semibold text-base tracking-tight text-[var(--text)]\u0022\u003EAgentReady\u003Cspan class=\u0022text-[var(--text)]\u0022\u003E.Lab\u003C/span\u003E\u003C/span\u003E\u003Cspan class=\u0022hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-mono bg-[var(--surface-sunken)] text-[var(--text-muted)] border border-[var(--border)]\u0022\u003E\u003Csvg xmlns=\u0022http://www.w3.org/2000/svg\u0022 width=\u002224\u0022 height=\u002224\u0022 viewBox=\u00220 0 24 24\u0022 fill=\u0022none\u0022 stroke=\u0022currentColor\u0022 stroke-width=\u00222\u0022 stroke-linecap=\u0022round\u0022 stroke-linejoin=\u0022round\u0022 class=\u0022lucide lucide-lock w-2.5 h-2.5 stroke-[1.5]\u0022 aria-hidden=\u0022true\u0022\u003E\u003Crect width=\u002218\u0022 height=\u002211\u0022 x=\u00223\u0022 y=\u002211\u0022 rx=\u00222\u0022 ry=\u00222\u0022\u003E\u003C/rect\u003E\u003Cpath d=\u0022M7 11V7a5 5 0 0 1 10 0v4\u0022\u003E\u003C/path\u003E\u003C/svg\u003ESandbox Locked\u003C/span\u003E\u003C/div\u003E\u003C/a\u003E\u003C/div\u003E\u003Cnav class=\u0022hidden lg:flex items-center gap-1 text-[13px] font-sans\u0022\u003E\u003Ca href=\u0022#about\u0022 class=\u0022px-2.5 py-1 rounded text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)] transition-colors\u0022\u003EOverview\u003C/a\u003E\u003Ca href=\u0022#threats\u0022 class=\u0022px-2.5 py-1 rounded text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)] transition-colors\u0022\u003EThreats\u003C/a\u003E\u003Ca href=\u0022#features\u0022 class=\u0022px-2.5 py-1 rounded text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)] transition-colors\u0022\u003EFeatures\u003C/a\u003E\u003Ca href=\u0022#preview\u0022 class=\u0022px-2.5 py-1 rounded text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)] transition-colors\u0022\u003EInteractive Demo\u003C/a\u003E\u003Ca href=\u0022#workflow\u0022 class=\u0022px-2.5 py-1 rounded text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)] transition-colors\u0022\u003EWorkflow\u003C/a\u003E\u003Ca href=\u0022#docs\u0022\n\u2026[truncated]",
+        "durationMs": 3771
+      },
+      {
+        "name": "simulation-route-200",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n\u003C!DOCTYPE html\u003E\u003Chtml lang=\u0022en\u0022 class=\u0022Jg8Z5W_variable gH3yGq_variable _5Hl15a_variable h-full antialiased\u0022\u003E\u003Chead\u003E\u003Cmeta charSet=\u0022utf-8\u0022/\u003E\u003Cmeta name=\u0022viewport\u0022 content=\u0022width=device-width, initial-scale=1\u0022/\u003E\u003Clink rel=\u0022stylesheet\u0022 href=\u0022/_next/static/chunks/2cyg5qlh8lpz9.css\u0022 data-precedence=\u0022next\u0022/\u003E\u003Clink rel=\u0022preload\u0022 as=\u0022script\u0022 fetchPriority=\u0022low\u0022 href=\u0022/_next/static/chunks/0uk63h0tuavo5.js\u0022/\u003E\u003Cscript src=\u0022/_next/static/chunks/27lurnt78us9u.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/2xbu7vbjlke9r.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/41yg3r8a3egyx.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/turbopack-2u1d16houkiyo.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/1vlgwjx8l8fx9.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/3as2hnlia0uzd.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/1ihqnpuduxse-.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cmeta name=\u0022next-size-adjust\u0022 content=\u0022\u0022/\u003E\u003Ctitle\u003EAgentReady Lab \u2014 Crash-Testing \u0026amp; Dual-Ledger Safety for Agentic Commerce\u003C/title\u003E\u003Cmeta name=\u0022description\u0022 content=\u0022Adversarial crash-testing, dual-ledger compliance auditing, and self-healing for autonomous AI agent commerce on the PayPal Sandbox.\u0022/\u003E\u003Clink rel=\u0022icon\u0022 href=\u0022/favicon.ico?favicon.117ezoe8m31dk.ico\u0022 sizes=\u002248x48\u0022 type=\u0022image/x-icon\u0022/\u003E\u003Cscript\u003E(self.__next_s=self.__next_s||[]).push([0,{\u0022children\u0022:\u0022(() =\\u003e {\\n  const savedTheme = localStorage.getItem(\\\u0022agentready_theme\\\u0022);\\n  const theme = savedTheme === \\\u0022dark\\\u0022 ? \\\u0022dark\\\u0022 : \\\u0022light\\\u0022;\\n  document.documentElement.setAttribute(\\\u0022data-theme\\\u0022, theme);\\n  document.documentElement.classList.toggle(\\\u0022dark\\\u0022, theme === \\\u0022dark\\\u0022);\\n})();\u0022,\u0022id\u0022:\u0022theme-initializer\u0022}])\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/0cz1d0mv5g_q7.js\u0022 noModule=\u0022\u0022\u003E\u003C/script\u003E\u003C/head\u003E\u003Cbody class=\u0022min-h-full flex flex-col font-sans bg-[var(--bg)] text-[var(--text)] transition-colors duration-150\u0022\u003E\u003Cdiv hidden=\u0022\u0022\u003E\u003C!--$--\u003E\u003C!--/$--\u003E\u003C/div\u003E\u003C!--\u0026--\u003E\u003C!--\u0026--\u003E\u003Cdiv class=\u0022min-h-screen bg-[var(--bg)] text-[var(--text)] flex flex-col font-sans\u0022\u003E\u003Cdiv class=\u0022bg-[var(--surface-sunken)] border-b border-[var(--border)] px-6 py-2 flex items-center justify-between text-xs\u0022\u003E\u003Ca class=\u0022inline-flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text)] font-mono transition\u0022 href=\u0022/\u0022\u003E\u003Csvg xmlns=\u0022http://www.w3.org/2000/svg\u0022 width=\u002224\u0022 height=\u002224\u0022 viewBox=\u00220 0 24 24\u0022 fill=\u0022none\u0022 stroke=\u0022currentColor\u0022 stroke-width=\u00222\u0022 stroke-linecap=\u0022round\u0022 stroke-linejoin=\u0022round\u0022 class=\u0022lucide lucide-arrow-left w-3.5 h-3.5\u0022 aria-hidden=\u0022true\u0022\u003E\u003Cpath d=\u0022m12 19-7-7 7-7\u0022\u003E\u003C/path\u003E\u003Cpath d=\u0022M19 12H5\u0022\u003E\u003C/path\u003E\u003C/svg\u003E\u003Cspan\u003EBack to Product Overview \u0026amp; Documentation\u003C/span\u003E\u003C/a\u003E\u003Cdiv class=\u0022flex items-center gap-3\u0022\u003E\u003Ca class=\u0022inline-flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--text)] transition font-mono\u0022 href=\u0022/#docs\u0022\u003E\u003Csvg xmlns=\u0022http://www.w3.org/2000/svg\u0022 width=\u002224\u0022 height=\u002224\u0022 viewBox=\u00220 0 24 24\u0022 fill=\u0022none\u0022 stroke=\u0022currentColor\u0022 stroke-width=\u00222\u0022 stroke-linecap=\u0022round\u0022 stroke-linejoin=\u0022round\u0022 class=\u0022lucide lucide-book-open w-3 h-3 text-[var(--text-muted)]\u0022 aria-hidden=\u0022true\u0022\u003E\u003Cpath d=\u0022M12 5v16\u0022\u003E\u003C/path\u003E\u003Cpath d=\u0022M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z\u0022\u003E\u003C/path\u003E\u003C/svg\u003E\u003Cspan\u003EDeveloper Docs\u003C/span\u003E\u003C/a\u003E\u003Cspan class=\u0022text-[var(--text-dim)]\u0022\u003E\u2022\u003C/span\u003E\u003Cspan class=\u0022font-mono text-[11px] text-[var(--text-dim)]\u0022\u003EEnvironment: PayPal Sandbox v2\u003C/span\u003E\u003C/div\u003E\u003C/div\u003E\u003Cheader class=\u0022w-full bg-[var(--surface)] border-b border-[var(--border)] sticky top-0 z-50 px-6 py-3.5 backdrop-blur-md\u0022\u003E\u003Cdiv class=\u0022max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4\u0022\u003E\u003Cdiv class=\u0022flex items-center gap-3.5\u0022\u003E\u003Cdiv class=\u0022w-8 h-8 rounded bg-[var(--surface-sunken)] border border-[var(--border)] flex items-center justify-center\u0022\u003E\u003Csvg xmlns=\u0022http://www.w3.org/2000/svg\u0022 width=\u002224\u0022 height=\u002224\u0022 viewBox=\u00220 0 24 24\u0022 fill=\u0022none\u0022 stroke=\u0022currentColor\u0022 stroke-width=\u00222\u0022 stroke-linecap=\u0022round\u0022 stroke-linejoin=\u0022round\u0022 class=\u0022lucide lucide-shield-exclamation-point lucide-shield-alert w-5 h-5 text-[var(--text-mu\n\u2026[truncated]",
+        "durationMs": 3395
+      }
+    ],
+    "executions": [
+      {
+        "source": "production-build",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "run",
+          "build"
+        ],
+        "cwd": "D:\\AgentLab\\agent-ready\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "tsc-no-emit",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\node.EXE",
+        "args": [
+          "node_modules/typescript/bin/tsc",
+          "--noEmit"
+        ],
+        "cwd": "D:\\AgentLab\\agent-ready\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "tests-pass",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "test"
+        ],
+        "cwd": "D:\\AgentLab\\agent-ready\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "landing-route-200",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\node.EXE",
+        "args": [
+          "node_modules/next/dist/bin/next",
+          "start",
+          "--hostname",
+          "127.0.0.1",
+          "--port",
+          "3101"
+        ],
+        "cwd": "D:\\AgentLab\\agent-ready\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "simulation-route-200",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\node.EXE",
+        "args": [
+          "node_modules/next/dist/bin/next",
+          "start",
+          "--hostname",
+          "127.0.0.1",
+          "--port",
+          "3101"
+        ],
+        "cwd": "D:\\AgentLab\\agent-ready\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      }
+    ]
+  }
+}

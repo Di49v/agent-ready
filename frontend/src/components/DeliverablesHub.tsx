@@ -9,10 +9,8 @@ import {
   ExternalLink,
   FileCheck,
   FileCode,
-  Layers,
   Package,
   ShieldCheck,
-  Sparkles,
   Terminal,
 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
@@ -69,55 +67,61 @@ console.log(\`Remediated Score: \${rerun.score}/100 🟢\`);`;
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="bg-[#0D0F14] border border-white/[0.07] rounded-lg p-5">
+      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-lg p-5">
         <div className="flex items-center gap-2 mb-1.5">
-          <span className="h-2 w-2 rounded-full bg-cyan-400" />
-          <h2 className="text-lg font-medium text-white tracking-[-0.02em] flex items-center gap-2">
-            Platform Deliverables &amp; Sponsor Hub <span className="text-zinc-500 font-mono text-xs uppercase px-2 py-0.5 rounded bg-white/5 border border-white/10">Stage 6</span>
+          <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+          <h2 className="text-lg font-medium text-[var(--accent)] tracking-[-0.02em] flex items-center gap-2">
+            Platform Deliverables &amp; Sponsor Hub <span className="text-[var(--text-dim)] font-mono text-xs uppercase px-2 py-0.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)]">Stage 6</span>
           </h2>
         </div>
-        <p className="text-zinc-400 text-sm max-w-2xl leading-relaxed">
+        <p className="text-[var(--text-muted)] text-sm max-w-2xl leading-relaxed">
           AgentReady Lab is built API-first. Every crash-test run, dual-ledger comparison, and grounded APIMatic patch is exposed through clean OpenAPI 3.1 endpoints, a Model Context Protocol (MCP) server, and dynamic vector safety score badges.
         </p>
       </div>
 
       {/* Grid: SVG Badges & MCP Config */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/[0.07] border border-white/[0.07] rounded-lg overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-[var(--surface-sunken)] border border-[var(--border)] rounded-lg overflow-hidden">
         {/* Dynamic SVG Safety Score Badges */}
-        <div className="bg-[#0D0F14] p-5 space-y-4">
+        <div className="bg-[var(--surface)] p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-emerald-400" />
-              <h3 className="text-sm font-medium text-white">Dynamic SVG Safety Score Badges</h3>
+              <ShieldCheck className="h-4 w-4 text-[var(--pass)]" />
+              <h3 className="text-sm font-medium text-[var(--text)]">Dynamic SVG Safety Score Badges</h3>
             </div>
-            <span className="text-zinc-500 font-mono text-[10px] uppercase">GET /v1/badge/&#123;target&#125;.svg</span>
+            <span className="text-[var(--text-dim)] font-mono text-[10px] uppercase">GET /v1/badge/&#123;target&#125;.svg</span>
           </div>
-          <p className="text-xs text-zinc-400 leading-relaxed">
+          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
             Vector safety score badge generated dynamically based on reconciler audit results. Live README badge for e-commerce stores:
           </p>
 
           {/* Badge Previews */}
           <div className="grid grid-cols-2 gap-3 pt-1">
-            <div className="p-3 rounded bg-[#13161F] border border-white/[0.07] space-y-2">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase block">Hardened Shop (Guarded)</span>
-              <div className="inline-flex rounded overflow-hidden text-xs font-mono font-bold shadow-sm">
-                <span className="bg-[#1E293B] text-white px-2.5 py-1 border-r border-black/30">agent-ready</span>
-                <span className="bg-[#10B981] text-black px-2.5 py-1 font-bold">95 / 100</span>
+            <div className="p-3 rounded bg-[var(--surface-sunken)] border border-[var(--border)] space-y-2">
+              <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase block">Hardened Shop (Guarded)</span>
+              <div className="inline-flex rounded overflow-hidden text-xs font-mono font-bold shadow-none">
+                <span className="bg-[var(--surface-sunken)] text-[var(--text)] px-2.5 py-1 border-r border-[var(--border)]">agent-ready</span>
+                <span className="inline-flex items-center gap-1.5 bg-[var(--surface-sunken)] text-[var(--text-muted)] px-2.5 py-1 font-bold">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--pass)]" />
+                  95 / 100
+                </span>
               </div>
             </div>
 
-            <div className="p-3 rounded bg-[#13161F] border border-white/[0.07] space-y-2">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase block">Naive Shop (Vulnerable)</span>
-              <div className="inline-flex rounded overflow-hidden text-xs font-mono font-bold shadow-sm">
-                <span className="bg-[#1E293B] text-white px-2.5 py-1 border-r border-black/30">agent-ready</span>
-                <span className="bg-[#F43F5E] text-white px-2.5 py-1 font-bold">18 / 100</span>
+            <div className="p-3 rounded bg-[var(--surface-sunken)] border border-[var(--border)] space-y-2">
+              <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase block">Naive Shop (Vulnerable)</span>
+              <div className="inline-flex rounded overflow-hidden text-xs font-mono font-bold shadow-none">
+                <span className="bg-[var(--surface-sunken)] text-[var(--text)] px-2.5 py-1 border-r border-[var(--border)]">agent-ready</span>
+                <span className="inline-flex items-center gap-1.5 bg-[var(--surface-sunken)] text-[var(--text-muted)] px-2.5 py-1 font-bold">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--fail)]" />
+                  18 / 100
+                </span>
               </div>
             </div>
           </div>
 
           {/* Markdown Snippet Copy */}
           <div className="space-y-1.5 pt-2">
-            <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400">
+            <div className="flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
               <span>Markdown Embed Code:</span>
               <button
                 onClick={() =>
@@ -126,53 +130,53 @@ console.log(\`Remediated Score: \${rerun.score}/100 🟢\`);`;
                     "badge"
                   )
                 }
-                className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 cursor-pointer"
+                className="text-[var(--text-muted)] hover:text-[var(--text)] flex items-center gap-1 cursor-pointer"
               >
                 {copiedKey === "badge" ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                 <span>{copiedKey === "badge" ? "Copied" : "Copy"}</span>
               </button>
             </div>
-            <pre className="p-2.5 rounded bg-[#08090C] border border-white/[0.07] text-[11px] font-mono text-zinc-300 overflow-x-auto">
+            <pre className="p-2.5 rounded bg-[var(--bg)] border border-[var(--border)] text-[11px] font-mono text-[var(--text)] overflow-x-auto">
               {`[![AgentReady Score](${API_BASE_URL}/v1/badge/hardened-shop.svg)](${API_BASE_URL}/v1/runs/latest/report)`}
             </pre>
           </div>
         </div>
 
         {/* Model Context Protocol (MCP) Server */}
-        <div className="bg-[#0D0F14] p-5 space-y-4">
+        <div className="bg-[var(--surface)] p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Terminal className="h-4 w-4 text-cyan-400" />
-              <h3 className="text-sm font-medium text-white">Model Context Protocol (MCP) Server</h3>
+              <Terminal className="h-4 w-4 text-[var(--text-muted)]" />
+              <h3 className="text-sm font-medium text-[var(--text)]">Model Context Protocol (MCP) Server</h3>
             </div>
-            <span className="text-zinc-500 font-mono text-[10px] uppercase">Section B3.10</span>
+            <span className="text-[var(--text-dim)] font-mono text-[10px] uppercase">Section B3.10</span>
           </div>
-          <p className="text-xs text-zinc-400 leading-relaxed">
-            Exposes 5 tools directly to <strong>Google Antigravity IDE</strong> (<code className="text-zinc-300">Open MCP Config</code>) and <strong>Claude Desktop</strong> for the 10-second demo video clip:
+          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+            Exposes 5 tools directly to <strong>Google Antigravity IDE</strong> (<code className="text-[var(--text)]">Open MCP Config</code>) and <strong>Claude Desktop</strong> for the 10-second demo video clip:
           </p>
 
           {/* Tools List */}
           <div className="flex flex-wrap gap-1.5 font-mono text-[11px]">
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-cyan-300">start_crash_test</span>
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-cyan-300">list_findings</span>
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-cyan-300">explain_finding</span>
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-cyan-300">suggest_fix</span>
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-cyan-300">rerun</span>
+            <span className="px-2 py-0.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] text-[var(--text-muted)]">start_crash_test</span>
+            <span className="px-2 py-0.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] text-[var(--text-muted)]">list_findings</span>
+            <span className="px-2 py-0.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] text-[var(--text-muted)]">explain_finding</span>
+            <span className="px-2 py-0.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] text-[var(--text-muted)]">suggest_fix</span>
+            <span className="px-2 py-0.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] text-[var(--text-muted)]">rerun</span>
           </div>
 
           {/* MCP JSON Snippet */}
           <div className="space-y-1.5 pt-1">
-            <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400">
+            <div className="flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
               <span>IDE Config (Antigravity / Claude Desktop):</span>
               <button
                 onClick={() => copyToClipboard(mcpConfigJson, "mcp")}
-                className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 cursor-pointer"
+                className="text-[var(--text-muted)] hover:text-[var(--text)] flex items-center gap-1 cursor-pointer"
               >
                 {copiedKey === "mcp" ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                 <span>{copiedKey === "mcp" ? "Copied" : "Copy"}</span>
               </button>
             </div>
-            <pre className="p-2.5 rounded bg-[#08090C] border border-white/[0.07] text-[10px] font-mono text-zinc-300 overflow-x-auto max-h-[140px]">
+            <pre className="p-2.5 rounded bg-[var(--bg)] border border-[var(--border)] text-[10px] font-mono text-[var(--text)] overflow-x-auto max-h-[140px]">
               {mcpConfigJson}
             </pre>
           </div>
@@ -180,47 +184,47 @@ console.log(\`Remediated Score: \${rerun.score}/100 🟢\`);`;
       </div>
 
       {/* Grid: APIMatic SDK & OpenAPI Exporter */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/[0.07] border border-white/[0.07] rounded-lg overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-[var(--surface-sunken)] border border-[var(--border)] rounded-lg overflow-hidden">
         {/* APIMatic Generated TypeScript SDK */}
-        <div className="bg-[#0D0F14] p-5 space-y-4">
+        <div className="bg-[var(--surface)] p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Package className="h-4 w-4 text-purple-400" />
-              <h3 className="text-sm font-medium text-white">APIMatic Typed TypeScript SDK</h3>
+              <Package className="h-4 w-4 text-[var(--text-muted)]" />
+              <h3 className="text-sm font-medium text-[var(--text)]">APIMatic Typed TypeScript SDK</h3>
             </div>
-            <span className="text-zinc-500 font-mono text-[10px] uppercase">@agent-ready/sdk</span>
+            <span className="text-[var(--text-dim)] font-mono text-[10px] uppercase">@agent-ready/sdk</span>
           </div>
-          <p className="text-xs text-zinc-400 leading-relaxed">
-            Generated directly from <code className="text-zinc-300">openapi.json</code> using APIMatic conventions. Includes RFC 9457 error translation and typed models:
+          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+            Generated directly from <code className="text-[var(--text)]">openapi.json</code> using APIMatic conventions. Includes RFC 9457 error translation and typed models:
           </p>
 
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400">
+            <div className="flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
               <span>SDK Usage Sample:</span>
               <button
                 onClick={() => copyToClipboard(sdkCodeSnippet, "sdk")}
-                className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 cursor-pointer"
+                className="text-[var(--text-muted)] hover:text-[var(--text)] flex items-center gap-1 cursor-pointer"
               >
                 {copiedKey === "sdk" ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                 <span>{copiedKey === "sdk" ? "Copied" : "Copy"}</span>
               </button>
             </div>
-            <pre className="p-2.5 rounded bg-[#08090C] border border-white/[0.07] text-[10px] font-mono text-zinc-300 overflow-x-auto max-h-[160px]">
+            <pre className="p-2.5 rounded bg-[var(--bg)] border border-[var(--border)] text-[10px] font-mono text-[var(--text)] overflow-x-auto max-h-[160px]">
               {sdkCodeSnippet}
             </pre>
           </div>
         </div>
 
         {/* Audit Report & Specification Links */}
-        <div className="bg-[#0D0F14] p-5 space-y-4">
+        <div className="bg-[var(--surface)] p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileCheck className="h-4 w-4 text-amber-400" />
-              <h3 className="text-sm font-medium text-white">Audit Reports &amp; OpenAPI Spec</h3>
+              <FileCheck className="h-4 w-4 text-[var(--text-muted)]" />
+              <h3 className="text-sm font-medium text-[var(--text)]">Audit Reports &amp; OpenAPI Spec</h3>
             </div>
-            <span className="text-zinc-500 font-mono text-[10px] uppercase">REST API /v1</span>
+            <span className="text-[var(--text-dim)] font-mono text-[10px] uppercase">REST API /v1</span>
           </div>
-          <p className="text-xs text-zinc-400 leading-relaxed">
+          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
             Download full audit reports with PayPal Sandbox transaction IDs as ground-truth evidence:
           </p>
 
@@ -229,48 +233,48 @@ console.log(\`Remediated Score: \${rerun.score}/100 🟢\`);`;
               href={`${API_BASE_URL}/openapi.json`}
               target="_blank"
               rel="noreferrer"
-              className="p-3 rounded bg-[#13161F] border border-white/[0.07] hover:border-cyan-400/40 flex items-center justify-between text-xs font-mono text-zinc-300 hover:text-white transition group"
+              className="p-3 rounded bg-[var(--surface-sunken)] border border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-hover)] flex items-center justify-between text-xs font-mono text-[var(--text)] hover:text-[var(--text)] transition group"
             >
               <div className="flex items-center gap-2.5">
-                <FileCode className="h-4 w-4 text-cyan-400" />
+                <FileCode className="h-4 w-4 text-[var(--text-muted)]" />
                 <div>
-                  <div className="font-semibold text-white">OpenAPI 3.1 Specification</div>
-                  <div className="text-[10px] text-zinc-500">Ready for APIMatic Studio &amp; Postman</div>
+                  <div className="font-semibold text-[var(--text)]">OpenAPI 3.1 Specification</div>
+                  <div className="text-[10px] text-[var(--text-dim)]">Ready for APIMatic Studio &amp; Postman</div>
                 </div>
               </div>
-              <ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-cyan-400 transition" />
+              <ExternalLink className="h-3.5 w-3.5 text-[var(--text-dim)] group-hover:text-[var(--text)] transition" />
             </a>
 
             <a
               href={`${API_BASE_URL}/docs`}
               target="_blank"
               rel="noreferrer"
-              className="p-3 rounded bg-[#13161F] border border-white/[0.07] hover:border-cyan-400/40 flex items-center justify-between text-xs font-mono text-zinc-300 hover:text-white transition group"
+              className="p-3 rounded bg-[var(--surface-sunken)] border border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-hover)] flex items-center justify-between text-xs font-mono text-[var(--text)] hover:text-[var(--text)] transition group"
             >
               <div className="flex items-center gap-2.5">
-                <Code2 className="h-4 w-4 text-purple-400" />
+                <Code2 className="h-4 w-4 text-[var(--text-muted)]" />
                 <div>
-                  <div className="font-semibold text-white">Interactive Swagger API Docs</div>
-                  <div className="text-[10px] text-zinc-500">FastAPI interactive documentation</div>
+                  <div className="font-semibold text-[var(--text)]">Interactive Swagger API Docs</div>
+                  <div className="text-[10px] text-[var(--text-dim)]">FastAPI interactive documentation</div>
                 </div>
               </div>
-              <ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-purple-400 transition" />
+              <ExternalLink className="h-3.5 w-3.5 text-[var(--text-dim)] group-hover:text-[var(--text)] transition" />
             </a>
 
             <a
               href={`${API_BASE_URL}/v1/runs/run_42_naive_shop/postman`}
               target="_blank"
               rel="noreferrer"
-              className="p-3 rounded bg-[#13161F] border border-white/[0.07] hover:border-amber-400/40 flex items-center justify-between text-xs font-mono text-zinc-300 hover:text-white transition group"
+              className="p-3 rounded bg-[var(--surface-sunken)] border border-[var(--border)] hover:border-[var(--border-strong)] flex items-center justify-between text-xs font-mono text-[var(--text)] hover:text-[var(--text)] transition group"
             >
               <div className="flex items-center gap-2.5">
-                <Download className="h-4 w-4 text-amber-400" />
+                <Download className="h-4 w-4 text-[var(--text-muted)]" />
                 <div>
-                  <div className="font-semibold text-white">Postman Collection (v2.1.0)</div>
-                  <div className="text-[10px] text-zinc-500">1-click reproduction tests for failed findings</div>
+                  <div className="font-semibold text-[var(--text)]">Postman Collection (v2.1.0)</div>
+                  <div className="text-[10px] text-[var(--text-dim)]">1-click reproduction tests for failed findings</div>
                 </div>
               </div>
-              <ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-amber-400 transition" />
+              <ExternalLink className="h-3.5 w-3.5 text-[var(--text-dim)] group-hover:text-[var(--text-muted)] transition" />
             </a>
           </div>
         </div>
@@ -278,4 +282,3 @@ console.log(\`Remediated Score: \${rerun.score}/100 🟢\`);`;
     </div>
   );
 };
-
