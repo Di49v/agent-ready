@@ -8,6 +8,7 @@ import {
   Users,
 } from "lucide-react";
 import AccordionGallery from "./AccordionGallery";
+import { SwarmDiagram, ChaosDiagram, ReconDiagram, FixDiagram } from "./PipelineDiagrams";
 
 const PIPELINE_STAGES = [
   {
@@ -16,7 +17,8 @@ const PIPELINE_STAGES = [
     description: "9 specialized buyer personas execute in 2 batched waves (`asyncio.Semaphore(5)`) to stress-test the store without triggering PayPal 429 rate limits.",
     footer: "Input: Target Store URL + Seed",
     accentText: "text-[var(--text)]",
-    accentBorder: "border-[var(--text-muted)]/50"
+    accentBorder: "border-[var(--text-muted)]/50",
+    visual: <SwarmDiagram />
   },
   {
     stage: "STAGE 02",
@@ -24,7 +26,8 @@ const PIPELINE_STAGES = [
     description: "Deterministic faults: drops payment response, strips idempotency keys, mutates prices to $1.50, and forges unverified webhook payloads.",
     footer: "Reproducible: `seed=42`",
     accentText: "text-[var(--warn)]",
-    accentBorder: "border-[var(--warn)]/50"
+    accentBorder: "border-[var(--warn)]/50",
+    visual: <ChaosDiagram />
   },
   {
     stage: "STAGE 03",
@@ -32,7 +35,8 @@ const PIPELINE_STAGES = [
     description: "Cross-examines PayPal Sandbox API ground truth against merchant internal ledger (`/_lab/ledger`) joined on `custom_id == cart_id`.",
     footer: "Evaluates: 6 Invariant Rules",
     accentText: "text-[var(--accent)]",
-    accentBorder: "border-[var(--accent)]/50"
+    accentBorder: "border-[var(--accent)]/50",
+    visual: <ReconDiagram />
   },
   {
     stage: "STAGE 04",
@@ -40,7 +44,8 @@ const PIPELINE_STAGES = [
     description: "Synthesizes plain-English root causes with exact PayPal IDs, generates verified 10-line Git patches, and triggers 1-click re-run verification.",
     footer: "Output: Score Recovery (18 → 95)",
     accentText: "text-[var(--pass)]",
-    accentBorder: "border-[var(--pass)]/50"
+    accentBorder: "border-[var(--pass)]/50",
+    visual: <FixDiagram />
   }
 ];
 
