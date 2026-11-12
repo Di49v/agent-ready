@@ -2,6 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
+import TextPressure from "./TextPressure";
+import MaskedHeading from "./MaskedHeading";
 import { PLAYGROUND_URL, METRICS } from "@/lib/constants";
 import {
   Zap,
@@ -39,7 +41,7 @@ export const HeroSection: React.FC = () => {
             </div>
 
             {/* Sponsor & Standard Tags */}
-            <div className="flex flex-wrap items-center gap-2 mb-4 text-[11px] font-mono text-[var(--text-muted)]">
+            <div className="flex flex-wrap items-center gap-2 mb-3 text-[11px] font-mono text-[var(--text-muted)]">
               <span className="px-2 py-0.5 rounded border border-[var(--border)] bg-[var(--surface-sunken)]">
                 PayPal Sandbox v2
               </span>
@@ -51,20 +53,72 @@ export const HeroSection: React.FC = () => {
               </span>
             </div>
 
-            {/* Main Heading in Fraunces */}
-            <h1 className="font-heading font-semibold text-3xl sm:text-5xl text-[var(--text)] leading-[1.15] tracking-tight">
-              PayPal protects the payment.{" "}
-              <span className="text-[var(--accent)]">
-                Nobody tests the merchant&rsquo;s side
-              </span>{" "}
-              of an agent order.{" "}
-              <span className="underline decoration-[var(--highlight)] decoration-1 underline-offset-4">
-                AgentReady Lab does.
-              </span>
-            </h1>
+            {/* Main Heading using TextPressure & MaskedHeading combined */}
+            <div className="w-full flex flex-col items-start overflow-hidden py-2 font-heading cursor-crosshair">
+              {/* TextPressure lines (Solid Black, properly spaced) */}
+              <TextPressure
+                text="PAYPAL PROTECTS THE PAYMENT."
+                minFontSize={34}
+                textColor="#000000"
+                pressureColor="#000000"
+                width={true}
+                weight={true}
+                flex={false} 
+                radius={0.3}
+                smoothing={0.5}
+                idle="none"
+                clickRipple={true}
+                className="-mt-1"
+              />
+              <TextPressure
+                text="NOBODY TESTS THE MERCHANT SIDE"
+                minFontSize={28}
+                textColor="#000000"
+                pressureColor="#000000"
+                width={true}
+                weight={true}
+                flex={false}
+                radius={0.1}
+                smoothing={0.5}
+                idle="none"
+                clickRipple={true}
+                className="-mt-1"
+              />
+              <TextPressure
+                text="OF AN AGENT ORDER."
+                minFontSize={28}
+                textColor="#000000"
+                pressureColor="#000000"
+                width={true}
+                weight={true}
+                flex={false}
+                radius={0.1}
+                smoothing={0.5}
+                idle="none"
+                clickRipple={true}
+                className="-mt-1"
+              />
+
+              {/* The MaskedHeading Punchline */}
+              <div className="mt-4 w-full">
+                <MaskedHeading 
+                  text="AGENTREADY LAB DOES."
+                  mediaType="image"
+                  src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000&auto=format&fit=crop"
+                  fillScale={1.15}
+                  parallax={15}
+                  reveal="blur"
+                  trigger="view"
+                  stagger={0.05}
+                  align="left"
+                  textScale={0.09}
+                  className="font-black text-left"
+                />
+              </div>
+            </div>
 
             {/* Technical Subtitle */}
-            <p className="mt-4 text-[15px] sm:text-base text-[var(--text-muted)] leading-relaxed font-sans">
+            <p className="mt-5 text-[15px] sm:text-base text-[var(--text-muted)] leading-relaxed font-sans">
               An adversarial crash-testing, dual-ledger compliance auditing, and self-healing platform for autonomous AI agent commerce. Swarm 9 specialized buyer test dummies, inject deterministic chaos faults, reconcile against PayPal Sandbox ground truth, and generate grounded 10-line code patches.
             </p>
 
@@ -98,7 +152,7 @@ export const HeroSection: React.FC = () => {
           </div>
 
           {/* Right Column: Theme-Compliant Terminal */}
-          <div className="lg:col-span-6 w-full">
+          <div className="lg:col-span-6 w-full mt-4 lg:mt-0">
             <div className="w-full rounded-xl border border-[var(--code-border)] bg-[var(--code-bg)] text-[var(--code-text)] text-[13px] font-mono shadow-2xl overflow-hidden relative transition-colors">
               {/* Subtle top glow */}
               <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[var(--accent)]/50 to-transparent"></div>
