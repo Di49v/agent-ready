@@ -2,6 +2,12 @@
 
 > **"PayPal protects the payment. Nobody tests the merchant's side of an agent order. AgentReady Lab does."**
 
+<p align="center">
+  <a href="https://agent-ready-deploy.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/🚀_Try_AgentReady_Lab_Live-Click_Here-2EA44F?style=for-the-badge" alt="Try AgentReady Lab Live"/>
+  </a>
+</p>
+
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.162.0-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-16.4.5-black?logo=next.js&logoColor=white)](https://nextjs.org)
 [![PayPal SDK](https://img.shields.io/badge/PayPal_SDK-2.29_Async-00457C?logo=paypal&logoColor=white)](https://github.com/context-plugins/paypal-python-sdk)
@@ -13,6 +19,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
+
+
 
 ## What is AgentReady Lab?
 
