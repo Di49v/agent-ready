@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { PLAYGROUND_URL, GITHUB_REPO_URL } from "@/lib/constants";
 import { ThemeToggle } from "./ThemeToggle";
-import PillNav from "./PillNav"; // Import the new PillNav component
+import PillNav from "./PillNav"; 
 import {
   Zap,
   Menu,
@@ -28,10 +28,11 @@ export const Navbar: React.FC = () => {
     { label: "Overview", href: "#about" },
     { label: "Threats", href: "#threats" },
     { label: "Features", href: "#features" },
-    { label: "Interactive Demo", href: "#preview" },
+    { label: "Trust Models", href: "#preview" },
     { label: "Workflow", href: "#workflow" },
     { label: "Docs", href: "#docs" },
     { label: "Postman Hub", href: "#postman" },
+    { label: "Platform Hub", href: "/platform" }, // <-- Added Platform Hub here!
   ];
 
   return (
@@ -60,7 +61,7 @@ export const Navbar: React.FC = () => {
             activeHref="#about" 
             itemStyle="plain" 
             hoverEffect="glide"
-            indicator="pill" // <-- CRITICAL FIX: This makes the oval rest on the active item!
+            indicator="pill" 
             layout="split"
             surface="none"
             size="sm"
@@ -69,7 +70,6 @@ export const Navbar: React.FC = () => {
             collapse="never"
             intro={false}
             style={{
-              // Makes the oval shape clearly visible in both Light and Dark mode
               "--pn-pill": "var(--surface-sunken)", 
               "--pn-pill-shadow": "inset 0 0 0 1px var(--border)", 
               "--pn-pill-ink": "var(--text)", 

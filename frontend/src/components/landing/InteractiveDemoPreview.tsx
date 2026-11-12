@@ -49,7 +49,7 @@ export const InteractiveDemoPreview: React.FC = () => {
             {/* Left Side: Tabs */}
             <div className="flex items-center gap-4">
               <span className="hidden sm:inline-block text-[11px] font-mono text-[var(--text-muted)] uppercase tracking-wider">
-                Architecture:
+                Trust Models:
               </span>
               <div className="inline-flex rounded-md bg-[var(--surface)] p-1 border border-[var(--border)] shadow-sm">
                 <button
@@ -61,7 +61,7 @@ export const InteractiveDemoPreview: React.FC = () => {
                   }`}
                 >
                   <span className={`inline-block h-1.5 w-1.5 rounded-full ${selectedShop === "naive" ? "bg-[var(--fail)]" : "bg-[var(--text-dim)]"}`} />
-                  Naive Shop (Vulnerable)
+                  Legacy/Baseline Store (Vulnerable)
                 </button>
                 <button
                   onClick={() => setSelectedShop("hardened")}
@@ -72,7 +72,7 @@ export const InteractiveDemoPreview: React.FC = () => {
                   }`}
                 >
                   <span className={`inline-block h-1.5 w-1.5 rounded-full ${selectedShop === "hardened" ? "bg-[var(--pass)]" : "bg-[var(--text-dim)]"}`} />
-                  Hardened Shop (Guard)
+                  Zero-Trust/Sheilded Store (Guard)
                 </button>
               </div>
             </div>
@@ -96,7 +96,7 @@ export const InteractiveDemoPreview: React.FC = () => {
                 <div className="md:col-span-7 space-y-6">
                   <div className="flex items-center gap-2 mb-2">
                     <AlertCircle className="w-6 h-6 text-[var(--fail)]" />
-                    <h3 className="text-xl sm:text-2xl font-heading font-semibold text-[var(--text)]">The Naive Approach</h3>
+                    <h3 className="text-xl sm:text-2xl font-heading font-semibold text-[var(--text)]">The Naive Store</h3>
                   </div>
                   <p className="text-[14px] sm:text-[15px] text-[var(--text-muted)] leading-relaxed">
                     A "Naive Shop" represents a standard web integration. It assumes the buyer is a human clicking buttons in a browser, making it highly vulnerable to autonomous AI agents that act unpredictably and at high speeds.
@@ -147,7 +147,7 @@ export const InteractiveDemoPreview: React.FC = () => {
                 <div className="md:col-span-7 space-y-6">
                   <div className="flex items-center gap-2 mb-2">
                     <ShieldCheck className="w-6 h-6 text-[var(--pass)]" />
-                    <h3 className="text-xl sm:text-2xl font-heading font-semibold text-[var(--text)]">The Hardened Approach</h3>
+                    <h3 className="text-xl sm:text-2xl font-heading font-semibold text-[var(--text)]">The Hardened Store</h3>
                   </div>
                   <p className="text-[14px] sm:text-[15px] text-[var(--text-muted)] leading-relaxed">
                     A "Hardened Shop" implements strict zero-trust commerce invariants. It assumes every incoming API request could be from a faulty agent, validating every single action against a deterministic source of truth.
