@@ -3,262 +3,195 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { PLAYGROUND_URL } from "@/lib/constants";
-import {
-  Play,
-  RotateCcw,
-  ArrowRight,
-  Terminal,
+import { 
+  AlertCircle, 
+  ShieldCheck, 
+  Server, 
+  Key, 
+  FileWarning, 
+  CheckCircle,
+  Zap
 } from "lucide-react";
+
+// Mini helper icon for the vulnerable server
+const XIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+  </svg>
+);
 
 export const InteractiveDemoPreview: React.FC = () => {
   const [selectedShop, setSelectedShop] = useState<"naive" | "hardened">("naive");
-  const [isSimulating, setIsSimulating] = useState<boolean>(false);
-  const [simStep, setSimStep] = useState<number>(0);
-  const [hasCompleted, setHasCompleted] = useState<boolean>(false);
-
-  const runSimulation = () => {
-    setIsSimulating(true);
-    setHasCompleted(false);
-    setSimStep(1);
-
-    setTimeout(() => setSimStep(2), 600);
-    setTimeout(() => setSimStep(3), 1200);
-    setTimeout(() => setSimStep(4), 1800);
-    setTimeout(() => {
-      setIsSimulating(false);
-      setHasCompleted(true);
-    }, 2400);
-  };
-
-  const resetSimulation = () => {
-    setSimStep(0);
-    setHasCompleted(false);
-    setIsSimulating(false);
-  };
-
-  // Determine chart values
-  const scoreValue = !hasCompleted && !isSimulating ? 0 : (selectedShop === "naive" ? 18 : 95);
-  const displayScore = !hasCompleted && !isSimulating ? "--" : scoreValue.toString();
-  const themeColor = !hasCompleted && !isSimulating
-    ? "text-[var(--border-strong)]"
-    : selectedShop === "naive"
-    ? "text-[var(--fail)]"
-    : "text-[var(--pass)]";
 
   return (
     <section id="preview" className="py-16 md:py-24 border-b border-[var(--border)] bg-[var(--bg)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         {/* Section Header */}
-        <div className="flex flex-col text-left max-w-2xl mb-12">
+        <div className="flex flex-col text-left max-w-3xl mb-10">
           <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] mb-2 font-medium">
-            Interactive Micro-Simulator
+            Architecture Breakdown
           </span>
-          <h2 className="font-heading font-semibold text-2xl sm:text-4xl text-[var(--accent)] tracking-tight">
-            Test the Red-to-Green Engine in Real Time
+          <h2 className="font-heading font-semibold text-3xl sm:text-4xl text-[var(--text)] tracking-tight">
+            Why Standard Integrations Fail AI Agents
           </h2>
           <p className="mt-3 text-[15px] sm:text-base text-[var(--text-muted)] leading-relaxed">
-            Toggle between the vulnerable baseline and protected shop, trigger an in-browser micro-run, and observe how AgentReady Lab evaluates dual-ledger compliance.
+            Toggle below to understand the critical differences between a standard web integration and a resilient, zero-trust backend designed for autonomous commerce.
           </p>
         </div>
 
-        {/* Micro-Simulator Container */}
-        <div className="max-w-4xl rounded-md border border-[var(--border)] bg-[var(--surface)] overflow-hidden">
+        {/* Main Floating Container */}
+        <div className="max-w-5xl mx-auto rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
+          
           {/* Top Control Bar */}
-          <div className="bg-[var(--surface-sunken)] px-5 py-3 border-b border-[var(--border)] flex flex-wrap items-center justify-between gap-3">
-            {/* Shop Toggle */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
-                Target Store:
+          <div className="bg-[var(--surface-sunken)] px-4 py-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            
+            {/* Left Side: Tabs */}
+            <div className="flex items-center gap-4">
+              <span className="hidden sm:inline-block text-[11px] font-mono text-[var(--text-muted)] uppercase tracking-wider">
+                Architecture:
               </span>
-              <div className="inline-flex rounded-md bg-[var(--surface)] p-0.5 border border-[var(--border)]">
+              <div className="inline-flex rounded-md bg-[var(--surface)] p-1 border border-[var(--border)] shadow-sm">
                 <button
-                  onClick={() => {
-                    setSelectedShop("naive");
-                    resetSimulation();
-                  }}
-                  className={`px-3 py-1 rounded text-xs font-mono transition-colors cursor-pointer ${
+                  onClick={() => setSelectedShop("naive")}
+                  className={`px-3.5 py-1.5 rounded text-xs font-mono transition-all cursor-pointer flex items-center gap-2 ${
                     selectedShop === "naive"
-                      ? "bg-[var(--surface-sunken)] text-[var(--text)] font-semibold border border-[var(--border-strong)]"
-                      : "text-[var(--text-muted)] hover:text-[var(--text)]"
+                      ? "bg-[var(--fail)]/10 text-[var(--fail)] font-semibold border border-[var(--fail)]/20 shadow-sm"
+                      : "text-[var(--text-muted)] hover:text-[var(--text)] border border-transparent"
                   }`}
                 >
-                  <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-[var(--fail)]" />
+                  <span className={`inline-block h-1.5 w-1.5 rounded-full ${selectedShop === "naive" ? "bg-[var(--fail)]" : "bg-[var(--text-dim)]"}`} />
                   Naive Shop (Vulnerable)
                 </button>
                 <button
-                  onClick={() => {
-                    setSelectedShop("hardened");
-                    resetSimulation();
-                  }}
-                  className={`px-3 py-1 rounded text-xs font-mono transition-colors cursor-pointer ${
+                  onClick={() => setSelectedShop("hardened")}
+                  className={`px-3.5 py-1.5 rounded text-xs font-mono transition-all cursor-pointer flex items-center gap-2 ${
                     selectedShop === "hardened"
-                      ? "bg-[var(--surface-sunken)] text-[var(--text)] font-semibold border border-[var(--border-strong)]"
-                      : "text-[var(--text-muted)] hover:text-[var(--text)]"
+                      ? "bg-[var(--pass)]/10 text-[var(--pass)] font-semibold border border-[var(--pass)]/20 shadow-sm"
+                      : "text-[var(--text-muted)] hover:text-[var(--text)] border border-transparent"
                   }`}
                 >
-                  <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-[var(--pass)]" />
+                  <span className={`inline-block h-1.5 w-1.5 rounded-full ${selectedShop === "hardened" ? "bg-[var(--pass)]" : "bg-[var(--text-dim)]"}`} />
                   Hardened Shop (Guard)
                 </button>
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={runSimulation}
-                disabled={isSimulating}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md font-sans text-xs font-medium bg-[var(--accent)] text-[var(--accent-foreground)] hover:bg-[var(--accent-hover)] disabled:opacity-50 transition-colors cursor-pointer"
-              >
-                {isSimulating ? (
-                  <>
-                    <span className="w-3 h-3 border-2 border-[var(--text-muted)] border-t-transparent rounded-full animate-spin" />
-                    <span>Executing Swarm...</span>
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-3 h-3 fill-current stroke-[1.5]" />
-                    <span>Run Micro-Simulation</span>
-                  </>
-                )}
-              </button>
-
-              <button
-                onClick={resetSimulation}
-                title="Reset simulation"
-                className="p-1.5 rounded-md border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--text)] transition-colors cursor-pointer"
-              >
-                <RotateCcw className="w-3.5 h-3.5 stroke-[1.5]" />
-              </button>
-            </div>
+            {/* Right Side: Direct Simulation Button */}
+            <Link 
+              href={PLAYGROUND_URL}
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-md text-xs font-semibold bg-[var(--accent)] text-[var(--accent-foreground)] hover:bg-[var(--accent-hover)] transition-colors shadow-sm cursor-pointer"
+            >
+              <Zap className="w-3.5 h-3.5 fill-current" />
+              <span>Direct Simulation</span>
+            </Link>
           </div>
 
-          {/* Simulator Content Area */}
-          <div className="p-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-            {/* Left: Score & Radial Chart (Col 4) */}
-            <div className="md:col-span-4 flex flex-col items-center justify-center p-6 rounded-md border border-[var(--border)] bg-[var(--surface-sunken)] text-center h-full">
-              <span className="text-[11px] font-mono text-[var(--text-dim)] uppercase tracking-wider mb-2">
-                Simulated Score
-              </span>
-
-              {/* Side-by-Side Pie Chart and Score */}
-              <div className="flex items-center justify-center gap-5 my-4">
-                {/* SVG Solid Pie Chart */}
-                <div className="relative w-[72px] h-[72px] rounded-full overflow-hidden border border-[var(--border-strong)] bg-[var(--surface)]">
-                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 32 32">
-                    {/* Progress Fill (Solid Pie Slice) */}
-                    <circle
-                      cx="16"
-                      cy="16"
-                      r="8"
-                      fill="transparent"
-                      stroke="currentColor"
-                      strokeWidth="16"
-                      strokeDasharray="50.265 50.265"
-                      strokeDashoffset={50.265 - (scoreValue / 100) * 50.265}
-                      className={`transition-all duration-1000 ease-out ${themeColor}`}
-                    />
-                  </svg>
+          {/* Content Area */}
+          <div className="p-6 md:p-10 bg-[var(--surface)] min-h-[360px]">
+            {selectedShop === "naive" ? (
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center animate-in fade-in zoom-in-95 duration-300">
+                
+                {/* Left Text */}
+                <div className="md:col-span-7 space-y-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <AlertCircle className="w-6 h-6 text-[var(--fail)]" />
+                    <h3 className="text-xl sm:text-2xl font-heading font-semibold text-[var(--text)]">The Naive Approach</h3>
+                  </div>
+                  <p className="text-[14px] sm:text-[15px] text-[var(--text-muted)] leading-relaxed">
+                    A "Naive Shop" represents a standard web integration. It assumes the buyer is a human clicking buttons in a browser, making it highly vulnerable to autonomous AI agents that act unpredictably and at high speeds.
+                  </p>
+                  <ul className="space-y-6 border-t border-[var(--border)] pt-6">
+                    <li className="flex items-start gap-3.5">
+                      <div className="bg-[var(--fail)]/10 p-2 rounded-md mt-0.5 border border-[var(--fail)]/20">
+                        <FileWarning className="w-4 h-4 text-[var(--fail)] flex-shrink-0" />
+                      </div>
+                      <div>
+                        <strong className="block text-[14px] text-[var(--text)] mb-1">Missing Idempotency Keys</strong>
+                        <span className="text-[13.5px] text-[var(--text-muted)] leading-relaxed block">If a network timeout occurs, AI agents automatically retry the request. Without proper caching, the server processes both requests, double-charging the customer.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3.5">
+                      <div className="bg-[var(--fail)]/10 p-2 rounded-md mt-0.5 border border-[var(--fail)]/20">
+                        <AlertCircle className="w-4 h-4 text-[var(--fail)] flex-shrink-0" />
+                      </div>
+                      <div>
+                        <strong className="block text-[14px] text-[var(--text)] mb-1">Client-Side Price Trust</strong>
+                        <span className="text-[13.5px] text-[var(--text-muted)] leading-relaxed block">The server accepts price totals directly from the API payload. A rogue or hallucinating agent can alter the cart total, leading to silent under-collection.</span>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
 
-                {/* Score Number & Status */}
-                <div className="flex flex-col items-start text-left">
-                  <span className={`text-4xl font-mono font-semibold tabular-nums leading-none ${themeColor}`}>
-                    {displayScore}
-                  </span>
-                  <span className={`text-[10px] mt-1 font-mono uppercase tracking-wider font-bold ${themeColor}`}>
-                    {!hasCompleted && !isSimulating
-                      ? "IDLE"
-                      : selectedShop === "naive"
-                      ? "CRITICAL"
-                      : "PASSED"}
-                  </span>
+                {/* Right Graphic */}
+                <div className="md:col-span-5 flex items-center justify-center bg-[var(--surface-sunken)] rounded-xl border border-[var(--border)] p-8 shadow-inner h-full min-h-[280px]">
+                   <div className="text-center space-y-5">
+                      <div className="w-24 h-24 mx-auto bg-[var(--fail)]/10 rounded-full flex items-center justify-center border border-[var(--fail)]/20 shadow-sm relative">
+                        <Server className="w-10 h-10 text-[var(--fail)]" />
+                        <span className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full bg-[var(--fail)] border-[3px] border-[var(--surface-sunken)]">
+                          <XIcon className="w-3.5 h-3.5 text-white" />
+                        </span>
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-[var(--fail)]">Vulnerable Backend</div>
+                        <div className="text-[13px] text-[var(--text-muted)] mt-1.5 leading-relaxed">Susceptible to agent swarms<br/>and dual-ledger leakage.</div>
+                      </div>
+                   </div>
                 </div>
+
               </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center animate-in fade-in zoom-in-95 duration-300">
+                
+                {/* Left Text */}
+                <div className="md:col-span-7 space-y-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <ShieldCheck className="w-6 h-6 text-[var(--pass)]" />
+                    <h3 className="text-xl sm:text-2xl font-heading font-semibold text-[var(--text)]">The Hardened Approach</h3>
+                  </div>
+                  <p className="text-[14px] sm:text-[15px] text-[var(--text-muted)] leading-relaxed">
+                    A "Hardened Shop" implements strict zero-trust commerce invariants. It assumes every incoming API request could be from a faulty agent, validating every single action against a deterministic source of truth.
+                  </p>
+                  <ul className="space-y-6 border-t border-[var(--border)] pt-6">
+                    <li className="flex items-start gap-3.5">
+                      <div className="bg-[var(--pass)]/10 p-2 rounded-md mt-0.5 border border-[var(--pass)]/20">
+                        <Key className="w-4 h-4 text-[var(--pass)] flex-shrink-0" />
+                      </div>
+                      <div>
+                        <strong className="block text-[14px] text-[var(--text)] mb-1">Strict Request Idempotency</strong>
+                        <span className="text-[13.5px] text-[var(--text-muted)] leading-relaxed block">Enforces `PayPal-Request-Id`. If an agent retries a delayed request, the server returns the cached success response instead of creating a duplicate charge.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3.5">
+                      <div className="bg-[var(--pass)]/10 p-2 rounded-md mt-0.5 border border-[var(--pass)]/20">
+                        <CheckCircle className="w-4 h-4 text-[var(--pass)] flex-shrink-0" />
+                      </div>
+                      <div>
+                        <strong className="block text-[14px] text-[var(--text)] mb-1">Dual-Ledger Reconciliation</strong>
+                        <span className="text-[13.5px] text-[var(--text-muted)] leading-relaxed block">Prices are strictly recalculated server-side and continuously cross-referenced with PayPal's actual captured amounts to detect any leakage instantly.</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
 
-              <div className="mt-2 text-xs font-mono">
-                {selectedShop === "naive" ? (
-                  <span className="text-[var(--fail)] font-medium">
-                    3 Invariant Breaches
-                  </span>
-                ) : (
-                  <span className="text-[var(--pass)] font-medium">
-                    Guarded + 1 Honest Limit
-                  </span>
-                )}
+                {/* Right Graphic */}
+                <div className="md:col-span-5 flex items-center justify-center bg-[var(--surface-sunken)] rounded-xl border border-[var(--border)] p-8 shadow-inner h-full min-h-[280px]">
+                   <div className="text-center space-y-5">
+                      <div className="w-24 h-24 mx-auto bg-[var(--pass)]/10 rounded-full flex items-center justify-center border border-[var(--pass)]/20 shadow-sm relative">
+                        <ShieldCheck className="w-10 h-10 text-[var(--pass)]" />
+                        <span className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full bg-[var(--pass)] border-[3px] border-[var(--surface-sunken)]">
+                          <CheckCircle className="w-3.5 h-3.5 text-[var(--surface)]" />
+                        </span>
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-[var(--pass)]">Zero-Trust Backend</div>
+                        <div className="text-[13px] text-[var(--text-muted)] mt-1.5 leading-relaxed">AgentReady Lab Verified<br/>for autonomous agents.</div>
+                      </div>
+                   </div>
+                </div>
+
               </div>
-            </div>
-
-            {/* Right: Live Telemetry Stream Box (Col 8) */}
-            <div className="md:col-span-8 flex flex-col justify-between rounded-md border border-[var(--code-border)] bg-[var(--code-bg)] text-[var(--code-text)] p-4 text-xs font-mono">
-              <div className="border-b border-[var(--code-border)] pb-2 mb-3 flex items-center justify-between text-[11px] text-[var(--text-muted)]">
-                <span className="flex items-center gap-1.5">
-                  <Terminal className="w-3.5 h-3.5 text-[var(--text-muted)] stroke-[1.5]" />
-                  <span>event_stream // client_side_telemetry</span>
-                </span>
-                <span className="text-[var(--text-muted)]">Seed: 42 (Reproducible)</span>
-              </div>
-
-              <div className="space-y-2 min-h-[160px] leading-relaxed">
-                {simStep === 0 && !hasCompleted && (
-                  <div className="text-[var(--text-dim)] italic py-8 text-center font-sans">
-                    Click &ldquo;Run Micro-Simulation&rdquo; to test the dual-wave adversarial buyer swarm.
-                  </div>
-                )}
-
-                {simStep >= 1 && (
-                  <div className="audit-log-enter">
-                    <span className="text-[var(--text-muted)] font-semibold">[0.0s WAVE_1]</span> Dispatched 5 parallel buyers (Retrier, Tamperer, Stale Cart, Webhook Skeptic, Refunder)...
-                  </div>
-                )}
-
-                {simStep >= 2 && selectedShop === "naive" && (
-                  <div className="audit-log-enter text-[var(--fail)]">
-                    <span className="font-semibold">[0.6s VULN]</span> The Retrier: Dropped ack triggered duplicate capture <span className="underline">PP-CAP-5O190127TN364715T</span> ($240 on $120 order)!
-                  </div>
-                )}
-                {simStep >= 2 && selectedShop === "hardened" && (
-                  <div className="audit-log-enter text-[var(--pass)]">
-                    <span className="font-semibold">[0.6s GUARD]</span> The Retrier: Idempotency-Key matched cache; returned 200 OK with <code>Idempotent-Replayed: true</code>!
-                  </div>
-                )}
-
-                {simStep >= 3 && selectedShop === "naive" && (
-                  <div className="audit-log-enter text-[var(--fail)]">
-                    <span className="font-semibold">[1.2s VULN]</span> The Tamperer: Client price $1.50 accepted for $150.00 shoe! Store database under-collected $148.50.
-                  </div>
-                )}
-                {simStep >= 3 && selectedShop === "hardened" && (
-                  <div className="audit-log-enter text-[var(--pass)]">
-                    <span className="font-semibold">[1.2s GUARD]</span> The Tamperer: Recalculated server catalog price; rejected with RFC 9457 <code>409 PRICE_MISMATCH</code>.
-                  </div>
-                )}
-
-                {simStep >= 4 && selectedShop === "naive" && (
-                  <div className="audit-log-enter text-[var(--text-muted)]">
-                    <span className="font-semibold">[1.8s FINAL]</span> Dual-Ledger Reconciler: Score <span className="font-semibold underline text-[var(--fail)]">18/100 (FAIL)</span>. APIMatic Fix Engine synthesizes 10-line patch.
-                  </div>
-                )}
-                {simStep >= 4 && selectedShop === "hardened" && (
-                  <div className="audit-log-enter text-[var(--text-muted)]">
-                    <span className="font-semibold">[1.8s FINAL]</span> Dual-Ledger Reconciler: Score <span className="font-semibold underline text-[var(--pass)]">95/100 (PASS)</span>. Honest residual finding on black-box probe.
-                  </div>
-                )}
-              </div>
-
-              {/* Bottom Micro-CTA */}
-              <div className="mt-4 pt-3 border-t border-[var(--code-border)] flex items-center justify-between text-[11px]">
-                <span className="text-[var(--text-dim)] font-sans">
-                  Simulated preview of core reconcile logic
-                </span>
-                <Link
-                  href={PLAYGROUND_URL}
-                  className="inline-flex items-center gap-1 text-[var(--text-muted)] hover:text-[var(--text)] font-medium transition-colors"
-                >
-                  <span>Open Full 9-Lane Workbench</span>
-                  <ArrowRight className="w-3.5 h-3.5 stroke-[1.5]" />
-                </Link>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
