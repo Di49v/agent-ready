@@ -106,7 +106,7 @@ export const HeroSection: React.FC = () => {
               <TextPressure
                 text="PAYPAL PROTECTS THE PAYMENT."
                 minFontSize={34}
-                baseWeight={900} 
+                
                 textColor="var(--text)"
                 pressureColor="var(--accent)"
                 width={true}
@@ -121,7 +121,7 @@ export const HeroSection: React.FC = () => {
               <TextPressure
                 text="NOBODY TESTS THE MERCHANT SIDE"
                 minFontSize={34}
-                baseWeight={200}
+               
                 textColor="var(--text)"
                 pressureColor="var(--accent)"
                 width={true}
@@ -136,7 +136,7 @@ export const HeroSection: React.FC = () => {
               <TextPressure
                 text="OF AN AGENT ORDER."
                 minFontSize={34}
-                baseWeight={200}
+          
                 textColor="var(--text)"
                 pressureColor="var(--accent)"
                 width={true}
