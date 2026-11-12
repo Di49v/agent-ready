@@ -55,10 +55,10 @@ export const HeroSection: React.FC = () => {
 
             {/* Main Heading using TextPressure & MaskedHeading combined */}
             <div className="w-full flex flex-col items-start overflow-hidden py-2 font-heading cursor-crosshair">
-              {/* TextPressure lines (Solid Black, properly spaced) */}
               <TextPressure
                 text="PAYPAL PROTECTS THE PAYMENT."
                 minFontSize={34}
+                baseWeight={900} 
                 textColor="#000000"
                 pressureColor="#000000"
                 width={true}
@@ -72,13 +72,14 @@ export const HeroSection: React.FC = () => {
               />
               <TextPressure
                 text="NOBODY TESTS THE MERCHANT SIDE"
-                minFontSize={28}
+                minFontSize={34}
+                baseWeight={200}
                 textColor="#000000"
                 pressureColor="#000000"
                 width={true}
                 weight={true}
                 flex={false}
-                radius={0.1}
+                radius={0.3}
                 smoothing={0.5}
                 idle="none"
                 clickRipple={true}
@@ -86,13 +87,14 @@ export const HeroSection: React.FC = () => {
               />
               <TextPressure
                 text="OF AN AGENT ORDER."
-                minFontSize={28}
+                minFontSize={34}
+                baseWeight={200}
                 textColor="#000000"
                 pressureColor="#000000"
                 width={true}
                 weight={true}
                 flex={false}
-                radius={0.1}
+                radius={0.3}
                 smoothing={0.5}
                 idle="none"
                 clickRipple={true}
@@ -102,7 +104,7 @@ export const HeroSection: React.FC = () => {
               {/* The MaskedHeading Punchline */}
               <div className="mt-4 w-full">
                 <MaskedHeading 
-                  text="AGENTREADY LAB DOES."
+                  text="AGENT READY LAB DOES."
                   mediaType="image"
                   src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000&auto=format&fit=crop"
                   fillScale={1.15}
@@ -154,7 +156,6 @@ export const HeroSection: React.FC = () => {
           {/* Right Column: Theme-Compliant Terminal */}
           <div className="lg:col-span-6 w-full mt-4 lg:mt-0">
             <div className="w-full rounded-xl border border-[var(--code-border)] bg-[var(--code-bg)] text-[var(--code-text)] text-[13px] font-mono shadow-2xl overflow-hidden relative transition-colors">
-              {/* Subtle top glow */}
               <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[var(--accent)]/50 to-transparent"></div>
               
               {/* Terminal Window Header */}
@@ -176,10 +177,9 @@ export const HeroSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Terminal Body with Exact Theme Variables */}
+              {/* Terminal Body */}
               <div className="p-5 space-y-5 leading-relaxed overflow-x-auto text-[12px] sm:text-[13px]">
-                
-                {/* Stage 1: Chaos */}
+                {/* Stage 1 */}
                 <div>
                   <div className="text-[var(--text-dim)] mb-1.5">// 1. Chaos Fault Injected: Dropped ack on payment confirmation</div>
                   <div className="flex items-start gap-2">
@@ -190,7 +190,7 @@ export const HeroSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Stage 2: Recon */}
+                {/* Stage 2 */}
                 <div>
                   <div className="text-[var(--text-dim)] mb-1.5">// 2. Deterministic Dual-Ledger Cross-Examination</div>
                   
@@ -214,7 +214,7 @@ export const HeroSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Stage 3: Patch */}
+                {/* Stage 3 */}
                 <div>
                   <div className="text-[var(--text-dim)] mb-1.5">// 3. APIMatic-Grounded Patch Synthesis</div>
                   <div className="flex items-start gap-2">
@@ -224,35 +224,60 @@ export const HeroSection: React.FC = () => {
                     </span>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
 
-        {/* Top Metrics Bar: Flat 4-Column Hairline Grid */}
-        <div className="mt-12 hairline-grid grid-cols-2 md:grid-cols-4 bg-[var(--border)] border border-[var(--border)] rounded-md">
-          <div className="bg-[var(--surface)] p-4 flex flex-col items-center justify-center text-center">
-            <span className="text-2xl font-mono font-semibold text-[var(--text)] tabular-nums">0 – 100</span>
-            <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-0.5">Readiness Score</span>
-            <span className="text-[11px] text-[var(--text-muted)]">Weighted Deterministic</span>
+        {/* Top Metrics Bar: Dynamic Interactive Cards */}
+        <div className="mt-12 hairline-grid grid-cols-2 md:grid-cols-4 bg-[var(--border)] border border-[var(--border)] rounded-md overflow-hidden">
+          
+          {/* Card 1 */}
+          <div className="group relative bg-[var(--surface)] p-5 flex flex-col items-center justify-center text-center transition-all duration-300 hover:bg-[var(--surface-hover)] cursor-default">
+            <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--accent)] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+            <span className="relative text-2xl font-mono font-semibold text-[var(--text)] tabular-nums transition-transform duration-300 group-hover:scale-110 group-hover:text-[var(--accent)]">
+              0 &ndash; 100
+            </span>
+            <span className="relative text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-1.5 transition-colors duration-300 group-hover:text-[var(--text)]">Readiness Score</span>
+            <span className="relative text-[11px] text-[var(--text-muted)] mt-0.5">Weighted Deterministic</span>
           </div>
-          <div className="bg-[var(--surface)] p-4 flex flex-col items-center justify-center text-center">
-            <span className="text-2xl font-mono font-semibold text-[var(--text)] tabular-nums">{METRICS.invariantsCount} / {METRICS.invariantsCount}</span>
-            <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-0.5">Commerce Invariants</span>
-            <span className="text-[11px] text-[var(--text-muted)]">Audited Deterministically</span>
+
+          {/* Card 2 */}
+          <div className="group relative bg-[var(--surface)] p-5 flex flex-col items-center justify-center text-center transition-all duration-300 hover:bg-[var(--surface-hover)] cursor-default">
+            <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--accent)] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left delay-75" />
+            <span className="relative text-2xl font-mono font-semibold text-[var(--text)] tabular-nums transition-transform duration-300 group-hover:scale-110 group-hover:text-[var(--accent)]">
+              {METRICS.invariantsCount} / {METRICS.invariantsCount}
+            </span>
+            <span className="relative text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-1.5 transition-colors duration-300 group-hover:text-[var(--text)]">Commerce Invariants</span>
+            <span className="relative text-[11px] text-[var(--text-muted)] mt-0.5">Audited Deterministically</span>
           </div>
-          <div className="bg-[var(--surface)] p-4 flex flex-col items-center justify-center text-center">
-            <span className="text-2xl font-mono font-semibold text-[var(--text)] tabular-nums">12 / 12</span>
-            <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-0.5">Benchmark Matrix</span>
-            <span className="text-[11px] text-[var(--text-muted)]">0 False Alarms (100%)</span>
+
+          {/* Card 3 */}
+          <div className="group relative bg-[var(--surface)] p-5 flex flex-col items-center justify-center text-center transition-all duration-300 hover:bg-[var(--surface-hover)] cursor-default">
+            <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--accent)] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left delay-100" />
+            <span className="relative text-2xl font-mono font-semibold text-[var(--text)] tabular-nums transition-transform duration-300 group-hover:scale-110 group-hover:text-[var(--accent)]">
+              12 / 12
+            </span>
+            <span className="relative text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-1.5 transition-colors duration-300 group-hover:text-[var(--text)]">Benchmark Matrix</span>
+            <span className="relative text-[11px] text-[var(--text-muted)] mt-0.5">0 False Alarms (100%)</span>
           </div>
-          <div className="bg-[var(--surface)] p-4 flex flex-col items-center justify-center text-center">
-            <span className="text-2xl font-mono font-semibold text-[var(--text)] tabular-nums">{METRICS.preventedFinancialLeakage}</span>
-            <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-0.5">Undetected Leakage</span>
-            <span className="text-[11px] text-[var(--text-muted)]">Dual-Ledger Verified</span>
+
+          {/* Card 4 */}
+          <div className="group relative bg-[var(--surface)] p-5 flex flex-col items-center justify-center text-center transition-all duration-300 hover:bg-[var(--surface-hover)] cursor-default">
+            <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--accent)] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left delay-150" />
+            <span className="relative text-2xl font-mono font-semibold text-[var(--text)] tabular-nums transition-transform duration-300 group-hover:scale-110 group-hover:text-[var(--accent)]">
+              {METRICS.preventedFinancialLeakage}
+            </span>
+            <span className="relative text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-1.5 transition-colors duration-300 group-hover:text-[var(--text)]">Undetected Leakage</span>
+            <span className="relative text-[11px] text-[var(--text-muted)] mt-0.5">Dual-Ledger Verified</span>
           </div>
+
         </div>
+
       </div>
     </section>
   );
