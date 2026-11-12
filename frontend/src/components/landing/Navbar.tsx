@@ -32,7 +32,7 @@ export const Navbar: React.FC = () => {
     { label: "Workflow", href: "#workflow" },
     { label: "Docs", href: "#docs" },
     { label: "Postman Hub", href: "#postman" },
-    { label: "Platform Hub", href: "/platform" }, // <-- Added Platform Hub here!
+    { label: "Sponsor Hub", href: "/platform" }, // <-- Added Platform Hub here!
   ];
 
   return (

@@ -16,15 +16,10 @@ const sponsors = [
   // Typography nodes don't need a title, otherwise it prints twice!
   { node: <span className="font-bold tracking-tight text-[var(--text)]">AG Grid</span> },
   { node: <span className="font-bold text-[#14b5cb]">APIMatic</span> },
-  { node: <span className="font-black italic text-[#9b51e0]">Astropods</span> },
-  { node: <span className="font-bold text-[#21ba45]">Bryntum</span> },
   { node: <span className="font-bold tracking-tighter text-[#f26522]">Channel3</span> },
-  { node: <span className="font-bold text-[#005571] dark:text-[#fec514]">Elastic</span> },
-  { node: <span className="font-mono font-bold tracking-widest text-[var(--text)]">KERNEL</span> },
   
   { node: <SiPostman className="text-[#FF6C37]" />, title: "Postman" },
   { node: <SiRender className="text-[#46E3B7] dark:text-white" />, title: "Render" },
-  { node: <SiZapier className="text-[#FF4A00]" />, title: "Zapier" },
 ];
 
 export const GlobalSponsorTicker: React.FC = () => {
