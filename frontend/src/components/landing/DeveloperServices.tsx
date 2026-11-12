@@ -48,20 +48,6 @@ GEMINI_API_KEYS="key_alpha,key_beta,key_gamma"
 LAB_PROBE_HMAC_SECRET="32_byte_hex_signature_secret"
 CART_RECEIPT_HMAC_SECRET="32_byte_hex_cart_approval_secret"`;
 
-  const apiEndpoints = [
-    { method: "POST", path: "/v1/targets", desc: "Register a merchant store sandbox target" },
-    { method: "POST", path: "/v1/runs", desc: "Initiate an adversarial swarm test run" },
-    { method: "GET", path: "/v1/runs/{id}", desc: "Fetch live run status and readiness score (0-100)" },
-    { method: "GET", path: "/v1/runs/{id}/findings", desc: "List detected violations with PayPal IDs" },
-    { method: "GET", path: "/v1/runs/{id}/events", desc: "Real-time SSE event stream (agent_step, etc.)" },
-    { method: "POST", path: "/v1/runs/{id}/rerun", desc: "Re-run same random seed against Hardened Shop" },
-    { method: "GET", path: "/v1/runs/{id}/report", desc: "Export comprehensive audit report (JSON/MD)" },
-    { method: "GET", path: "/v1/runs/{id}/postman", desc: "Export Postman Collection v2.1.0 for the run" },
-    { method: "GET", path: "/v1/badge/{target}.svg", desc: "Generate dynamic SVG readiness score badge" },
-    { method: "POST", path: "/webhooks/paypal", desc: "Live PayPal Sandbox webhook listener" },
-    { method: "GET", path: "/_lab/ledger", desc: "HMAC-signed read-only store probe endpoint" },
-  ];
-
   const installMethods = [
     { id: "npm", label: "npm", command: "npm install ./sdk" },
     { id: "pnpm", label: "pnpm", command: "pnpm add ./sdk" },
@@ -413,50 +399,6 @@ if (findings.some((finding) => finding.severity === "CRITICAL")) {
             <pre className="text-[11px] leading-relaxed font-mono text-[var(--code-text)] whitespace-pre-wrap break-words overflow-x-auto">
               <code>{mcpConfigJson}</code>
             </pre>
-          </div>
-        </div>
-
-        {/* API Endpoints Table */}
-        <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 mb-10">
-          <div className="mb-3 border-b border-[var(--border)] pb-3">
-            <span className="text-xs font-mono text-[var(--text-muted)] font-medium">
-              OpenAPI 3.1 Surface
-            </span>
-            <h3 className="text-base font-heading font-semibold text-[var(--text)] mt-0.5">
-              Core REST API Endpoints (/v1/*)
-            </h3>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-mono border-collapse">
-              <thead>
-                <tr className="border-b border-[var(--border)] text-[var(--text-dim)]">
-                  <th className="py-2 px-3 font-medium">METHOD</th>
-                  <th className="py-2 px-3 font-medium">ENDPOINT</th>
-                  <th className="py-2 px-3 font-medium">FUNCTION &amp; PAYLOAD</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--border)] text-[var(--text-muted)]">
-                {apiEndpoints.map((ep) => (
-                  <tr key={ep.path} className="hover:bg-[var(--surface-hover)] transition-colors">
-                    <td className="py-2 px-3">
-                      <span
-                        className={`px-1.5 py-0.5 rounded font-mono text-[10px] font-semibold ${
-                          ep.method === "POST"
-                            ? "bg-[var(--surface-sunken)] text-[var(--text-muted)] border border-[var(--border)]"
-                            : "bg-[var(--surface-sunken)] text-[var(--text)] border border-[var(--border)]"
-                        }`}
-                      >
-                        {ep.method}
-                      </span>
-                    </td>
-                    <td className="py-2 px-3 font-medium text-[var(--text)]">
-                      {ep.path}
-                    </td>
-                    <td className="py-2 px-3">{ep.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
         </div>
 

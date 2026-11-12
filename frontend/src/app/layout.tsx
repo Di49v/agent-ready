@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Fraunces, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { GlobalSponsorTicker } from "@/components/GlobalSponsorTicker";
 import { ThemeProvider } from "@/lib/theme-context";
 
 const fraunces = Fraunces({
@@ -51,7 +52,12 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="min-h-full flex flex-col font-sans bg-[var(--bg)] text-[var(--text)] transition-colors duration-150">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {/* Global Ticker sits at the very top of the app */}
+          <GlobalSponsorTicker />
+          
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

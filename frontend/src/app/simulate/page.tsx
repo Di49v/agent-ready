@@ -11,7 +11,6 @@ import { BenchmarkMatrixModal } from "@/components/BenchmarkMatrixModal";
 import { WorkflowHeroBanner } from "@/components/WorkflowHeroBanner";
 import { GuidedWalkthroughBar } from "@/components/GuidedWalkthroughBar";
 import { JudgeArena } from "@/components/JudgeArena";
-import { DeliverablesHub } from "@/components/DeliverablesHub";
 import {
   createRun,
   fetchPersonas,
@@ -33,7 +32,6 @@ import {
   ArrowUpRight,
   Layers,
   CheckCircle2,
-  Package,
   ArrowLeft,
   BookOpen,
 } from "lucide-react";
@@ -54,7 +52,7 @@ export default function SimulationPlaygroundPage() {
   const [selectedLane, setSelectedLane] = useState<number>(2);
   const [isBenchmarkOpen, setIsBenchmarkOpen] = useState<boolean>(false);
   const [errorBanner, setErrorBanner] = useState<string | null>(null);
-  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState<"workbench" | "arena" | "deliverables">("workbench");
+  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState<"workbench" | "arena">("workbench");
   const [tourStep, setTourStep] = useState<number>(1);
 
   // Load initial 9 personas on component mount
@@ -306,13 +304,12 @@ export default function SimulationPlaygroundPage() {
           </div>
         )}
 
-        {/* 4-Tab Workspace Navigation */}
+        {/* 3-Tab Workspace Navigation */}
         <div className="flex items-center gap-2 border-b border-[var(--border)] pb-3 overflow-x-auto">
           {[
             { id: "workbench", label: "Crash-Test Workbench", badge: "9 Lanes", icon: Layers },
             { id: "arena", label: "The Judge Arena", badge: "Live Agent + Chaos", icon: Zap },
             { id: "benchmark", label: "12-Bug Benchmark Matrix", badge: "12/12 Verified", icon: CheckCircle2 },
-            { id: "deliverables", label: "Platform & Sponsor Hub", badge: "MCP · SDK · SVG", icon: Package },
           ].map((tab) => {
             const isActive = activeWorkspaceTab === tab.id;
             const Icon = tab.icon;
@@ -345,10 +342,8 @@ export default function SimulationPlaygroundPage() {
         {/* TAB 1: CRASH-TEST WORKBENCH */}
         {activeWorkspaceTab === "workbench" && (
           <div className="space-y-6">
-            {/* Self-Explanatory Story Hero Banner */}
             <WorkflowHeroBanner />
 
-            {/* 4-Step Interactive Guided Judge Tour Bar */}
             <GuidedWalkthroughBar
               currentStep={tourStep}
               onSelectStep={handleSelectTourStep}
@@ -356,7 +351,6 @@ export default function SimulationPlaygroundPage() {
               score={currentRun?.score}
             />
 
-            {/* Live Swarm Telemetry Lanes (Swiss Precision Telemetry) */}
             <SwarmLanes
               personas={personas}
               laneStates={laneStates}
@@ -365,13 +359,11 @@ export default function SimulationPlaygroundPage() {
               onSelectLane={setSelectedLane}
             />
 
-            {/* Live Channel3 Store & Cart Wire Inspector */}
             <LiveStoreCartInspector
               selectedLane={selectedLane}
               onSelectLane={setSelectedLane}
             />
 
-            {/* AG Grid Results Matrix */}
             <FindingsGrid
               findings={findings}
               dualRows={dualRows}
@@ -383,9 +375,6 @@ export default function SimulationPlaygroundPage() {
 
         {/* TAB 2: THE JUDGE ARENA */}
         {activeWorkspaceTab === "arena" && <JudgeArena />}
-
-        {/* TAB 4: DELIVERABLES & SPONSOR HUB */}
-        {activeWorkspaceTab === "deliverables" && <DeliverablesHub />}
 
         {/* Milestone Indicator Banner */}
         <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -410,7 +399,6 @@ export default function SimulationPlaygroundPage() {
         </div>
       </main>
 
-      {/* Side-by-Side Dual-Ledger Inspector Slide-Over Drawer */}
       <LedgerDiffDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
@@ -420,7 +408,6 @@ export default function SimulationPlaygroundPage() {
         isRerunning={isRerunning}
       />
 
-      {/* 12-Bug Benchmark & Grounded APIMatic Matrix Modal */}
       <BenchmarkMatrixModal
         isOpen={isBenchmarkOpen}
         onClose={() => setIsBenchmarkOpen(false)}
