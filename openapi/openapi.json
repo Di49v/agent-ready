@@ -806,6 +806,30 @@
           "completed_at": {
             "type": "string",
             "title": "Completed At"
+          },
+          "product_card": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product Card"
+          },
+          "wire_preview": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wire Preview"
           }
         },
         "type": "object",

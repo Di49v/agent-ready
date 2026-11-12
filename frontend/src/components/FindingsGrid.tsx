@@ -298,7 +298,7 @@ export const FindingsGrid: React.FC<FindingsGridProps> = ({
 
       {/* Grid Container */}
       <div
-        className="w-full h-[360px] rounded-lg overflow-hidden border border-[var(--border)]"
+        className="w-full h-[360px] rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--surface)]"
         style={{ width: "100%", height: "360px" }}
       >
         {activeTab === "findings" ? (

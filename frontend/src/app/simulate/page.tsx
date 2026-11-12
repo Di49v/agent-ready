@@ -37,7 +37,7 @@ import {
 } from "lucide-react";
 
 export default function SimulationPlaygroundPage() {
-  const [selectedTarget, setSelectedTarget] = useState<string>("naive-shop");
+  const [selectedTarget, setSelectedTarget] = useState<string>("naive-shop"); // Default to Naive Shop so first run shows vulnerabilities
   const [selectedPolicy, setSelectedPolicy] = useState<"observe" | "assist" | "auto">("auto");
   const [personas, setPersonas] = useState<PersonaSpec[]>([]);
   const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -323,11 +323,10 @@ export default function SimulationPlaygroundPage() {
                     setActiveWorkspaceTab(tab.id as any);
                   }
                 }}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-mono transition-all cursor-pointer whitespace-nowrap ${
-                  isActive
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-mono transition-all cursor-pointer whitespace-nowrap ${isActive
                     ? "bg-[var(--surface-sunken)] text-[var(--accent)] border border-[var(--accent)] font-semibold"
                     : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-hover)] border border-transparent"
-                }`}
+                  }`}
               >
                 <Icon className="h-3.5 w-3.5" />
                 <span>{tab.label}</span>
