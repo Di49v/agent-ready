@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import TextPressure from "./TextPressure";
 import MaskedHeading from "./MaskedHeading";
@@ -13,6 +13,53 @@ import {
   Play,
   AlertCircle,
 } from "lucide-react";
+
+// --- Lightweight Animated Counter Component ---
+const AnimatedCounter = ({
+  value,
+  startValue = 0,
+  duration = 2000,
+  decimals = 0,
+  prefix = "",
+  suffix = "",
+}: {
+  value: number;
+  startValue?: number;
+  duration?: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+}) => {
+  const [current, setCurrent] = useState(startValue);
+
+  useEffect(() => {
+    let startTime: number;
+    let animationFrame: number;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      
+      // Smooth ease-out exponential effect
+      const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      setCurrent(startValue + (value - startValue) * easeProgress);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        setCurrent(value);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [value, startValue, duration]);
+
+  return (
+    <>{prefix}{current.toFixed(decimals)}{suffix}</>
+  );
+};
+// ----------------------------------------------
 
 export const HeroSection: React.FC = () => {
   return (
@@ -55,12 +102,13 @@ export const HeroSection: React.FC = () => {
 
             {/* Main Heading using TextPressure & MaskedHeading combined */}
             <div className="w-full flex flex-col items-start overflow-hidden py-2 font-heading cursor-crosshair">
+              {/* FIXED: textColor changed from #000000 to var(--text) */}
               <TextPressure
                 text="PAYPAL PROTECTS THE PAYMENT."
                 minFontSize={34}
                 baseWeight={900} 
-                textColor="#000000"
-                pressureColor="#000000"
+                textColor="var(--text)"
+                pressureColor="var(--accent)"
                 width={true}
                 weight={true}
                 flex={false} 
@@ -74,8 +122,8 @@ export const HeroSection: React.FC = () => {
                 text="NOBODY TESTS THE MERCHANT SIDE"
                 minFontSize={34}
                 baseWeight={200}
-                textColor="#000000"
-                pressureColor="#000000"
+                textColor="var(--text)"
+                pressureColor="var(--accent)"
                 width={true}
                 weight={true}
                 flex={false}
@@ -89,8 +137,8 @@ export const HeroSection: React.FC = () => {
                 text="OF AN AGENT ORDER."
                 minFontSize={34}
                 baseWeight={200}
-                textColor="#000000"
-                pressureColor="#000000"
+                textColor="var(--text)"
+                pressureColor="var(--accent)"
                 width={true}
                 weight={true}
                 flex={false}
@@ -237,7 +285,7 @@ export const HeroSection: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--accent)] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
             <span className="relative text-2xl font-mono font-semibold text-[var(--text)] tabular-nums transition-transform duration-300 group-hover:scale-110 group-hover:text-[var(--accent)]">
-              0 &ndash; 100
+              0 &ndash; <AnimatedCounter value={100} duration={2000} />
             </span>
             <span className="relative text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-1.5 transition-colors duration-300 group-hover:text-[var(--text)]">Readiness Score</span>
             <span className="relative text-[11px] text-[var(--text-muted)] mt-0.5">Weighted Deterministic</span>
@@ -248,7 +296,7 @@ export const HeroSection: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--accent)] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left delay-75" />
             <span className="relative text-2xl font-mono font-semibold text-[var(--text)] tabular-nums transition-transform duration-300 group-hover:scale-110 group-hover:text-[var(--accent)]">
-              {METRICS.invariantsCount} / {METRICS.invariantsCount}
+              <AnimatedCounter value={METRICS.invariantsCount || 6} duration={1500} /> / {METRICS.invariantsCount || 6}
             </span>
             <span className="relative text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-1.5 transition-colors duration-300 group-hover:text-[var(--text)]">Commerce Invariants</span>
             <span className="relative text-[11px] text-[var(--text-muted)] mt-0.5">Audited Deterministically</span>
@@ -259,7 +307,7 @@ export const HeroSection: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--accent)] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left delay-100" />
             <span className="relative text-2xl font-mono font-semibold text-[var(--text)] tabular-nums transition-transform duration-300 group-hover:scale-110 group-hover:text-[var(--accent)]">
-              12 / 12
+              <AnimatedCounter value={12} duration={1800} /> / 12
             </span>
             <span className="relative text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-1.5 transition-colors duration-300 group-hover:text-[var(--text)]">Benchmark Matrix</span>
             <span className="relative text-[11px] text-[var(--text-muted)] mt-0.5">0 False Alarms (100%)</span>
@@ -270,7 +318,7 @@ export const HeroSection: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--accent)] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left delay-150" />
             <span className="relative text-2xl font-mono font-semibold text-[var(--text)] tabular-nums transition-transform duration-300 group-hover:scale-110 group-hover:text-[var(--accent)]">
-              {METRICS.preventedFinancialLeakage}
+              <AnimatedCounter startValue={160} value={0} prefix="$" decimals={2} duration={2500} />
             </span>
             <span className="relative text-[11px] font-mono uppercase tracking-wider text-[var(--text-dim)] mt-1.5 transition-colors duration-300 group-hover:text-[var(--text)]">Undetected Leakage</span>
             <span className="relative text-[11px] text-[var(--text-muted)] mt-0.5">Dual-Ledger Verified</span>

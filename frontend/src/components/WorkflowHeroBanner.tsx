@@ -16,49 +16,7 @@ export const WorkflowHeroBanner: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"without_guard" | "with_guard">("with_guard");
 
   return (
-    <div className="bg-[var(--surface)] border border-[var(--border)] rounded-lg p-6 space-y-6">
-      {/* Top Header: The 1-Line Pitch & Sponsor Attributions */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 border-b border-[var(--border)] pb-5">
-        <div className="space-y-2 max-w-3xl">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded text-[11px] font-mono uppercase tracking-[0.08em] bg-[var(--surface-sunken)] text-[var(--text-muted)] border border-[var(--border)]">
-              Autonomous AI Commerce Security
-            </span>
-            <span className="text-[var(--text-dim)] font-mono text-[11px]">·</span>
-            <span className="text-[var(--text-muted)] font-mono text-[11px]">PayPal Sandbox & APIMatic Middleware</span>
-          </div>
-
-          <h1 className="text-2xl sm:text-3xl font-medium text-[var(--text)] tracking-[-0.03em] leading-tight">
-            PayPal protects the payment. Nobody tests the merchant's side of an agent order.{" "}
-            <span className="underline decoration-[var(--highlight)] decoration-1 underline-offset-4 text-[var(--highlight)]">AgentReady Lab does.</span>
-          </h1>
-
-          <p className="text-[var(--text-muted)] text-sm leading-relaxed">
-            When autonomous AI agents buy on behalf of humans, unhandled network drops trigger duplicate captures ($240 charged for $120 order), client payloads mutate prices ($1.50 steal), and prompt traps hijack cart quantities. Lab crash-tests the store with a 9-persona swarm, reconciles ledgers, and proves self-healing.
-          </p>
-        </div>
-
-        {/* Sponsor Badges */}
-        <div className="flex lg:flex-col flex-wrap gap-2 shrink-0">
-          <div className="px-3 py-1.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] flex items-center gap-2 text-xs font-mono text-[var(--text)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-muted)]" />
-            <span>PayPal Sandbox v2.29</span>
-          </div>
-          <div className="px-3 py-1.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] flex items-center gap-2 text-xs font-mono text-[var(--text)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-muted)]" />
-            <span>APIMatic Context Plugin</span>
-          </div>
-          <div className="px-3 py-1.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] flex items-center gap-2 text-xs font-mono text-[var(--text)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-muted)]" />
-            <span>Channel3 Product Catalog</span>
-          </div>
-          <div className="px-3 py-1.5 rounded bg-[var(--surface-sunken)] border border-[var(--border)] flex items-center gap-2 text-xs font-mono text-[var(--text)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-muted)]" />
-            <span>AG Grid Community v32</span>
-          </div>
-        </div>
-      </div>
-
+    <div className="bg-[var(--surface)] border border-[var(--border)] rounded-lg p-6">
       {/* Interactive 3-Card Cart-to-Mini-Simulator */}
       <div>
         <div className="flex items-center justify-between mb-3">
